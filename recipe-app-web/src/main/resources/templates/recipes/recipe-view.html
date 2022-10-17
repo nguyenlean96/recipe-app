@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head th:replace="fragments :: html_header" />
+    <body>
+        <div th:replace="fragments :: html_navbar" />
+
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Library</li>
+            </ol>
+        </nav>
+
+        <h1 th:text="${recipe_name}" class="" />
+
+        <script th:replace="fragments :: bootstrap_script" />
+    </body>
+</html>

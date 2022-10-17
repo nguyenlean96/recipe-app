@@ -1,0 +1,4 @@
+.dshadow {
+    filter: drop-shadow(0px 5px 50rem #004365);
+    filter: drop-shadow(0px 2px 6px #82A9BC);
+}
