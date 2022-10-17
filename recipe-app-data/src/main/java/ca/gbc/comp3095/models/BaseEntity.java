@@ -10,4 +10,8 @@ public class BaseEntity {
     public void setId(Long id) {
         this.id = id;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> fd21917 (new changes committed)
 }
