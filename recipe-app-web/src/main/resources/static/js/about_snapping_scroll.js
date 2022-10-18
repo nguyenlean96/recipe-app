@@ -1,3 +1,4 @@
+// import Swiper from 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.esm.browser.min.js';
 const $ = selector => document.querySelectorAll(selector);
 
 window.onload = slider_activate();
@@ -5,9 +6,9 @@ window.onload = slider_activate();
 let swiper;
 
 function slider_activate() {
-    if ($('.teresahaidong_slider').length > 0) {
+    if ($('.about_slider').length > 0) {
         swiper = new Swiper(
-            '.teresahaidong_slider',
+            '.about_slider',
             {
                 direction: 'vertical',
                 sliderPerView: 1,

@@ -3,12 +3,47 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-    <head th:replace="fragments :: html_header" />
+    <head>
+        <meta charset="UTF-8">
+        <title th:text="${'YourRecipe ' + page_title}" />
+        <!-- Bootstrap stylesheet -->
+        <link th:fragment="bootstrap_stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        <!-- Swiper for page scrolling -->
+        <link  rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    </head>
     <body>
         <div th:replace="fragments :: html_navbar" />
 
-        <h1 th:text="${viewName}" />
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="/templates/img/article-gf-mealplan-hero.jpg" class="d-block w-100 card-image" alt="First member">
+
+                </div>
+                <div class="carousel-item">
+                    <img src="/templates/img/image04-4.jpg" class="d-block w-100 card-image" alt="Second member">
+                </div>
+                <div class="carousel-item">
+                    <img src="/templates/img/specialdiets-vegan-meal-plan.jpg" class="d-block w-100 card-image" alt="Third Member">
+                </div>
+                <div class="carousel-item">
+                    <img src="/templates/img/ut-medium-meal-plan-660x396.jpg" class="d-block w-100 card-image" alt="forth member">
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
 
         <script th:replace="fragments :: bootstrap_script" />
+        <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+        <script src="js/about_snapping_scroll.js"></script>
     </body>
 </html>
