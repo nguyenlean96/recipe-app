@@ -2,9 +2,11 @@ package ca.gbc.comp3095.services.maps;
 
 import ca.gbc.comp3095.models.Recipe;
 import ca.gbc.comp3095.services.RecipeService;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
+@Component
 public class RecipeMapService extends AbstractMapService<Recipe, Long> implements RecipeService {
 
     @Override
