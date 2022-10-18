@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
-@Component
 public class RecipeMapService extends AbstractMapService<Recipe, Long> implements RecipeService {
 
     @Override
