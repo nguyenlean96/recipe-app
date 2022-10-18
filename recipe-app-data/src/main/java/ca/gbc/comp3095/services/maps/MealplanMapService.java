@@ -1,6 +1,5 @@
 package ca.gbc.comp3095.services.maps;
 
-import ca.gbc.comp3095.models.Cookbook;
 import ca.gbc.comp3095.models.Mealplan;
 import ca.gbc.comp3095.services.MealplanService;
 

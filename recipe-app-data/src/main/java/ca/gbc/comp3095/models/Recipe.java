@@ -5,6 +5,8 @@ import java.util.Set;
 
 public class Recipe{
     private long id;
+    // created_by - type long id - foreign key to users table
+    private long created_by;
     private String name;
     private String description;
     private Integer prepTime;
@@ -17,7 +19,7 @@ public class Recipe{
     public Recipe() {
     }
 
-    public Recipe(long id, String name, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
+    public Recipe(long id, long created_by, String name, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -30,7 +32,7 @@ public class Recipe{
     }
 
     // everything but id in constructor for database
-    public Recipe(String name, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
+    public Recipe(long created_by, String name, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
         this.name = name;
         this.description = description;
         this.prepTime = prepTime;
@@ -47,6 +49,14 @@ public class Recipe{
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getCreated_by() {
+        return created_by;
+    }
+
+    public void setCreated_by(long created_by) {
+        this.created_by = created_by;
     }
 
     public String getName() {
@@ -117,6 +127,7 @@ public class Recipe{
     public String toString() {
         return "Recipe{" +
                 "id=" + id +
+                ", created_by=" + created_by +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", prepTime=" + prepTime +
