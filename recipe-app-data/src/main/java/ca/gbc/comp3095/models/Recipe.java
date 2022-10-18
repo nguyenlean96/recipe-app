@@ -5,6 +5,7 @@ import java.util.Set;
 
 public class Recipe{
     private long id;
+    private String name;
     private String description;
     private Integer prepTime;
     private Integer cookTime;
@@ -16,8 +17,9 @@ public class Recipe{
     public Recipe() {
     }
 
-    public Recipe(long id, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
+    public Recipe(long id, String name, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
         this.id = id;
+        this.name = name;
         this.description = description;
         this.prepTime = prepTime;
         this.cookTime = cookTime;
@@ -28,7 +30,8 @@ public class Recipe{
     }
 
     // everything but id in constructor for database
-    public Recipe(String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
+    public Recipe(String name, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
+        this.name = name;
         this.description = description;
         this.prepTime = prepTime;
         this.cookTime = cookTime;
@@ -44,6 +47,14 @@ public class Recipe{
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -106,6 +117,7 @@ public class Recipe{
     public String toString() {
         return "Recipe{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", prepTime=" + prepTime +
                 ", cookTime=" + cookTime +
