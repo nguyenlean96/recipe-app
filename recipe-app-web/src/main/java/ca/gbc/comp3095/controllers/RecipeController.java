@@ -14,17 +14,10 @@ import java.util.*;
 @RequestMapping(path="/recipe")
 public class RecipeController {
 
-    private final RecipeMapService recipeMapService;
-
-    @Autowired
-    public RecipeController(RecipeMapService service) {
-        this.recipeMapService = service;
-    }
-
     @RequestMapping({"", "/", "/list"})
     public ModelAndView list(Model model) {
         Recipe r1 = new Recipe(
-                "Fluffy Cake Doughnuts",
+                // "Fluffy Cake Doughnuts",
                 "This recipe is very quick and easy to make. I have a donut pan, which is like a muffin pan, but has donut shaped holes rather than muffin shaped holes. These donuts are baked not fried, so they don't have so many calories. I mix up either a powdered sugar glaze or a chocolate icing to top these with. They can also be rolled in cinnamon and white sugar, but it doesn't stick very well. My husband likes them just plain. For a chocolate glaze, simply stir 1/2 cup melted chocolate chips into the glaze mixture.",
                 20, 10, 12,
                 "2 cups all-purpose flour\n" +
@@ -62,7 +55,7 @@ public class RecipeController {
                 "EASY"
         );
         Recipe r2 = new Recipe(
-                "Baked Apple Cider Donuts",
+                // "Baked Apple Cider Donuts",
                 "All the world's great donuts are fried, except there are a few rare examples of when they're not—and this incredibly delicious and easy-to-make apple cider donut is one notable exception. Since we're not going to fry these, not only are they easier, but they're way less messy. Less time cleaning up means more time eating donuts.",
                 15, 20, 12,
                 "2 cups all-purpose flour\n" +
