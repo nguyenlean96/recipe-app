@@ -15,6 +15,7 @@
         margin-left: 10%;
         margin-right: 10%;
         padding: 2%;
+        background: beige;
     }
 </style>
 <body id="bkgd">
@@ -25,7 +26,7 @@
         <h3>Add Recipe</h3>
         <div class="card-body">
             <div class="col-md-10">
-                <form action="#" method="post"> <!-- th:action="@{/recipe-view.html/add}" th:object="${recipes}" -->
+                <form action="#"   method="post"> <!--th:action="@{/recipe-view.html/add}" th:object="${recipe}" -->
                     <div class="row">
                         <div class="form-group col-md-8">
                             <label for="recipeImage" class="col-form-label">Recipe Image</label> <input type="file"
