@@ -1,6 +1,15 @@
 package ca.gbc.comp3095.models;
 
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+@Entity
+@Table
 public class User{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username;
     private String password;
@@ -8,6 +17,12 @@ public class User{
     private String firstName;
     private String lastName;
     private String phoneNumber;
+
+    // RELATIONSHIPS
+    // many to many with user = my recipes (when a user creates a recipe)
+    @ManyToMany(mappedBy = "users")
+    private Set<Recipe> recipes = new HashSet<>();
+
 
     public User() {
     }
@@ -22,7 +37,6 @@ public class User{
         this.phoneNumber = phoneNumber;
     }
 
-    // everything but id in constructor for database
     public User(String username, String password, String email, String firstName, String lastName, String phoneNumber) {
         this.username = username;
         this.password = password;
@@ -30,6 +44,16 @@ public class User{
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
+    }
+
+    public User(String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Recipe> recipes) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.recipes = recipes;
     }
 
     public Long getId() {
@@ -88,6 +112,14 @@ public class User{
         this.phoneNumber = phoneNumber;
     }
 
+    public Set<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(Set<Recipe> recipes) {
+        this.recipes = recipes;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -98,9 +130,21 @@ public class User{
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", recipes=" + recipes +
                 '}';
     }
 
-    // RELATIONSHIPS
-    // many to many with user = my recipes (when a user creates a recipe)
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.equals(user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
 }

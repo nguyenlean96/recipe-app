@@ -1,8 +1,4 @@
 package ca.gbc.comp3095.controllers;
-
-import ca.gbc.comp3095.models.Recipe;
-import ca.gbc.comp3095.services.maps.RecipeMapService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
