@@ -3,19 +3,111 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-    <head th:replace="fragments :: html_header" />
-    <body>
-        <div th:replace="fragments :: html_navbar" />
+<head th:replace="fragments :: html_header"/>
+<style>
+    #bkgd {
+        background-size: cover;
+    }
 
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Library</li>
-            </ol>
-        </nav>
+    .recipeForm {
+        border: 2px solid #000000;
+        border-radius: 23px;
+        margin-left: 10%;
+        margin-right: 10%;
+        padding: 2%;
+    }
+</style>
+<body id="bkgd">
+<div th:replace="fragments :: html_navbar"/>
 
-        <h1 th:text="${recipe_name}" class="" />
+<div class="container my-5">
+    <div class="recipeForm">
+        <h3>Add Recipe</h3>
+        <div class="card-body">
+            <div class="col-md-10">
+                <form action="#" method="post"> <!-- th:action="@{/recipe-view.html/add}" th:object="${recipes}" -->
+                    <div class="row">
+                        <div class="form-group col-md-8">
+                            <label for="recipeImage" class="col-form-label">Recipe Image</label> <input type="file"
+                                                                                                        accept="image/*"
+                                                                                                        class="form-control"
+                                                                                                        id="recipeImage"
+                                                                                                        placeholder="RecipeImage"
+                                                                                                        onchange="loadFile(event)">
+                            <span class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="name" class="col-form-label">Recipe Name</label> <input type="text"
+                                                                                                class="form-control"
+                                                                                                id="name"
+                                                                                                placeholder="Name">
+                            <span class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="prepTime" class="col-form-label">Prep Time(Minutes)</label> <input type="ti"
+                                                                                                           class="form-control"
+                                                                                                           id="prepTime"
+                                                                                                           placeholder="Prep Time">
+                            <span class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="cookTime" class="col-form-label">Cook Time(Minutes)</label> <input
+                                type="number"
+                                class="form-control"
+                                id="cookTime"
+                                placeholder="Cook Time">
+                            <span class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="serving" class="col-form-label">Servings</label> <input type="number"
+                                                                                                class="form-control"
+                                                                                                id="serving"
+                                                                                                placeholder="Servings">
+                            <span class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="ingredients" class="col-form-label">Ingredients</label> <input type="text"
+                                                                                                       class="form-control"
+                                                                                                       id="ingredients"
+                                                                                                       placeholder="Ingredients">
+                            <span class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="directions" class="col-form-label">Directions</label> <input type="text"
+                                                                                                     class="form-control"
+                                                                                                     id="directions"
+                                                                                                     placeholder="Directions">
+                            <span class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="difficulty" class="col-form-label">Difficulty:</label>
+                            <select name="difficulty" id="difficulty">
+                                <option value="easy">Easy</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                            <span class="text-danger"></span>
+                        </div>
 
-        <script th:replace="fragments :: bootstrap_script" />
-    </body>
+                        <div class="col-md-6">
+                            <input type="submit" class="btn btn-primary" value="Add Recipe">
+                        </div>
+
+                        <div class="form-group col-md-8"></div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let loadFile = function (event) {
+        let bkgd = document.getElementById("bkgd");
+        bkgd.style.backgroundImage = "url(" + URL.createObjectURL(event.target.files[0]) + ")";
+    }
+</script>
+<script th:replace="fragments :: bootstrap_script"/>
+</body>
 </html>
