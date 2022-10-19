@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -14,18 +15,24 @@ public class HomeController {
 
     @GetMapping({"","/","/home","/index"})
     public ModelAndView home(Model model, HttpSession session) {
-        List<String> names = (List<String>) session.getAttribute("USER_NAME");
-        if (names != null) {
-            for (String name : names) {
-                System.out.println(name);
-            }
-        }
-        System.out.println("Home view access detected");
-//        model.addAttribute("name", name);
-        ModelAndView mv = new ModelAndView();
-//        mv.addObject("name", name);
 
-//        System.out.println("User: " + name);
+        System.out.println("Home view access detected");
+
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("fake_recipes", Arrays.asList(
+                "Baked Apple Cider Donuts",
+                "Apple Cider Stew",
+                "Glazed Apple Cider Cake",
+                "Apple Cider Pancakes",
+                "Apple Cider Sauce and Pork Loin Chops",
+                "Spiked Caramel Apple Cider",
+                "Slow Cooker Apple Cider Braised Pork",
+                "Ashley's Apple Cider Doughnuts",
+                "Butternut Squash and Apple Cider Soup",
+                "Apple Cider Pulled Pork with Caramelized Onion and Apples"
+
+        ));
+
         mv.setViewName("index");
 
         return mv;
