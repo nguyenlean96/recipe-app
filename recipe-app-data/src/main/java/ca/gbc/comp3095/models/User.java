@@ -6,10 +6,10 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table
+@Table(name="users")
 public class User{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE  )
     private Long id;
     private String username;
     private String password;
@@ -19,10 +19,13 @@ public class User{
     private String phoneNumber;
 
     // RELATIONSHIPS
-    // many to many with user = my recipes (when a user creates a recipe)
-    @ManyToMany(mappedBy = "users")
-    private Set<Recipe> recipes = new HashSet<>();
+    // one to many with mealplan = mealplan has a user
+    @OneToMany(mappedBy = "user")
+    private Set<Mealplan> mealplans = new HashSet<>();
 
+    @ManyToMany()
+    @JoinTable(name = "user_recipe", joinColumns = @JoinColumn( name = "user_id"),  inverseJoinColumns = @JoinColumn( name = "recipe_id"))
+    private Set<Recipe> recipes  = new HashSet<>();
 
     public User() {
     }
@@ -46,13 +49,14 @@ public class User{
         this.phoneNumber = phoneNumber;
     }
 
-    public User(String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Recipe> recipes) {
+    public User(String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Mealplan> mealplans, Set<Recipe> recipes) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
+        this.mealplans = mealplans;
         this.recipes = recipes;
     }
 
@@ -112,12 +116,33 @@ public class User{
         this.phoneNumber = phoneNumber;
     }
 
+    public Set<Mealplan> getMealplans() {
+        return mealplans;
+    }
+
+    public void setMealplans(Set<Mealplan> mealplans) {
+        this.mealplans = mealplans;
+    }
+
     public Set<Recipe> getRecipes() {
         return recipes;
     }
 
     public void setRecipes(Set<Recipe> recipes) {
         this.recipes = recipes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
@@ -130,21 +155,8 @@ public class User{
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", mealplans=" + mealplans +
                 ", recipes=" + recipes +
                 '}';
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id.equals(user.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
 }
