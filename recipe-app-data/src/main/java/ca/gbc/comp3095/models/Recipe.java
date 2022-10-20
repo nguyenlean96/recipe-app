@@ -11,6 +11,7 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     private String name;
+    private String imageUrl;
     @Lob
     @Column(length=512)
     private String description;
@@ -35,9 +36,10 @@ public class Recipe {
     public Recipe() {
     }
 
-    public Recipe(long id, String name, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, Set<User> users, Set<Mealplan> mealplans) {
+    public Recipe(long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, Set<User> users, Set<Mealplan> mealplans) {
         this.id = id;
         this.name = name;
+        this.imageUrl = imageUrl;
         this.description = description;
         this.prepTime = prepTime;
         this.cookTime = cookTime;
@@ -49,8 +51,9 @@ public class Recipe {
         this.mealplans = mealplans;
     }
 
-    public Recipe(String name, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, Set<User> users, Set<Mealplan> mealplans) {
+    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, Set<User> users, Set<Mealplan> mealplans) {
         this.name = name;
+        this.imageUrl = imageUrl;
         this.description = description;
         this.prepTime = prepTime;
         this.cookTime = cookTime;
@@ -62,8 +65,9 @@ public class Recipe {
         this.mealplans = mealplans;
     }
 
-    public Recipe(String name, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
+    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
         this.name = name;
+        this.imageUrl = imageUrl;
         this.description = description;
         this.prepTime = prepTime;
         this.cookTime = cookTime;
@@ -87,6 +91,14 @@ public class Recipe {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getDescription() {
@@ -166,6 +178,7 @@ public class Recipe {
         return "Recipe{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 ", description='" + description + '\'' +
                 ", prepTime=" + prepTime +
                 ", cookTime=" + cookTime +
@@ -192,5 +205,21 @@ public class Recipe {
 
     public void removeUser(User user) {
         this.users.remove(user);
+    }
+
+    public void addUsers(Set<User> users) {
+        this.users.addAll(users);
+    }
+
+    public void removeUsers(Set<User> users) {
+        this.users.removeAll(users);
+    }
+
+    public void addMealplans(Set<Mealplan> mealplans) {
+        this.mealplans.addAll(mealplans);
+    }
+
+    public void removeMealplans(Set<Mealplan> mealplans) {
+        this.mealplans.removeAll(mealplans);
     }
 }
