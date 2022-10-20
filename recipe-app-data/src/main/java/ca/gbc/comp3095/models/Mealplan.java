@@ -4,37 +4,37 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table
+@Table(name="mealplans")
 public class Mealplan {
    @Id
    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     long id;
     String dish;
-    // foreign key to recipe_id -- annotate as @ManyToOne
+    // foreign key to recipe_id
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn
-    private Recipe recipe_id;
-    // foreign key to user_id -- annotate as @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    // foreign key to user_id
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn
-    private User user_id;
+    @JoinColumn(name = "recipe_id")
+    private Recipe recipe;
     String date;
 
     public Mealplan() {
     }
 
-    public Mealplan(long id, String dish, Recipe recipe_id, User user_id, String date) {
+    public Mealplan(long id, String dish, User user, Recipe recipe, String date) {
         this.id = id;
         this.dish = dish;
-        this.recipe_id = recipe_id;
-        this.user_id = user_id;
+        this.user = user;
+        this.recipe = recipe;
         this.date = date;
     }
 
-    public Mealplan(String dish, Recipe recipe_id, User user_id, String date) {
+    public Mealplan(String dish, User user, Recipe recipe, String date) {
         this.dish = dish;
-        this.recipe_id = recipe_id;
-        this.user_id = user_id;
+        this.user = user;
+        this.recipe = recipe;
         this.date = date;
     }
 
@@ -54,20 +54,20 @@ public class Mealplan {
         this.dish = dish;
     }
 
-    public Recipe getRecipe_id() {
-        return recipe_id;
+    public User getUser() {
+        return user;
     }
 
-    public void setRecipe_id(Recipe recipe_id) {
-        this.recipe_id = recipe_id;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public User getUser_id() {
-        return user_id;
+    public Recipe getRecipe() {
+        return recipe;
     }
 
-    public void setUser_id(User user_id) {
-        this.user_id = user_id;
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 
     public String getDate() {
@@ -79,30 +79,26 @@ public class Mealplan {
     }
 
     @Override
-    public String toString() {
-        return "Mealplan{" +
-                "id=" + id +
-                ", dish='" + dish + '\'' +
-                ", recipe_id=" + recipe_id +
-                ", user_id=" + user_id +
-                ", date='" + date + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Mealplan mealplan = (Mealplan) o;
-        return id == mealplan.id &&
-                Objects.equals(dish, mealplan.dish) &&
-                Objects.equals(recipe_id, mealplan.recipe_id) &&
-                Objects.equals(user_id, mealplan.user_id) &&
-                Objects.equals(date, mealplan.date);
+        return id == mealplan.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dish, recipe_id, user_id, date);
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Mealplan{" +
+                "id=" + id +
+                ", dish='" + dish + '\'' +
+                ", user=" + user +
+                ", recipe=" + recipe +
+                ", date='" + date + '\'' +
+                '}';
     }
 }
