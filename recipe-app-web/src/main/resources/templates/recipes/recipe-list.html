@@ -13,28 +13,17 @@
             </ol>
         </nav>
         <h1>Recipe list</h1>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">Prep Time</th>
-                <th scope="col">Cook Time</th>
-                <th scope="col">Servings</th>
-                <th scope="col">Ingredients</th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr th:each="recipe : ${recipes}">
-                    <td th:text="${recipe.name}" />
-                    <td th:text="${recipe.description}" />
-                    <td th:text="${recipe.prepTime}" />
-                    <td th:text="${recipe.cookTime}" />
-                    <td th:text="${recipe.servings}" />
-                    <td th:text="${recipe.ingredients}" />
-                </tr>
-            </tbody>
-        </table>
+        <div th:each="recipe : ${recipes}">
+            <div class="d-flex align-items-center">
+                <div class="flex-shrink-0">
+                    <img th:src="@{${recipe.getImageUrl()}}" style="max-width: 8vw;" alt="...">
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <h5><a th:text="${recipe.getName()}" th:href="@{'/api/v1/recipes/details?id=' + ${recipe.getId()}}"></a></h5>
+                    <p th:text="${recipe.getDescription()}" />
+                </div>
+            </div>
+        </div>
         <script th:replace="fragments :: bootstrap_script" />
     </body>
 </html>

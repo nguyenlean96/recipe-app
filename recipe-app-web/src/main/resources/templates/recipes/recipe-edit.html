@@ -7,92 +7,94 @@
     <body>
         <div th:replace="fragments :: html_navbar" />
 
-        <div class="mx-5 my-1">
-            <div class="d-flex flex-column flex-nowrap">
-                <img class="opacity-25 d-block w-100 card-image" src="../../static/images/background/ut-medium-meal-plan-660x396.jpg" alt="" style="max-height: 30vh;" th:attr="src=@{images/background/ut-medium-meal-plan-660x396.jpg}">
-                <div class="mx-5 border border-white rounded-2 dshadow">
-                    <form class="row g-3 mx-5 mt-3"
-                          th:action="@{${action}}"
-                          th:method="POST">
-                        <!-- <input type="hidden"
-                               th:attr="value=${recipe.created_by}? #{${recipe.created_by}} : ''"> -->
-                        <div class="col-md-12">
-                            <label for="recipe_name_input" class="form-label">Name</label>
-                            <input name="name" type="text" class="form-control" id="recipe_name_input">
-                        </div>
-                        <div class="col-md-12">
-                            <label for="recipe_description_input" class="form-label">Description</label>
-                            <input name="description" type="text" class="form-control" id="recipe_description_input">
-                        </div>
+        <div class="border mx-5 my-1">
+            <div class="card text-bg-dark d-flex flex-column flex-nowrap">
+                <img class="opacity-25 d-block w-100 card-image" alt="Recipe edit background img" style="max-height: 30vh;" th:src="@{ /images/background/ut-medium-meal-plan-660x396.jpg}">
+                <div class="card-img-overlay mx-5" style="margin-top: 12vh;">
+                    <div class="bg-light text-dark rounded" style="filter: drop-shadow(0px 5px 50rem #004365);
+    filter: drop-shadow(0px 2px 6px #82A9BC);">
+                        <form class="row g-3 mx-5 mt-3"
+                              th:action="@{${action}}"
+                              method="post">
+                            <!-- <input type="hidden"
+                                   th:attr="value=${recipe.created_by}? #{${recipe.created_by}} : ''"> -->
+                            <div class="col-md-12">
+                                <label for="recipe_name_input" class="form-label">Name</label>
+                                <input name="name" type="text" class="form-control" id="recipe_name_input">
+                            </div>
+                            <input type="hidden" name="imageUrl" value="" />
+                            <div class="col-md-12">
+                                <label for="recipe_description_input" class="form-label">Description</label>
+                                <input name="description" type="text" class="form-control" id="recipe_description_input">
+                                <div id="description_message"></div>
+                            </div>
 
-                        <!-- Ingredient Section START -->
-                        <div class="col-md-12">
-                            <label class="form-label">Name</label>
-                            <div id="ingredient_list_input">
-                                <div id="ingredient_input">
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" id="recipe_direction_input">
-                                    </div>
-                                    <div class="col-md-3">
-                                        DEL
+                            <!-- Serving START -->
+                            <div class="row col-md-12">
+                                <div class="row col-4">
+                                    <label for="recipe_servings_input" class="form-label">Prep Time</label>
+                                    <input type="number" class="form-control" id="recipe_prep_input" name="prepTime">
+                                    <span id="prep_min">minute</span>
+                                </div>
+                                <div class="col-4">
+                                    <label for="recipe_servings_input" class="form-label">Cook Time</label>
+                                    <input type="number" class="form-control" id="recipe_cook_input" name="cookTime">
+                                    <span id="cook_min">minute</span>
+                                </div>
+                                <div class="col-4">
+                                    <label for="recipe_servings_input" class="form-label">Servings</label>
+                                    <input type="number" class="form-control" id="recipe_servings_input" name="servings">
+                                    <span id="serv_num">minute</span>
+                                </div>
+
+                            </div>
+                            <!-- Ingredient Section START -->
+                            <div class="col-md-12">
+                                <label class="form-label">Ingredients</label>
+                                <textarea class="form-control" rows="3" style="width: 100%;" id="recipe_ingredient_input" name="ingredient"></textarea>
+                                <div id="ingredient_message"></div>
+                                <!--
+                                <div id="ingredient_input_1">
+                                    <div id="ingredient_input">
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" id="recipe_direction_input">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button id="btn_del_1">DEL</button>
+                                        </div>
                                     </div>
                                 </div>
+                                <button class="btn btn-primary">Add Ingredient</button>
+                                -->
                             </div>
-                            <button class="btn btn-primary">Add Ingredient</button>
-                        </div>
 
-                        <!-- Ingredient Section END -->
-
-                        <!-- Serving START -->
-                        <div class="col-md-6">
-                            <label for="recipe_servings_input" class="form-label">Servings</label>
-                            <input type="text" class="form-control" id="recipe_servings_input">
-                        </div>
+                            <!-- Ingredient Section END -->
 
 
-                        <div class="col-md-6">
-                            <label for="inputPassword4" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="inputPassword4">
-                        </div>
-                        <div class="col-12">
-                            <label for="inputAddress" class="form-label">Address</label>
-                            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                        </div>
-                        <div class="col-12">
-                            <label for="inputAddress2" class="form-label">Address 2</label>
-                            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="inputCity" class="form-label">City</label>
-                            <input type="text" class="form-control" id="inputCity">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="inputState" class="form-label">State</label>
-                            <select id="inputState" class="form-select">
-                                <option selected>Choose...</option>
-                                <option>...</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label for="inputZip" class="form-label">Zip</label>
-                            <input type="text" class="form-control" id="inputZip">
-                        </div>
-                        <div class="col-12">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="gridCheck">
-                                <label class="form-check-label" for="gridCheck">
-                                    Check me out
-                                </label>
+                            <div class="col-md-12">
+                                <label class="form-label">Directions</label>
+                                <textarea class="form-control" rows="3" style="width: 100%;" id="recipe_direction_input" name="directions"></textarea>
+                                <div id="directions_message"></div>
                             </div>
-                        </div>
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary">Sign in</button>
-                        </div>
-                    </form>
+
+                            <div class="col-12">
+                                <select class="form-select" aria-label="Recipe Difficulty Select" name="difficulty">
+                                    <option selected>Select difficulty for this recipe</option>
+                                    <option value="easy">One</option>
+                                    <option value="moderate">Two</option>
+                                    <option value="hard">Three</option>
+                                </select>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-
+        <div th:replace="fragments :: html_footer" />
+        <script th:src="@{/js/recipe_form.js}"></script>
         <script th:replace="fragments :: bootstrap_script" />
     </body>
 </html>

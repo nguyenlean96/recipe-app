@@ -7,7 +7,7 @@
     <body>
         <div th:replace="fragments :: html_navbar" />
         <div class="card text-bg-dark m-1">
-            <img class="opacity-25 d-block w-100 card-image" src="images/background/ut-medium-meal-plan-660x396.jpg" alt="" style="max-height: 18rem;">
+            <img class="opacity-25 d-block w-100 card-image" th:src="@{/images/background/ut-medium-meal-plan-660x396.jpg}" alt="" style="max-height: 18rem;">
             <div class="card-img-overlay">
                 <div class="d-flex justify-content-center">
                     <h1>Welcome to Recipe App</h1>
@@ -19,15 +19,27 @@
             <div th:each="recipe : ${fake_recipes}">
                 <div class="p-2">
                     <div class="card" style="max-width: 18vw;">
-                        <img src="/images/mDishes/1Rutabaga-Beef-Stew-cda62388960c4a339a7655cdd7e854bf.webp" class="card-img-top" alt="...">
+                        <img th:src="@{/images/mDishes/1Rutabaga-Beef-Stew-cda62388960c4a339a7655cdd7e854bf.webp}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title" th:text="${recipe}"></h5>
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-primary">Add to my cook book</a>
+                            <p><small th:text="'MEDIUM'"></small></p>
                         </div>
                     </div>
                 </div>
+            </div><div th:each="recipe : ${recipes}">
+            <div class="p-2">
+                <div class="card" style="max-width: 18vw;">
+                    <img th:src="@{${recipe.getImageUrl()}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"><a th:text="${recipe.getName()}" th:href="@{'/api/v1/recipes/details?id=' + ${recipe.getId()}}"></a></h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <hr>
+                        <p th:text="${recipe.getDifficulty()}"></p>
+                    </div>
+                </div>
             </div>
+        </div>
         </div>
 
         <div th:replace="fragments :: html_footer" />
