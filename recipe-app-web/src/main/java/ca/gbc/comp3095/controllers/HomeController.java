@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.List;
+
 @Controller
 public class HomeController {
 
@@ -18,6 +22,19 @@ public class HomeController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("name", name);
 
+        mv.addObject("fake_recipes", Arrays.asList(
+                "Baked Apple Cider Donuts",
+                "Apple Cider Stew",
+                "Glazed Apple Cider Cake",
+                "Apple Cider Pancakes",
+                "Apple Cider Sauce and Pork Loin Chops",
+                "Spiked Caramel Apple Cider",
+                "Slow Cooker Apple Cider Braised Pork",
+                "Ashley's Apple Cider Doughnuts",
+                "Butternut Squash and Apple Cider Soup",
+                "Apple Cider Pulled Pork with Caramelized Onion and Apples"
+
+        ));
         System.out.println("User: " + name);
         mv.setViewName("index");
 
@@ -25,9 +42,16 @@ public class HomeController {
     }
 
     @GetMapping("about")
-    public String about(Model model) {
-        model.addAttribute("viewName", "about");
+    public ModelAndView about(Model model) {
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("viewName", "about");
 
-        return "about";
+        mv.setViewName("about");
+        return mv;
+    }
+
+    public boolean isLoggedIn(HttpSession session) {
+        List<String> username = (List<String>) session.getAttribute("RECIPE_USER");
+        return (!(username == null));
     }
 }

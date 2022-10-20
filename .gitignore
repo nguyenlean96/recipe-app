@@ -32,3 +32,8 @@ build/
 
 ### VS Code ###
 .vscode/
+.DS_Store
+/recipe-app-web/.DS_Store
+recipe-app-web/src/.DS_Store
+recipe-app-web/src/main/.DS_Store
+recipe-app-web/src/main/resources/.DS_Store
