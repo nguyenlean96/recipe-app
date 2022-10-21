@@ -1,6 +1,7 @@
 package ca.gbc.comp3095.controllers;
 
 import ca.gbc.comp3095.models.Recipe;
+import ca.gbc.comp3095.models.User;
 import ca.gbc.comp3095.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
@@ -23,12 +25,11 @@ public class HomeController {
     }
 
     @GetMapping({"","/","home","index"})
-    public ModelAndView home(Model model) {
-        String name = "An";
+    public ModelAndView home(HttpServletRequest req) {
         System.out.println("Home view access detected");
-        model.addAttribute("name", name);
         ModelAndView mv = new ModelAndView();
-        mv.addObject("name", name);
+        mv.addObject("loggedin", isLoggedIn(req));
+        mv.addObject("user", new User());
         List<Recipe> saved_recipes = (List<Recipe>) recipeService.findAll();
         if (saved_recipes.isEmpty()) {
             mv.addObject("fake_recipes", Arrays.asList(
@@ -48,30 +49,38 @@ public class HomeController {
             mv.addObject("recipes", saved_recipes);
         }
 
-        System.out.println("User: " + name);
+
         mv.setViewName("index");
         return mv;
     }
 
     @GetMapping("/about")
-    public ModelAndView about(Model model) {
+    public ModelAndView about(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
+        mv.addObject("loggedin", isLoggedIn(req));
         mv.addObject("viewName", "about");
 
         mv.setViewName("about");
-        return mv;
+        return autoDirect(req, mv);
     }
 
     @GetMapping("error")
-    public ModelAndView error() {
+    public ModelAndView error(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
+        mv.addObject("loggedin", isLoggedIn(req));
 
         mv.setViewName("redirect:/");
         return mv;
     }
 
-    public boolean isLoggedIn(HttpSession session) {
+    public boolean isLoggedIn(HttpServletRequest req) {
+        HttpSession session = req.getSession();
         List<String> username = (List<String>) session.getAttribute("RECIPE_USER");
         return (!(username == null));
+    }
+    public ModelAndView autoDirect(HttpServletRequest req, ModelAndView mv) {
+        HttpSession session = req.getSession();
+        List<String> username = (List<String>) session.getAttribute("RECIPE_USER");
+        return (!(username == null)) ? new ModelAndView("redirect:/") : mv;
     }
 }

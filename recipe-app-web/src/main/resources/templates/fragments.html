@@ -27,7 +27,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul th:if="not ${loggedin}" class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/">Home</a>
                         </li>
@@ -38,63 +38,31 @@
                             <a class="nav-link" th:href="@{/about}">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Log In</a>
+                            <a class="nav-link" th:href="@{/api/v1/users/login}">Log In</a>
 
                         </li>
-                        <li class="nav-item dropdown">
+                        <li  class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Username
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" th:href="@{/api/v1/users/profile}">Profile</a></li>
-                                <li><a class="dropdown-item" th:href="@{/api/v1/recipes/add}">Add Recipe</a></li>
+                                <li><a class="dropdown-item"
+                                       th:href="@{/api/v1/recipes/add}"
+                                >Add Recipe</a></li>
+                                <li><a class="dropdown-item"
+                                       th:href="@{/api/v1/mealplans/add}"
+                                >Add Meal Plan</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" th:href="@{/api/v1/users/logout}">Log Out here</a></li>
                             </ul>
                         </li>
                     </ul>
-
-                </div>
-            </div>
-            <!-- Modal -->
-            <div class="modal modal-lg fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Log In</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <!-- Model Body Start -->
-                        <div class="modal-body p-0">
-                            <div class="row g-0">
-                                <div class="col-md-5 m-0 p-0 h-100">
-                                    <img th:src="@{/images/background/Mael-Plan-Diabetes.jpg}" class="opacity-50 img-fluid rounded-start h-100" alt="..." style="height: 100%; object-fit: fill; object-position: center">
-                                </div>
-                                <div class="col-md-7 m-0 p-0">
-                                    <!-- CARD Body START -->
-                                    <div class="card-body">
-                                        <form th:action="@{/api/v1/users/login}" method="post">
-                                            <div class="mx-3">
-                                                <div class="mb-3">
-                                                    <label for="uac_login_email_input" class="form-label">Email address</label>
-                                                    <input type="email" class="form-control" id="uac_login_email_input">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="uac_login_passwd_input" class="form-label">Password</label>
-                                                    <input type="password" class="form-control" id="uac_login_passwd_input">
-                                                </div>
-                                            </div>
-                                            <div class="m-0 p-0">
-                                                <button class="border border-0 m-0" type="submit" style="padding-top: 1em; padding-bottom: 1em; width: 100%; background-color: coral; color: #fff;">Submit</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <!-- CARD Body END -->
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Model Body END -->
-                    </div>
+                    <ul th:if="${loggedin}" class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Log In</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>

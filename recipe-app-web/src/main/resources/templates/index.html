@@ -33,7 +33,7 @@
                     <img th:src="@{${recipe.getImageUrl()}}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title"><a th:text="${recipe.getName()}" th:href="@{'/api/v1/recipes/details?id=' + ${recipe.getId()}}"></a></h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <p class="card-text" th:text="${recipe.getDescription()}"></p>
                         <hr>
                         <p th:text="${recipe.getDifficulty()}"></p>
                     </div>
