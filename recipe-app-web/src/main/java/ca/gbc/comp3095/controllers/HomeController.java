@@ -43,7 +43,6 @@ public class HomeController {
                     "Ashley's Apple Cider Doughnuts",
                     "Butternut Squash and Apple Cider Soup",
                     "Apple Cider Pulled Pork with Caramelized Onion and Apples"
-
             ));
         } else {
             mv.addObject("recipes", saved_recipes);

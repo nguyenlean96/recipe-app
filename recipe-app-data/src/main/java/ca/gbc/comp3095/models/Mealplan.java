@@ -6,7 +6,10 @@ import java.util.Objects;
 @Entity
 @Table(name="mealplans")
 public class Mealplan {
+    // the mealplan ITEMS (meals) are stored here for a simpler database
+    // each mealplan item has: one user - one recipe - the date they would eat the recipe - and the meal it is for (breakfast, lunch, dinner, snack)
    @Id
+   @SequenceGenerator(name="mealplan_generator", sequenceName="mealplan_sequence", allocationSize = 1)
    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     long id;
     String dish;
@@ -101,4 +104,14 @@ public class Mealplan {
                 ", date='" + date + '\'' +
                 '}';
     }
+
+    // helper methods to add and remove recipes from the mealplan
+    public void addRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
+    public void removeRecipe(Recipe recipe) {
+        this.recipe = null;
+    }
+
 }

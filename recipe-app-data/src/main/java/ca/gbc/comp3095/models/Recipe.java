@@ -2,12 +2,16 @@ package ca.gbc.comp3095.models;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name="recipes")
 public class Recipe {
+    // each recipe has the usual recipe attributes
+    // each recipe can be created by one user
     @Id
+    @SequenceGenerator(name="recipe_generator", sequenceName="recipe_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     private String name;
@@ -27,8 +31,12 @@ public class Recipe {
     private String difficulty; // enum Difficulty - EASY, MODERATE, HARD
 
     // RELATIONSHIPS
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @ManyToMany(mappedBy = "recipes")
-    private Set<User> users = new HashSet<>();
+    private Set<Cookbook> cookbooks = new HashSet<>();
 
     @OneToMany(mappedBy = "recipe")
     private Set<Mealplan> mealplans = new HashSet<>();
@@ -36,7 +44,7 @@ public class Recipe {
     public Recipe() {
     }
 
-    public Recipe(long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, Set<User> users, Set<Mealplan> mealplans) {
+    public Recipe(long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, User user, Set<Cookbook> cookbooks, Set<Mealplan> mealplans) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
@@ -47,11 +55,12 @@ public class Recipe {
         this.ingredients = ingredients;
         this.directions = directions;
         this.difficulty = difficulty;
-        this.users = users;
+        this.user = user;
+        this.cookbooks = cookbooks;
         this.mealplans = mealplans;
     }
 
-    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, Set<User> users, Set<Mealplan> mealplans) {
+    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, User user, Set<Cookbook> cookbooks, Set<Mealplan> mealplans) {
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
@@ -61,11 +70,41 @@ public class Recipe {
         this.ingredients = ingredients;
         this.directions = directions;
         this.difficulty = difficulty;
-        this.users = users;
+        this.user = user;
+        this.cookbooks = cookbooks;
         this.mealplans = mealplans;
     }
+    // without mealplans
+    public Recipe (String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, User user, Set<Cookbook> cookbooks) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.prepTime = prepTime;
+        this.cookTime = cookTime;
+        this.servings = servings;
+        this.ingredients = ingredients;
+        this.directions = directions;
+        this.difficulty = difficulty;
+        this.user = user;
+        this.cookbooks = cookbooks;
+    }
 
-    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
+    // without cookbooks and mealplans
+    public Recipe (String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, User user) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.prepTime = prepTime;
+        this.cookTime = cookTime;
+        this.servings = servings;
+        this.ingredients = ingredients;
+        this.directions = directions;
+        this.difficulty = difficulty;
+        this.user = user;
+    }
+
+    // without cookbooks, mealplans, and user
+    public Recipe (String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
@@ -77,6 +116,7 @@ public class Recipe {
         this.difficulty = difficulty;
     }
 
+    // getters and setters
     public long getId() {
         return id;
     }
@@ -157,12 +197,20 @@ public class Recipe {
         this.difficulty = difficulty;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<Cookbook> getCookbooks() {
+        return cookbooks;
+    }
+
+    public void setCookbooks(Set<Cookbook> cookbooks) {
+        this.cookbooks = cookbooks;
     }
 
     public Set<Mealplan> getMealplans() {
@@ -186,40 +234,11 @@ public class Recipe {
                 ", ingredients='" + ingredients + '\'' +
                 ", directions='" + directions + '\'' +
                 ", difficulty='" + difficulty + '\'' +
-                ", users=" + users +
+                ", user=" + user +
+                ", cookbooks=" + cookbooks +
                 ", mealplans=" + mealplans +
                 '}';
     }
 
-    public void addMealplan(Mealplan mealplan) {
-        this.mealplans.add(mealplan);
-    }
 
-    public void removeMealplan(Mealplan mealplan) {
-        this.mealplans.remove(mealplan);
-    }
-
-    public void addUser(User user) {
-        this.users.add(user);
-    }
-
-    public void removeUser(User user) {
-        this.users.remove(user);
-    }
-
-    public void addUsers(Set<User> users) {
-        this.users.addAll(users);
-    }
-
-    public void removeUsers(Set<User> users) {
-        this.users.removeAll(users);
-    }
-
-    public void addMealplans(Set<Mealplan> mealplans) {
-        this.mealplans.addAll(mealplans);
-    }
-
-    public void removeMealplans(Set<Mealplan> mealplans) {
-        this.mealplans.removeAll(mealplans);
-    }
 }
