@@ -3,18 +3,16 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-    <head th:replace="fragments :: html_header" />
+    <head th:replace="fragments :: html_head" />
     <body>
         <div th:replace="fragments :: html_navbar" />
         <div class="card text-bg-dark m-1">
-            <img class="opacity-25 d-block w-100 card-image" th:src="@{/images/background/ut-medium-meal-plan-660x396.jpg}" alt="" style="max-height: 18rem;">
-            <div class="card-img-overlay">
-                <div class="d-flex justify-content-center">
-                    <h1>Welcome to Recipe App</h1>
-                </div>
-            </div>
-
+            <img class="opacity-50 d-block w-100 card-image" th:src="@{/images/background/HomePage.jpg}" alt="" style="max-height: 18rem;object-fit: cover">
         </div>
+        <div>
+            <h1 style="text-align: center">Your Recipe</h1>
+        </div>
+        <hr>
         <div class="d-flex align-content-around m-5 flex-wrap g-2 g-lg-3">
             <div th:each="recipe : ${fake_recipes}">
                 <div class="p-2">
@@ -22,7 +20,7 @@
                         <img th:src="@{/images/mDishes/1Rutabaga-Beef-Stew-cda62388960c4a339a7655cdd7e854bf.webp}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title" th:text="${recipe}"></h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p class="card-text" >Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                             <p><small th:text="'MEDIUM'"></small></p>
                         </div>
                     </div>
