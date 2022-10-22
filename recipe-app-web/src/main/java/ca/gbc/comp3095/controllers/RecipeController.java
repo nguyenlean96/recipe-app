@@ -3,7 +3,6 @@ package ca.gbc.comp3095.controllers;
 import ca.gbc.comp3095.models.Recipe;
 import ca.gbc.comp3095.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -14,7 +13,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/v1/recipes")
 public class RecipeController {
-
+    private static boolean testMode = false;
     private final RecipeService recipeService;
 
     @Autowired
@@ -28,8 +27,8 @@ public class RecipeController {
         ModelAndView mv = new ModelAndView();
 
         mv.addObject("recipes", saved_recipes);
-        mv.setViewName("/recipes/recipe-list");
-        return autoDirect(req, mv);
+        mv.setViewName("/recipes/index");
+        return testMode ? mv : autoDirect(req, mv);
     }
     @GetMapping("/add")
     public ModelAndView add(HttpServletRequest req) {
@@ -40,12 +39,12 @@ public class RecipeController {
 
         mv.addObject("action", "/api/v1/recipes/save");
         mv.addObject("btn_label", "Add new recipe");
-        mv.setViewName("recipes/recipe-edit");
-        return autoDirect(req, mv);
+        mv.setViewName("recipes/edit");
+        return testMode ? mv : autoDirect(req, mv);
     }
 
     @PostMapping("/save")
-    public ModelAndView edit(HttpServletRequest req, Recipe recipe) {
+    public ModelAndView save(HttpServletRequest req, Recipe recipe) {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("redirect:/api/v1/recipes");
         try {
@@ -55,7 +54,7 @@ public class RecipeController {
             mv.addObject("message", e.getMessage());
         }
 
-        return autoDirect(req, mv);
+        return testMode ? mv : autoDirect(req, mv);
     }
     @GetMapping("/edit")
     public ModelAndView edit(@RequestParam("id") Long id, HttpServletRequest req) {
@@ -66,35 +65,36 @@ public class RecipeController {
 
         mv.addObject("action", "/api/v1/recipes/save");
         mv.addObject("btn_label", "Save changes");
-        mv.setViewName("recipes/recipe-edit");
-        return autoDirect(req, mv);
+        mv.setViewName("recipes/edit");
+
+        return testMode ? mv : autoDirect(req, mv);
     }
 
     @GetMapping("/details")
     public ModelAndView details(@RequestParam("id") Long id, HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
-        String view = "recipes/recipe-view";
+        String view = "recipes/view";
         try {
             if (id == null) {
                 return new ModelAndView("redirect:/").addObject("message", "Please select a recipe");
             }
 
             mv.addObject("recipe", recipeService.findById(id));
-            mv.setViewName("recipes/recipe-view");
+            mv.setViewName("recipes/view");
         } catch (Exception e) {
             System.out.println(e);
         }
-        return autoDirect(req, mv);
+        return testMode ? mv : autoDirect(req, mv);
     }
 
     public boolean isLoggedIn(HttpServletRequest req) {
         HttpSession session = req.getSession();
-        List<String> username = (List<String>) session.getAttribute("RECIPE_USER");
+        String username = (String) session.getAttribute("RECIPE_USER");
         return (!(username == null));
     }
     public ModelAndView autoDirect(HttpServletRequest req, ModelAndView mv) {
         HttpSession session = req.getSession();
-        List<String> username = (List<String>) session.getAttribute("RECIPE_USER");
-        return (!(username == null)) ? new ModelAndView("redirect:/") : mv;
+        String username = (String) session.getAttribute("RECIPE_USER");
+        return (username == null) ? new ModelAndView("redirect:/") : mv.addObject("loggedin", isLoggedIn(req));
     }
 }

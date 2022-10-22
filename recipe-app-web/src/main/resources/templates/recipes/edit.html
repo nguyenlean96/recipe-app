@@ -11,7 +11,7 @@
                 <img class="opacity-25 d-block w-100 card-image" alt="Recipe edit background img" style="max-height: 30vh;" th:src="@{ /images/background/ut-medium-meal-plan-660x396.jpg}">
                 <div class="card-img-overlay mx-5" style="margin-top: 12vh;">
                     <div class="bg-light text-dark rounded" style="filter: drop-shadow(0px 5px 50rem #004365);
-    filter: drop-shadow(0px 2px 6px #82A9BC);">
+            filter: drop-shadow(0px 2px 6px #82A9BC);">
                         <form class="row g-3 mx-5 mt-3"
                               th:action="@{${action}}"
                               th:object="${req_recipe}"
@@ -26,12 +26,12 @@
                                 <label for="recipe_name_input" class="form-label">Name</label>
 
                                 <input
-                                    class="form-control"
-                                    type="text"
-                                    name="name"
-                                    th:field="*{name}"
-                                    th:value="${req_recipe.getName()}"
-                                    id="recipe_name_input"
+                                        class="form-control"
+                                        type="text"
+                                        name="name"
+                                        th:field="*{name}"
+                                        th:value="${req_recipe.getName()}"
+                                        id="recipe_name_input"
                                 >
                             </div>
                             <!-- Default ImageURL field -->
@@ -44,13 +44,13 @@
                             <div class="col-md-12">
                                 <label for="recipe_description_input" class="form-label">Description</label>
                                 <textarea
-                                    class="form-control"
-                                    name="description"
-                                    rows="4"
-                                    style="width: 100%;"
-                                    th:field="*{description}"
-                                    th:value="${req_recipe.getDescription()}"
-                                    id="recipe_description_input"
+                                        class="form-control"
+                                        name="description"
+                                        rows="4"
+                                        style="width: 100%;"
+                                        th:field="*{description}"
+                                        th:value="${req_recipe.getDescription()}"
+                                        id="recipe_description_input"
                                 ></textarea>
                                 <div id="description_message"></div>
                             </div>

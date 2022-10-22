@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+>
     <head th:replace="fragments :: html_header" />
     <body>
         <div th:replace="fragments :: html_navbar" />
@@ -12,7 +11,7 @@
                 <div class="card-img-overlay mx-5" style="margin-top: 12vh;">
                     <h5 class="card-title" th:text="'Plan your weekly meal'"></h5>
                     <div class="bg-light text-dark rounded" style="filter: drop-shadow(0px 5px 50rem #004365);
-    filter: drop-shadow(0px 2px 6px #82A9BC);">
+            filter: drop-shadow(0px 2px 6px #82A9BC);">
                         <form class="row g-3 mx-5 mt-3"
                               th:action="@{${action}}"
                               th:object="${req_plan}"
@@ -50,8 +49,8 @@
                             -->
                             <div class="col-md-12">
                                 <input
-                                    class="form-control"
-                                    type="date"
+                                        class="form-control"
+                                        type="date"
                                 >
                             </div>
                             <div class="col-12">

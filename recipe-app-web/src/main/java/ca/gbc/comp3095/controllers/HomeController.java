@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 public class HomeController {
-
+    private static boolean testMode = false;
     private RecipeService recipeService;
     @Autowired
     public HomeController(RecipeService recipeService) {
@@ -28,7 +28,6 @@ public class HomeController {
     public ModelAndView home(HttpServletRequest req) {
         System.out.println("Home view access detected");
         ModelAndView mv = new ModelAndView();
-        mv.addObject("loggedin", isLoggedIn(req));
         mv.addObject("user", new User());
         List<Recipe> saved_recipes = (List<Recipe>) recipeService.findAll();
         if (saved_recipes.isEmpty()) {
@@ -47,8 +46,7 @@ public class HomeController {
         } else {
             mv.addObject("recipes", saved_recipes);
         }
-
-
+        mv.addObject("loggedin", isLoggedIn(req));
         mv.setViewName("index");
         return mv;
     }
@@ -56,7 +54,7 @@ public class HomeController {
     @GetMapping("/about")
     public ModelAndView about(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
-        mv.addObject("loggedin", isLoggedIn(req));
+        // mv.addObject("loggedin", isLoggedIn(req));
         mv.addObject("viewName", "about");
 
         mv.setViewName("about");
@@ -66,20 +64,21 @@ public class HomeController {
     @GetMapping("error")
     public ModelAndView error(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
-        mv.addObject("loggedin", isLoggedIn(req));
+        // mv.addObject("loggedin", isLoggedIn(req));
 
         mv.setViewName("redirect:/");
-        return mv;
+        return autoDirect(req, mv);
     }
 
     public boolean isLoggedIn(HttpServletRequest req) {
         HttpSession session = req.getSession();
-        List<String> username = (List<String>) session.getAttribute("RECIPE_USER");
+        String username = (String) session.getAttribute("RECIPE_USER");
+        System.out.println("Is logged in? " + String.valueOf(!(username == null)));
         return (!(username == null));
     }
     public ModelAndView autoDirect(HttpServletRequest req, ModelAndView mv) {
         HttpSession session = req.getSession();
-        List<String> username = (List<String>) session.getAttribute("RECIPE_USER");
-        return (!(username == null)) ? new ModelAndView("redirect:/") : mv;
+        String username = (String) session.getAttribute("RECIPE_USER");
+        return (username == null) ? new ModelAndView("redirect:/") : mv.addObject("loggedin", isLoggedIn(req));
     }
 }

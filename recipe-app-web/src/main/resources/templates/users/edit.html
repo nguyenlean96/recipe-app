@@ -1,0 +1,118 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head th:replace="fragments :: html_header" />
+    <body>
+        <div th:replace="fragments :: html_navbar" />
+        <div class="bg-light text-dark rounded m-5" style="filter: drop-shadow(0px 5px 50rem #004365);
+            filter: drop-shadow(0px 2px 6px #82A9BC);">
+            <form
+                    class="row g-3 m-3"
+                    th:action="@{${action}}"
+                    th:object="${user}"
+                    method="post"
+            >
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input
+                                type="text"
+                                class="form-control"
+                                th:field="*{username}"
+                                id="new_username_input"
+                        />
+                        <label for="new_username_input" class="form-label">Username</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input
+                                type="email"
+                                class="form-control"
+                                th:field="*{email}"
+                                id="new_user_email_input"
+                        />
+                        <label for="new_user_email_input" class="form-label">Email</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input
+                                type="password"
+                                class="form-control"
+                                id="new_user_password"
+                        >
+                        <label for="new_user_password" class="form-label">Password</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input
+                                type="password"
+                                class="form-control"
+                                id="new_user_password_confirm"
+                                th:field="*{password}"
+                        >
+                        <label for="new_user_password_confirm" class="form-label">Re-enter your password</label>
+                    </div>
+                </div>
+                <div class="row col-12">
+                    <div class="">
+                        <div class="form-floating mb-3">
+                            <input
+                                    th:if="not ${is_edit}"
+                                    type="text"
+                                    class="form-control"
+                                    id="new_user_fname_input"
+                                    th:field="*{firstName}"
+                            >
+                            <input
+                                    th:if="${is_edit}"
+                                    type="text"
+                                    class="form-control"
+                                    id="edit_fname_input"
+                                    th:field="*{firstName}"
+                                    th:value="${user.getFirstName()}"
+                            >
+                            <label
+                                    for="new_user_fname_input"
+                                    class="form-label"
+                            >
+                                First Name
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-floating mb-3">
+                            <input
+                                    th:if="not ${is_edit}"
+                                    type="text"
+                                    class="form-control"
+                                    id="new_user_lname_input"
+                                    th:field="*{lastName}"
+                            >
+                            <input
+                                    th:if="${is_edit}"
+                                    type="text"
+                                    class="form-control"
+                                    id="edit_lname_input"
+                                    th:field="*{lastName}"
+                                    th:value="${user.getLastName()}"
+                            >
+                            <label
+                                    for="new_user_lname_input"
+                                    class="form-label"
+                            >
+                                Last Name
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 mb-5 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

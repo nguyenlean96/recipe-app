@@ -12,21 +12,22 @@
                     <div class="col-md-7 m-0 p-0">
                         <div class="card-body">
                             <h5 class="card-title">Log In</h5>
-                            <form th:action="@{/api/v1/users/login}"
+                            <form th:action="@{/api/v1/users/validator}"
                                   th:object="${user}"
                                   method="post">
                                 <div class="mx-3">
                                     <div class="mb-3">
-                                        <label for="uac_login_email_input" class="form-label">Email address</label>
                                         <input
-                                                type="email"
+                                                type="text"
                                                 class="form-control"
                                                 th:field="*{username}"
-                                                id="uac_login_email_input">
+                                                id="uac_login_email_input"
+                                        >
+                                        <label for="uac_login_email_input" class="form-label">Username</label>
                                     </div>
                                     <div class="mb-3">
                                         <label for="uac_login_passwd_input" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="uac_login_passwd_input">
+                                        <input type="password" class="form-control" id="uac_login_passwd_input" th:field="*{password}">
                                     </div>
                                     <div class="mb-3">
                                         <a th:href="@{/api/v1/users/new-user}" th:text="'Register new user'"></a>
