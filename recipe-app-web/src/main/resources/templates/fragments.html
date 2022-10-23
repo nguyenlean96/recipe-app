@@ -27,44 +27,58 @@
                     aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse d-flex justify-content-center">
-                <ul th:if="${loggedin}" class="navbar-nav mb-2">
-                    <li class="nav-item me-2">
-                        <a class="nav-link" th:href="@{/api/v1/cookbooks}">My CookBook</a>
-                    </li>
-                    <li class="nav-item me-2">
-                        <a class="nav-link" th:href="@{/api/v1/recipes}">My Recipes</a>
-                    </li>
-                    <li class="nav-item me-2">
-                        <a class="nav-link" th:href="@{/api/v1/mealplans}">Meal Plans</a>
-                    </li>
-                    <li  class="nav-item dropdown">
-                        <a
-                                class="nav-link dropdown-toggle"
-                                th:href="@{/api/v1/users/profile}" role="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="true"
-                                th:text="${username}"
-                        >
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" th:href="@{/api/v1/users/profile}">Profile</a></li>
-                            <li><a class="dropdown-item"
-                                   th:href="@{/api/v1/recipes/add}"
-                            >Add Recipe</a></li>
-                            <li><a class="dropdown-item"
-                                   th:href="@{/api/v1/mealplans/add}"
-                            >Add Meal Plan</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" th:href="@{/api/v1/users/logout}">Log Out</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <ul th:if="not ${loggedin}" class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/api/v1/users/login}">Log In</a>
-                    </li>
-                </ul>
+            <div class="collapse navbar-collapse d-flex justify-content-center align-items-center">
+                <div
+                    th:if="${loggedin}"
+                >
+                    <ul class="navbar-nav mb-2">
+                        <li class="nav-item btn btn-primary me-2 p-0 d-flex align-items-center">
+                            <a
+                                    class="nav-link text-light m-0"
+                                    th:href="@{/api/v1/recipes/add}" th:text="'Add new recipe'"></a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="nav-link" th:href="@{/api/v1/cookbooks}">My CookBook</a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="nav-link" th:href="@{/api/v1/recipes}">My Recipes</a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="nav-link" th:href="@{/api/v1/mealplans}">Meal Plans</a>
+                        </li>
+                        <li  class="nav-item dropdown">
+                            <a
+                                    class="nav-link dropdown-toggle"
+                                    th:href="@{/api/v1/users/profile}" role="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="true"
+                                    th:text="${username}"
+                            >
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" th:href="@{/api/v1/users/profile}">Profile</a></li>
+                                <li><a class="dropdown-item"
+                                       th:href="@{/api/v1/recipes/add}"
+                                >Add Recipe</a></li>
+                                <li><a class="dropdown-item"
+                                       th:href="@{/api/v1/mealplans/add}"
+                                >Add Meal Plan</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" th:href="@{/api/v1/users/logout}">Log Out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div
+                    th:if="not ${loggedin}"
+                >
+                    <ul  class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/api/v1/users/login}">Log In</a>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </nav>

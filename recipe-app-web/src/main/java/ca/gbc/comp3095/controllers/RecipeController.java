@@ -37,7 +37,7 @@ public class RecipeController {
     public ModelAndView list(HttpServletRequest req) {
         String username = (String) req.getSession().getAttribute("RECIPE_USER");
         User curr = (User) userService.findByUsername(username);
-        List<Recipe> saved_recipes = List.copyOf(curr.getRecipes());
+        List<Recipe> saved_recipes = (List<Recipe>) List.copyOf(curr.getRecipes());
         ModelAndView mv = new ModelAndView();
 
         mv.addObject("recipes", saved_recipes);
@@ -68,6 +68,7 @@ public class RecipeController {
         recipe.addUser(curr);
         try {
             recipeService.save(recipe);
+            userService.save(curr);
         } catch (Exception e) {
             System.out.println(e);
             mv.addObject("message", e.getMessage());
