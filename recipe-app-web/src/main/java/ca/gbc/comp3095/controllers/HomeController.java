@@ -3,9 +3,8 @@ package ca.gbc.comp3095.controllers;
 import ca.gbc.comp3095.models.Recipe;
 import ca.gbc.comp3095.models.User;
 import ca.gbc.comp3095.services.RecipeService;
+import ca.gbc.comp3095.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,11 +16,21 @@ import java.util.List;
 
 @RestController
 public class HomeController {
+//*********************************************************************************
+//* Project: Your Recipe App
+//* Assignment: assignment 1
+//* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
+//* Student Number: 101334588  - 101292266    - 101303158            - 101311327
+//* Date: 2022-10-23
+//* Description: Home controller to handle requests for home operations and return the appropriate view to the user based on the request - Landing page operations
+// *********************************************************************************//
     private static boolean testMode = false;
     private RecipeService recipeService;
+    private UserService userService;
     @Autowired
-    public HomeController(RecipeService recipeService) {
+    public HomeController(RecipeService recipeService, UserService userService) {
         this.recipeService = recipeService;
+        this.userService = userService;
     }
 
     @GetMapping({"","/","home","index"})
@@ -48,7 +57,7 @@ public class HomeController {
         }
         mv.addObject("loggedin", isLoggedIn(req));
         mv.setViewName("index");
-        return mv;
+        return isLoggedIn(req) ? mv.addObject("username", "Hi " + userService.findByUsername((String) req.getSession().getAttribute("RECIPE_USER")).getFirstName() + "!") : mv;
     }
 
     @GetMapping("/about")
@@ -58,7 +67,7 @@ public class HomeController {
         mv.addObject("viewName", "about");
 
         mv.setViewName("about");
-        return autoDirect(req, mv);
+        return isLoggedIn(req) ? mv.addObject("loggedin", isLoggedIn(req)).addObject("username", req.getSession().getAttribute("RECIPE_USER")) : mv;
     }
 
     @GetMapping("error")
@@ -76,9 +85,10 @@ public class HomeController {
         System.out.println("Is logged in? " + String.valueOf(!(username == null)));
         return (!(username == null));
     }
+
     public ModelAndView autoDirect(HttpServletRequest req, ModelAndView mv) {
         HttpSession session = req.getSession();
         String username = (String) session.getAttribute("RECIPE_USER");
-        return (username == null) ? new ModelAndView("redirect:/") : mv.addObject("loggedin", isLoggedIn(req));
+        return (username == null) ? new ModelAndView("redirect:/") : mv.addObject("loggedin", isLoggedIn(req)).addObject("username", "Hi " + userService.findByUsername(username).getFirstName() + "!");
     }
 }

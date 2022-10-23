@@ -11,10 +11,6 @@ public class RecipeAppApplication {
 
 		ConfigurableApplicationContext context = SpringApplication.run(RecipeAppApplication.class, args);
 		System.out.println("Application started...");
-
-
-
-
 	}
 
 }

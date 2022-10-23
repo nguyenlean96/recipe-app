@@ -4,12 +4,10 @@ import ca.gbc.comp3095.models.User;
 import ca.gbc.comp3095.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.support.SessionAttributeStore;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,11 +15,18 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 @RequestMapping("/api/v1/users")
 public class UserController {
+//*********************************************************************************
+//* Project: Your Recipe App
+//* Assignment: assignment 1
+//* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
+//* Student Number: 101334588  - 101292266    - 101303158            - 101311327
+//* Date: 2022-10-23
+//* Description: User controller to handle requests for user operations and return the appropriate view based on the request
+// *********************************************************************************//
     private static boolean testMode = true;
     private final UserService userService;
     @Autowired
@@ -29,16 +34,22 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping({"", "/", "/view"})
+    @GetMapping({"", "/", "/profile"})
     public ModelAndView view(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
-        mv.addObject("page_title","<User's username>");
-
-        mv.setViewName("/users/view");
+        String username = (String) req.getSession().getAttribute("RECIPE_USER");
+        mv.addObject("page_title", username).addObject("username", username);
+        User profile = (User) userService.findByUsername(username);
+        mv.addObject("profile", profile);
+        mv.setViewName("users/view");
         return autoDirect(req, mv);
     }
+
     @GetMapping("/login")
     public ModelAndView login(HttpServletRequest req, HttpServletResponse res) {
+        if (isLoggedIn(req)) {
+            return new ModelAndView("redirect:/");
+        }
         String view_name = "users/uac/login";
         ModelAndView mv = new ModelAndView();
         mv.addObject("user", new User());
@@ -46,17 +57,7 @@ public class UserController {
         mv.setViewName("users/uac/login");
         return mv;
     }
-    /*
-    @GetMapping({"/login"})
-    public ModelAndView login() {
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("page_title","Log In");
 
-
-
-        mv.setViewName("/users/uac/login");
-        return mv;
-    } */
     @PostMapping("/save")
     public ModelAndView save(HttpServletRequest req, User u) {
         ModelAndView mv = new ModelAndView();
@@ -73,16 +74,17 @@ public class UserController {
 
         return mv;
     }
+
     @GetMapping("/logout")
     public ModelAndView logout(WebRequest req, SessionStatus status) {
         ModelAndView mv = new ModelAndView();
         status.setComplete();
         req.removeAttribute("RECIPE_USER", WebRequest.SCOPE_SESSION);
-        // store.cleanupAttribute(req, "RECIPE_USER");
 
         mv.setViewName("redirect:/");
         return mv;
     }
+
     @GetMapping("/new-user")
     public ModelAndView reg() {
         ModelAndView mv = new ModelAndView();
@@ -116,7 +118,9 @@ public class UserController {
                 return new ModelAndView("users/uac/login");
             }
             System.out.println(exists);
-            if (!(user.getPassword().equals(exists.getPassword()))) {
+            System.out.println(user);
+            System.out.println(exists.isMatched(user.getPassword()));
+            if (!(exists.isMatched(user.getPassword()))) {
                 return new ModelAndView("users/uac/login");
             }
             session.setAttribute("RECIPE_USER", user.getUsername());
@@ -136,6 +140,6 @@ public class UserController {
     public ModelAndView autoDirect(HttpServletRequest req, ModelAndView mv) {
         HttpSession session = req.getSession();
         String username = (String) session.getAttribute("RECIPE_USER");
-        return (username == null) ? new ModelAndView("redirect:/") : mv.addObject("loggedin", isLoggedIn(req));
+        return (username == null) ? new ModelAndView("redirect:/") : mv.addObject("loggedin", isLoggedIn(req)).addObject("username", username);
     }
 }

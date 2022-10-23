@@ -2,95 +2,164 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
 >
-    <head th:replace="fragments :: html_header" />
-    <body>
-        <div th:replace="fragments :: html_navbar" />
-        <div class="d-block border mx-5 my-1">
-            <div class="card text-bg-dark d-flex flex-column flex-nowrap">
-                <img class="opacity-25 d-block w-100 card-image" alt="Recipe edit background img" style="max-height: 30vh;" th:src="@{ /images/background/ut-medium-meal-plan-660x396.jpg}">
-                <div class="card-img-overlay mx-5" style="margin-top: 12vh;">
-                    <h5 class="card-title" th:text="'Plan your weekly meal'"></h5>
-                    <div class="bg-light text-dark rounded" style="filter: drop-shadow(0px 5px 50rem #004365);
+<head th:replace="fragments :: html_header" />
+<body>
+<div th:replace="fragments :: html_navbar" />
+<div class="d-block border mx-5 my-1">
+    <div class="card text-bg-dark d-flex flex-column flex-nowrap">
+        <img class="opacity-25 d-block w-100 card-image" alt="Recipe edit background img" style="max-height: 30vh;" th:src="@{ /images/background/ut-medium-meal-plan-660x396.jpg}">
+        <div class="card-img-overlay mx-5" style="margin-top: 12vh;">
+            <h5 class="card-title" th:text="'Plan your weekly meal'"></h5>
+            <div class="bg-light text-dark rounded" style="filter: drop-shadow(0px 5px 50rem #004365);
             filter: drop-shadow(0px 2px 6px #82A9BC);">
-                        <form class="row g-3 mx-5 mt-3"
-                              th:action="@{${action}}"
-                              th:object="${req_plan}"
-                              method="post">
-                            <input
-                                    type="hidden"
-                                    name="imageUrl"
-                                    th:field="*{id}"
-                            />
-                            <!-- BUILD OUR OWN CALENDAR PENDING
-                            <div class="col-md-12">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Sun</th>
-                                            <th scope="col">Mon</th>
-                                            <th scope="col">Tue</th>
-                                            <th scope="col">Wed</th>
-                                            <th scope="col">Thu</th>
-                                            <th scope="col">Fri</th>
-                                            <th scope="col">Sat</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th style="min-height: 5rem;"></th>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <hr>
-                            -->
-                            <div class="col-md-12">
-                                <input
-                                        class="form-control"
-                                        type="date"
-                                >
-                            </div>
-                            <div class="col-12">
-                                <select
-                                        class="form-select"
-                                        aria-label="Recipe Difficulty Select"
-                                        name="difficulty"
-                                        th:field="*{dish}"
-                                >
-                                    <option value="Normal" selected>Please select a type of meal</option>
-                                    <option value="Breakfast">Breakfast</option>
-                                    <option value="Lunch">Lunch</option>
-                                    <option value="Snacks">Snacks</option>
-                                    <option value="Dinner">Dinner</option>
-                                </select>
-                            </div>
-                            <div class="col-12">
-                                <select
-                                        class="form-select"
-                                        aria-label="Recipe Select"
-                                        name="recipe"
-                                        th:field="*{recipe}"
-
-                                >
-                                    <option value="Normal" selected>Please select a recipe</option>
-                                    <option value="Breakfast">Breakfast</option>
-                                    <option value="Lunch">Lunch</option>
-                                    <option value="Snacks">Snacks</option>
-                                    <option value="Dinner">Dinner</option>
-                                </select>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <button type="submit" class="btn btn-primary">Save changes</button>
-                            </div>
-                        </form>
+                <form class="row g-3 mx-5 mt-3"
+                      th:action="@{${action}}"
+                      th:object="${req_plan}"
+                      method="post">
+                    <input
+                            type="hidden"
+                            name="id"
+                            th:if="not (${req_plan.getId()} == null)"
+                            th:field="*{id}"
+                    />
+                    <!-- BUILD OUR OWN CALENDAR PENDING
+                    <div class="col-md-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Sun</th>
+                                    <th scope="col">Mon</th>
+                                    <th scope="col">Tue</th>
+                                    <th scope="col">Wed</th>
+                                    <th scope="col">Thu</th>
+                                    <th scope="col">Fri</th>
+                                    <th scope="col">Sat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th style="min-height: 5rem;"></th>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
+                    <hr>
+                    -->
+                    <div class="col-md-12">
+                        <input
+                                class="form-control"
+                                type="date"
+                                name="date"
+                                th:field="*{date}"
+                        >
+                    </div>
+                    <div class="col-12">
+                        <select
+                                class="form-select"
+                                aria-label="Recipe Difficulty Select"
+                                name="difficulty"
+                                th:field="*{dish}"
+                        >
+                            <option value="Normal" selected>Please select a type of meal</option>
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Lunch">Lunch</option>
+                            <option value="Snacks">Snacks</option>
+                            <option value="Dinner">Dinner</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <div
+                                th:if="${req_recipes} == null"
+                                class="card border border-0"
+                        >
+                            <select
+                                    class="form-select"
+                                    aria-label="Recipe Select"
+                                    name="recipe"
+                                    disabled
+                            >
+                                <option value="Normal" selected>Please select a recipe</option>
+                            </select>
+                            <a
+                                    class="stretched-link"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal"
+                                    th:href="@{#exampleModal}"></a>
+                        </div>
+                        <div
+                                th:unless="${req_recipes.isEmpty()}"
+                        >
+                            <select
+                                    class="form-select"
+                                    aria-label="Recipe Select"
+                                    name="recipe_id"
+
+                            >
+                                <div
+                                        th:unless="${req_plan.getRecipe()} == null"
+                                        th:each="recipe : ${req_recipes}"
+                                >
+                                    <option
+                                            th:if="${recipe.getId() == ${recipe_id}}"
+                                            th:value="${recipe_id}" selected></option>
+                                </div>
+                                <div
+                                        th:if="${recipe_id} == null"
+                                >
+                                    <option value="" selected>Please select a recipe</option>
+                                </div>
+                                <div
+                                        th:each="recipe : ${req_recipes}"
+                                >
+                                    <option
+                                            th:unless="${recipe.getId()} == ${recipe_id}"
+                                            th:value="${recipe.getId()}"
+                                            th:text="${recipe.getName()}"
+                                    ></option>
+                                </div>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:if="not (${message} == null)">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1
+                            class="modal-title fs-5"
+                            id="exampleModalLabel"
+                            th:text="${message_title}"
+                    ></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p
+                            th:text="${message}"
+                    ></p>
+                </div>
+                <div class="modal-footer">
+                    <a
+                            class="btn btn-primary"
+                            th:href="@{/api/v1/recipes/add}"
+                            th:text="'Add new recipe'"
+                    ></a>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script th:replace="fragments :: bootstrap_script" />
-    </body>
+</div>
+<script th:replace="fragments :: bootstrap_script" />
+</body>
 </html>
