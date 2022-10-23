@@ -8,12 +8,17 @@ import java.util.Objects;
 public class Mealplan {
     // the mealplan ITEMS (meals) are stored here for a simpler database
     // each mealplan item has: one user - one recipe - the date they would eat the recipe - and the meal it is for (breakfast, lunch, dinner, snack)
+
+    // ATTRIBUTES
    @Id
    @SequenceGenerator(name="mealplan_generator", sequenceName="mealplan_sequence", allocationSize = 1)
    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     long id;
     String dish;
     // foreign key to recipe_id
+    String date;
+
+    // RELATIONSHIPS
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
@@ -21,7 +26,7 @@ public class Mealplan {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
-    String date;
+
 
     public Mealplan() {
     }

@@ -2,6 +2,7 @@ package ca.gbc.comp3095.models;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -14,6 +15,8 @@ public class User{
     // each user has the profile attribiues
     // other than that each user can CREATE many recipes (saved in the recipe table as foreign key to user)
     // each user can save many recipes to their cookbook (saved in the cookbook_recipe table)
+
+    // ATTRIBUTES
     @Id
     @SequenceGenerator(name="user_generator", sequenceName="user_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE  )
@@ -29,16 +32,18 @@ public class User{
     @OneToMany(mappedBy = "user")
     private Set<Mealplan> mealplans = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
-    private Set<Cookbook> cookbooks = new HashSet<>();
-    @OneToMany(mappedBy = "user")
-    private Set<Recipe> recipes = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_recipe",
+            joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    private Set<Recipe> recipes;
 
+    // constructors
     public User() {
     }
 
-    // all attributes
-    public User(Long id, String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Mealplan> mealplans, Set<Cookbook> cookbooks, Set<Recipe> recipes) {
+    // with all attributes including id and relationships
+    public User(Long id, String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Mealplan> mealplans, Set<Recipe> recipes) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -47,12 +52,11 @@ public class User{
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.mealplans = mealplans;
-        this.cookbooks = cookbooks;
         this.recipes = recipes;
     }
 
-    // no id
-    public User(String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Mealplan> mealplans, Set<Cookbook> cookbooks, Set<Recipe> recipes) {
+    // without id
+    public User(String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Mealplan> mealplans, Set<Recipe> recipes) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -60,11 +64,10 @@ public class User{
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.mealplans = mealplans;
-        this.cookbooks = cookbooks;
         this.recipes = recipes;
     }
 
-    // basics
+    // without id and relationships
     public User(String username, String password, String email, String firstName, String lastName, String phoneNumber) {
         this.username = username;
         this.password = password;
@@ -74,7 +77,7 @@ public class User{
         this.phoneNumber = phoneNumber;
     }
 
-    // user with just recipes
+    // just recipes - no mealplan
     public User(String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Recipe> recipes) {
         this.username = username;
         this.password = password;
@@ -85,19 +88,8 @@ public class User{
         this.recipes = recipes;
     }
 
-    // user with recipe and cookbook
-    public User(String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Recipe> recipes, Set<Cookbook> cookbooks) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        this.recipes = recipes;
-        this.cookbooks = cookbooks;
-    }
 
-    // setters and getters
+    // getters and setters
     public Long getId() {
         return id;
     }
@@ -162,14 +154,6 @@ public class User{
         this.mealplans = mealplans;
     }
 
-    public Set<Cookbook> getCookbooks() {
-        return cookbooks;
-    }
-
-    public void setCookbooks(Set<Cookbook> cookbooks) {
-        this.cookbooks = cookbooks;
-    }
-
     public Set<Recipe> getRecipes() {
         return recipes;
     }
@@ -178,28 +162,21 @@ public class User{
         this.recipes = recipes;
     }
 
+    // equals and hashcode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) &&
-                Objects.equals(username, user.username) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(firstName, user.firstName) &&
-                Objects.equals(lastName, user.lastName) &&
-                Objects.equals(phoneNumber, user.phoneNumber) &&
-                Objects.equals(mealplans, user.mealplans) &&
-                Objects.equals(cookbooks, user.cookbooks) &&
-                Objects.equals(recipes, user.recipes);
+        return Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, email, firstName, lastName, phoneNumber, mealplans, cookbooks, recipes);
+        return Objects.hash(id);
     }
 
+    // toString
     @Override
     public String toString() {
         return "User{" +
@@ -211,64 +188,33 @@ public class User{
                 ", lastName='" + lastName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", mealplans=" + mealplans +
-                ", cookbooks=" + cookbooks +
                 ", recipes=" + recipes +
                 '}';
     }
 
-    // helper methods for adding and removing mealplans, cookbooks, and recipes
-    // add mealplan
-    public void addMealplan(Mealplan mealplan) {
-        this.mealplans.add(mealplan);
-    }
-
-    // remove mealplan
-    public void removeMealplan(Mealplan mealplan) {
-        this.mealplans.remove(mealplan);
-    }
-
-    // edit mealplan
-    public void editMealplan(Mealplan mealplan) {
-        this.mealplans.remove(mealplan);
-        this.mealplans.add(mealplan);
-    }
-
-    // add cookbook
-    public void addCookbook(Cookbook cookbook) {
-        this.cookbooks.add(cookbook);
-    }
-
-    // remove cookbook
-    public void removeCookbook(Cookbook cookbook) {
-        this.cookbooks.remove(cookbook);
-    }
-
-    // edit cookbook
-    public void editCookbook(Cookbook cookbook) {
-        this.cookbooks.remove(cookbook);
-        this.cookbooks.add(cookbook);
-    }
-    ////// adding more cookbooks and removing them is an option that might be added to the application later; however, at this time there will be one cookbook
-    // shown to the user as "My Cookbook" and the user will not be able to add or remove cookbooks
-    // by default add a cookbook whenever a user is created
-    public void addDefaultCookbook() {
-        Cookbook cookbook = new Cookbook(this, "My Cookbook", "My default cookbook");
-        this.cookbooks.add(cookbook);
-    }
-
-    // add recipe
-    public void addRecipe(Recipe recipe) {
+    // helper methods for relationships
+    public void addRecipe(Recipe recipe){
         this.recipes.add(recipe);
+        recipe.getUsers().add(this);
     }
 
-    // remove recipe
-    public void removeRecipe(Recipe recipe) {
+    public void removeRecipe(Recipe recipe){
         this.recipes.remove(recipe);
+        recipe.getUsers().remove(this);
     }
 
-    // edit recipe
-    public void editRecipe(Recipe recipe) {
-        this.recipes.remove(recipe);
-        this.recipes.add(recipe);
+    public void addMealplan(Mealplan mealplan){
+        this.mealplans.add(mealplan);
+        mealplan.setUser(this);
+    }
+
+    public void removeMealplan(Mealplan mealplan){
+        this.mealplans.remove(mealplan);
+        mealplan.setUser(null);
+    }
+
+    // encrypt password
+    public void encryptPassword() {
+        this.password = BCrypt.hashpw(this.password, BCrypt.gensalt());
     }
 }

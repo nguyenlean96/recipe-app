@@ -10,6 +10,8 @@ import java.util.Set;
 public class Recipe {
     // each recipe has the usual recipe attributes
     // each recipe can be created by one user
+
+    // ATTRIBUTES
     @Id
     @SequenceGenerator(name="recipe_generator", sequenceName="recipe_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -31,20 +33,18 @@ public class Recipe {
     private String difficulty; // enum Difficulty - EASY, MODERATE, HARD
 
     // RELATIONSHIPS
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToMany(mappedBy = "recipes")
-    private Set<Cookbook> cookbooks = new HashSet<>();
-
     @OneToMany(mappedBy = "recipe")
     private Set<Mealplan> mealplans = new HashSet<>();
 
+    @ManyToMany(mappedBy = "recipes")
+    private Set<User> users;
+
+    // constructors
     public Recipe() {
     }
 
-    public Recipe(long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, User user, Set<Cookbook> cookbooks, Set<Mealplan> mealplans) {
+    // with all attributes including id and relationships
+    public Recipe(long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, Set<Mealplan> mealplans, Set<User> users) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
@@ -55,12 +55,12 @@ public class Recipe {
         this.ingredients = ingredients;
         this.directions = directions;
         this.difficulty = difficulty;
-        this.user = user;
-        this.cookbooks = cookbooks;
         this.mealplans = mealplans;
+        this.users = users;
     }
 
-    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, User user, Set<Cookbook> cookbooks, Set<Mealplan> mealplans) {
+    // without id
+    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, Set<Mealplan> mealplans, Set<User> users) {
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
@@ -70,27 +70,12 @@ public class Recipe {
         this.ingredients = ingredients;
         this.directions = directions;
         this.difficulty = difficulty;
-        this.user = user;
-        this.cookbooks = cookbooks;
         this.mealplans = mealplans;
-    }
-    // without mealplans
-    public Recipe (String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, User user, Set<Cookbook> cookbooks) {
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.description = description;
-        this.prepTime = prepTime;
-        this.cookTime = cookTime;
-        this.servings = servings;
-        this.ingredients = ingredients;
-        this.directions = directions;
-        this.difficulty = difficulty;
-        this.user = user;
-        this.cookbooks = cookbooks;
+        this.users = users;
     }
 
-    // without cookbooks and mealplans
-    public Recipe (String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, User user) {
+    // without id and relationships
+    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
@@ -100,11 +85,10 @@ public class Recipe {
         this.ingredients = ingredients;
         this.directions = directions;
         this.difficulty = difficulty;
-        this.user = user;
     }
 
-    // without cookbooks, mealplans, and user
-    public Recipe (String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
+    // with users - without mealplans
+    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, Set<User> users) {
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
@@ -114,6 +98,7 @@ public class Recipe {
         this.ingredients = ingredients;
         this.directions = directions;
         this.difficulty = difficulty;
+        this.users = users;
     }
 
     // getters and setters
@@ -197,22 +182,6 @@ public class Recipe {
         this.difficulty = difficulty;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Set<Cookbook> getCookbooks() {
-        return cookbooks;
-    }
-
-    public void setCookbooks(Set<Cookbook> cookbooks) {
-        this.cookbooks = cookbooks;
-    }
-
     public Set<Mealplan> getMealplans() {
         return mealplans;
     }
@@ -221,6 +190,29 @@ public class Recipe {
         this.mealplans = mealplans;
     }
 
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    // equals and hashcode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Recipe recipe = (Recipe) o;
+        return id == recipe.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    // toString
     @Override
     public String toString() {
         return "Recipe{" +
@@ -234,11 +226,29 @@ public class Recipe {
                 ", ingredients='" + ingredients + '\'' +
                 ", directions='" + directions + '\'' +
                 ", difficulty='" + difficulty + '\'' +
-                ", user=" + user +
-                ", cookbooks=" + cookbooks +
                 ", mealplans=" + mealplans +
+                ", users=" + users +
                 '}';
     }
 
+    // helper methods for relationships
+    public void addMealplan(Mealplan mealplan) {
+        mealplans.add(mealplan);
+        mealplan.setRecipe(this);
+    }
 
+    public void removeMealplan(Mealplan mealplan) {
+        mealplans.remove(mealplan);
+        mealplan.setRecipe(null);
+    }
+
+    public void addUser(User user) {
+        users.add(user);
+        user.getRecipes().add(this);
+    }
+
+    public void removeUser(User user) {
+        users.remove(user);
+        user.getRecipes().remove(this);
+    }
 }

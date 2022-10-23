@@ -17,7 +17,7 @@ public class RecipeConfig {
         return args -> {
             Recipe recipe1 = new Recipe();
             recipe1.setName("Quick and Easy Pancit");
-            recipe1.setImageUrl("https://ibb.co/WyGTt06");
+            recipe1.setImageUrl("https://i.ibb.co/HzBJdCV/Screen-Shot-2022-10-21-at-10-43-30-PM.png");
             recipe1.setDescription("This is a quick and easy pancit recipe that you can make in less than 30 minutes.");
             recipe1.setPrepTime(10);
             recipe1.setCookTime(20);
@@ -53,7 +53,7 @@ public class RecipeConfig {
             ////////////////////////////
             Recipe recipe2 = new Recipe();
             recipe2.setName("Chicken Parmesan");
-            recipe2.setImageUrl("https://ibb.co/tMJ0RHp");
+            recipe2.setImageUrl("https://i.ibb.co/N6y0RF2/Screen-Shot-2022-10-21-at-10-51-03-PM.png");
             recipe2.setDescription("This is a classic chicken parmesan recipe that you can make at home.");
             recipe2.setPrepTime(10);
             recipe2.setCookTime(30);
@@ -91,7 +91,7 @@ public class RecipeConfig {
             ////////////////////////////
             Recipe recipe3 = new Recipe();
             recipe3.setName("Chicken and Dumplings");
-            recipe3.setImageUrl("https://ibb.co/qk3rRYh");
+            recipe3.setImageUrl("https://i.ibb.co/t8TJbpn/Screen-Shot-2022-10-21-at-11-01-03-PM.png");
             recipe3.setDescription("This is a classic chicken and dumplings recipe that you can make at home.");
             recipe3.setPrepTime(10);
             recipe3.setCookTime(30);
