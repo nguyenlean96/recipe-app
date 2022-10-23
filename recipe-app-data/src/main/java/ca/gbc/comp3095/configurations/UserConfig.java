@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UserConfig {
 //*********************************************************************************
-//* Project: The Recipe App
+//* Project: Your Recipe App
 //* Assignment: assignment 1
 //* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
 //* Student Number: 101334588 - 101292266 - 101303158 - 101311327

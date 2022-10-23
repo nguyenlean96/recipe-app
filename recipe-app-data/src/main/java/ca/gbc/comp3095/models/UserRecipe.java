@@ -5,9 +5,9 @@ import java.util.Objects;
 
 @Entity
 @Table(name="user_recipe")
-public class User_Recipe {
+public class UserRecipe {
 //*********************************************************************************
-//* Project: The Recipe App
+//* Project: Your Recipe App
 //* Assignment: assignment 1
 //* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
 //* Student Number: 101334588 - 101292266 - 101303158 - 101311327
@@ -22,11 +22,11 @@ public class User_Recipe {
     @SequenceGenerator(name="user_recipe_generator", sequenceName="user_recipe_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    private boolean isCreated;
-    private boolean isSaved;
+    private boolean isCreated; // for my recipes
+    private boolean isSaved; // for my cookbook
 
     // DEFAULT CONSTRUCTOR
-    public User_Recipe() {
+    public UserRecipe() {
     }
 
     // GETTERS AND SETTERS
@@ -59,10 +59,8 @@ public class User_Recipe {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User_Recipe that = (User_Recipe) o;
-        return isCreated == that.isCreated &&
-                isSaved == that.isSaved &&
-                Objects.equals(id, that.id);
+        UserRecipe that = (UserRecipe) o;
+        return isCreated == that.isCreated && isSaved == that.isSaved && Objects.equals(id, that.id);
     }
 
     @Override
@@ -72,11 +70,10 @@ public class User_Recipe {
 
     @Override
     public String toString() {
-        return "User_Recipe{" +
+        return "UserRecipe{" +
                 "id=" + id +
                 ", isCreated=" + isCreated +
                 ", isSaved=" + isSaved +
                 '}';
     }
 }
-
