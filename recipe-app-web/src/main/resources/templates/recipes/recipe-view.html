@@ -6,17 +6,25 @@
 <head th:replace="fragments :: html_head"/>
 <body>
 <div th:replace="fragments :: html_navbar"/>
-<div class="recipeView">
+<div class="recipeView container">
     <h1 th:text="${recipe.getName()}"></h1>
-    <div class="recipeImage" style="text-align: center;">
+    <div class="row">
+    <div class="recipeImage col img-wrap" style="align-content: center;">
         <img alt="Image of recipe" th:src="@{${recipe.getImageUrl()}}">
     </div>
-    <div class="recipeInfo" style="text-align: center">
-        <div th:text="'Prep Time: '+ ${recipe.getPrepTime()} + ' mins'"></div>
-        <div th:text="'Cook Time: '+${recipe.getCookTime()} + ' mins'"></div>
-        <div th:text="'Total Time: '+(${recipe.getPrepTime()} + ${recipe.getCookTime()}) + ' mins'"></div>
-        <div th:text="'Servings: '+${recipe.getServings()}"></div>
+    <div class="recipeInfo col" style="text-align: center; font-weight: bold;">
+        <div id="paper" style="transform: rotate(2deg);">
+            <div id="pattern">
+                <div id="content">
+                    <div th:text="'Prep Time: '+ ${recipe.getPrepTime()} + ' mins'"></div>
+                    <div th:text="'Cook Time: '+${recipe.getCookTime()} + ' mins'"></div>
+                    <div th:text="'Total Time: '+(${recipe.getPrepTime()} + ${recipe.getCookTime()}) + ' mins'"></div>
+                    <div th:text="'Servings: '+${recipe.getServings()}"></div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
     <div class="recipeDescriptionView">
         <p th:text="${recipe.getDescription()}"></p>
     </div>
@@ -24,6 +32,11 @@
     <div class="recipeIngredients">
         <h2>Ingredients</h2>
         <!--<div th:text="${recipe.ingredients()}></div>-->
+    </div>
+
+    <div class="recipeDirections">
+        <h2>Directions</h2>
+<!--        <p th:text="${recipe.getDirections()()}"></p>-->
     </div>
 
 </div>

@@ -48,9 +48,7 @@ h1{
     text-align: center;
     color: white;
 }
-nav{
-    padding-right: 2%;
-}
+
 .add{
     height: 50px;
     width: 50px;
@@ -68,16 +66,20 @@ a{
     border-radius: 20px;
     padding: 1%;
     margin: 2%;
-
+    background: #a3b5a3;
 }
 .recipeImage{
-    height: 500px;
-    width: 800px;
+    margin-bottom: 5vh;
+    text-align: center;
 }
 
 .recipeDescriptionView{
     text-align: center;
+    margin: 2%;
 }
+/*.recipeInfo{*/
+/*    margin-top: 25vh;*/
+/*}*/
 .recipeAddForm{
     padding-bottom: 10%;
 }
@@ -90,7 +92,58 @@ a{
     margin-bottom: 5%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+/* styling paper */
+#paper {
+    width: 25vw;
+    height: 30vh;
+    position: relative;
+    overflow: hidden;
+    margin: 20px auto;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 
-.addRecipe label{
+/* styling red vertical line */
+#paper::before {
+    content: '';
+    width: 2px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 40px;
+    background-color: rgba(255,0,0,0.6);
+}
+
+/* styling blue horizontal lines */
+#pattern {
+    height: 100%;
+    background-image: repeating-linear-gradient(white 0px, white 24px, teal 25px);
+}
+
+/* styling text content */
+#content {
+    padding-top: 6px;
+    padding-left: 56px;
+    padding-right: 16px;
+    line-height: 25px;
+    font-size: 19px;
+    font-family: 'Raleway', sans-serif;;
+    letter-spacing: 1px;
+    word-spacing: 5px;
+}
+.img-wrap {
+    width: 50vh;
+    height: 50vh;
+    position: relative;
+    display: inline-block;
+    object-fit: contain;
+    overflow: hidden;
+    margin: 0;
+}
+h2{
+    color: #004d00;
     font-weight: bold;
+    font-family: 'Playfair Display', serif;
 }
