@@ -12,6 +12,14 @@ import java.util.HashSet;
 
 @Configuration
 public class RecipeConfig {
+//*********************************************************************************
+//* Project: The Recipe App
+//* Assignment: assignment 1
+//* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
+//* Student Number: 101334588 - 101292266 - 101303158 - 101311327
+//* Date: 2022-10-23
+//* Description: configuration class to load some recipe data into the database as application is started up
+// *********************************************************************************//
     @Bean
     CommandLineRunner recipeCommandLineRunner(RecipeRepository recipeRepository) {
         return args -> {

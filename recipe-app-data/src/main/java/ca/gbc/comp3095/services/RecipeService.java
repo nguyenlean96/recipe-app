@@ -7,6 +7,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RecipeService {
+//*********************************************************************************
+//* Project: The Recipe App
+//* Assignment: assignment 1
+//* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
+//* Student Number: 101334588 - 101292266 - 101303158 - 101311327
+//* Date: 2022-10-23
+//* Description: service class to handle business logic for recipe and implement the abstract methods declared or inherited in the Recipe Repository interface
+// *********************************************************************************//
     private final RecipeRepository recipeRepository;
     @Autowired
     public RecipeService(RecipeRepository recipeRepository) {

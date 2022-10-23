@@ -6,28 +6,32 @@ import java.util.Objects;
 @Entity
 @Table(name="mealplans")
 public class Mealplan {
-    // the mealplan ITEMS (meals) are stored here for a simpler database
-    // each mealplan item has: one user - one recipe - the date they would eat the recipe - and the meal it is for (breakfast, lunch, dinner, snack)
-
+//*********************************************************************************
+//* Project: The Recipe App
+//* Assignment: assignment 1
+//* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
+//* Student Number: 101334588 - 101292266 - 101303158 - 101311327
+//* Date: 2022-10-23
+//* Description: the mealplan ITEMS (meals) are stored here for a simpler database
+//* each mealplan item has: one user - one recipe - the date they would eat the recipe - and the meal it is for (breakfast, lunch, dinner, snack)
+// *********************************************************************************//
     // ATTRIBUTES
    @Id
    @SequenceGenerator(name="mealplan_generator", sequenceName="mealplan_sequence", allocationSize = 1)
    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     long id;
     String dish;
-    // foreign key to recipe_id
     String date;
 
     // RELATIONSHIPS
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-    // foreign key to user_id
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
-
+    // CONSTRUCTORS
     public Mealplan() {
     }
 
@@ -46,6 +50,7 @@ public class Mealplan {
         this.date = date;
     }
 
+    // GETTERS AND SETTERS
     public long getId() {
         return id;
     }
@@ -86,6 +91,7 @@ public class Mealplan {
         this.date = date;
     }
 
+    // METHODS
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -110,7 +116,7 @@ public class Mealplan {
                 '}';
     }
 
-    // helper methods to add and remove recipes from the mealplan
+    // HELPER METHODS TO ADD AND REMOVE RECIPES FROM MEALPLAN
     public void addRecipe(Recipe recipe) {
         this.recipe = recipe;
     }

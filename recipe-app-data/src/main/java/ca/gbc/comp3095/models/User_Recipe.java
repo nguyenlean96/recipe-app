@@ -6,24 +6,30 @@ import java.util.Objects;
 @Entity
 @Table(name="user_recipe")
 public class User_Recipe {
-    // this is the join table for the many-to-many relationship between users and recipes
-    // however a separate entity is needed to add columns to the join table
+//*********************************************************************************
+//* Project: The Recipe App
+//* Assignment: assignment 1
+//* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
+//* Student Number: 101334588 - 101292266 - 101303158 - 101311327
+//* Date: 2022-10-23
+//* Description: this is the join table for the many-to-many relationship between users and recipes
+//* two new attributes are added to the join table: isCreated and isSaved
+//* this is to make the distinction between the recipes that the user created (my recipes) and the recipes that the user saved (my cookbook)
+// *********************************************************************************//
 
     // ATTRIBUTES
     @Id
     @SequenceGenerator(name="user_recipe_generator", sequenceName="user_recipe_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-
     private boolean isCreated;
-
     private boolean isSaved;
 
-    // constructor
+    // DEFAULT CONSTRUCTOR
     public User_Recipe() {
     }
 
-    // getters and setters
+    // GETTERS AND SETTERS
     public Long getId() {
         return id;
     }
@@ -48,7 +54,7 @@ public class User_Recipe {
         isSaved = saved;
     }
 
-    // equals and hashcode
+    // METHODS
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,7 +70,6 @@ public class User_Recipe {
         return Objects.hash(id, isCreated, isSaved);
     }
 
-    // toString - for testing
     @Override
     public String toString() {
         return "User_Recipe{" +

@@ -8,8 +8,15 @@ import java.util.Set;
 @Entity
 @Table(name="recipes")
 public class Recipe {
-    // each recipe has the usual recipe attributes
-    // each recipe can be created by one user
+//*********************************************************************************
+//* Project: The Recipe App
+//* Assignment: assignment 1
+//* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
+//* Student Number: 101334588 - 101292266 - 101303158 - 101311327
+//* Date: 2022-10-23
+//* Description: in addition to the recipe attributes, recipe has a many-to-many relationship with users that is stored in the user_recipe table.
+//* each recipe also can belong to many mealplan items (meals) - that is why the recipe id is stored in the mealplan table as a foreign key
+// *********************************************************************************//
 
     // ATTRIBUTES
     @Id
@@ -39,11 +46,10 @@ public class Recipe {
     @ManyToMany(mappedBy = "recipes")
     private Set<User> users;
 
-    // constructors
+    // CONSTRACTORS
     public Recipe() {
     }
 
-    // with all attributes including id and relationships
     public Recipe(long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, Set<Mealplan> mealplans, Set<User> users) {
         this.id = id;
         this.name = name;
@@ -59,7 +65,6 @@ public class Recipe {
         this.users = users;
     }
 
-    // without id
     public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, Set<Mealplan> mealplans, Set<User> users) {
         this.name = name;
         this.imageUrl = imageUrl;
@@ -74,7 +79,6 @@ public class Recipe {
         this.users = users;
     }
 
-    // without id and relationships
     public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
         this.name = name;
         this.imageUrl = imageUrl;
@@ -87,7 +91,6 @@ public class Recipe {
         this.difficulty = difficulty;
     }
 
-    // with users - without mealplans
     public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, Set<User> users) {
         this.name = name;
         this.imageUrl = imageUrl;
@@ -101,7 +104,7 @@ public class Recipe {
         this.users = users;
     }
 
-    // getters and setters
+    // GETTERS AND SETTERS
     public long getId() {
         return id;
     }
@@ -212,7 +215,7 @@ public class Recipe {
         return Objects.hash(id);
     }
 
-    // toString
+    // METHODS
     @Override
     public String toString() {
         return "Recipe{" +
@@ -231,7 +234,7 @@ public class Recipe {
                 '}';
     }
 
-    // helper methods for relationships
+    // HELPER METHODS FOR RELATIONSHIPS
     public void addMealplan(Mealplan mealplan) {
         mealplans.add(mealplan);
         mealplan.setRecipe(this);

@@ -3,6 +3,7 @@ package ca.gbc.comp3095.models;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -11,10 +12,19 @@ import java.util.Set;
 
 @Entity
 @Table(name="users")
-public class User{
-    // each user has the profile attribiues
-    // other than that each user can CREATE many recipes (saved in the recipe table as foreign key to user)
-    // each user can save many recipes to their cookbook (saved in the cookbook_recipe table)
+public class User {
+//*********************************************************************************
+//* Project: The Recipe App
+//* Assignment: assignment 1
+//* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
+//* Student Number: 101334588 - 101292266 - 101303158 - 101311327
+//* Date: 2022-10-23
+//* Description: each user has the usual profile attributes, but also has a many-to-many relationship with recipes that is stored in the user_recipe table.
+//* the recipes that are created by the user are flagged with boolean isCreated in the user_recipe table (displayed as my recipes)
+//* and the ones that are just saved are flagged with boolean isSaved (displayed as my cookbook).
+//* each user can have many meal plan items (meals) - that is why the user id is stored in the mealplan table as a foreign key on each row
+//* a password encryption method is also added to the user class to encrypt the password before it is stored in the database
+// *********************************************************************************//
 
     // ATTRIBUTES
     @Id
@@ -38,11 +48,10 @@ public class User{
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private Set<Recipe> recipes;
 
-    // constructors
+    // CONSTRUCTORS
     public User() {
     }
 
-    // with all attributes including id and relationships
     public User(Long id, String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Mealplan> mealplans, Set<Recipe> recipes) {
         this.id = id;
         this.username = username;
@@ -55,7 +64,6 @@ public class User{
         this.recipes = recipes;
     }
 
-    // without id
     public User(String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Mealplan> mealplans, Set<Recipe> recipes) {
         this.username = username;
         this.password = password;
@@ -67,7 +75,6 @@ public class User{
         this.recipes = recipes;
     }
 
-    // without id and relationships
     public User(String username, String password, String email, String firstName, String lastName, String phoneNumber) {
         this.username = username;
         this.password = password;
@@ -77,7 +84,6 @@ public class User{
         this.phoneNumber = phoneNumber;
     }
 
-    // just recipes - no mealplan
     public User(String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Recipe> recipes) {
         this.username = username;
         this.password = password;
@@ -88,8 +94,6 @@ public class User{
         this.recipes = recipes;
     }
 
-
-    // getters and setters
     public Long getId() {
         return id;
     }
@@ -162,7 +166,7 @@ public class User{
         this.recipes = recipes;
     }
 
-    // equals and hashcode
+    // METHODS
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -192,7 +196,7 @@ public class User{
                 '}';
     }
 
-    // helper methods for relationships
+    // HELPER METHODS FOR RELATIONSHIPS
     public void addRecipe(Recipe recipe){
         this.recipes.add(recipe);
         recipe.getUsers().add(this);
@@ -213,8 +217,14 @@ public class User{
         mealplan.setUser(null);
     }
 
-    // encrypt password
+    // ENCRYPT USER PASSWORD
     public void encryptPassword() {
         this.password = BCrypt.hashpw(this.password, BCrypt.gensalt());
+    }
+
+    // CHECK USER PASSWORD
+    public boolean isMatched(String password) {
+        BCryptPasswordEncoder b = new BCryptPasswordEncoder();
+        return b.matches(password, this.password);
     }
 }
