@@ -1,5 +1,5 @@
 package ca.gbc.comp3095.controllers;
-/*
+
 import ca.gbc.comp3095.models.Recipe;
 import ca.gbc.comp3095.models.User;
 import ca.gbc.comp3095.models.UserRecipe;
@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -35,12 +36,16 @@ public class CookbookController {
     @GetMapping({"", "/","/list"})
     public ModelAndView list(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
-        User curr = (User) userService.findByUsername(String.valueOf(req.getSession().getAttribute("RECIPE_USER")));
         mv.setViewName("cookbooks/index");
-        // List<UserRecipe> cookbook_recipes = (List<UserRecipe>) userService.findAllByUserIdAndIsSaved(curr.getId(), true);
+        User curr = (User) userService.findByUsername(String.valueOf(req.getSession().getAttribute("RECIPE_USER")));
+        List<Recipe> req_cookbook = new ArrayList<>();
+        mv.addObject("recipes", req_cookbook);
+        /*
 
-        // mv.addObject("cookbook_recipes", cookbook_recipes);
+        List<UserRecipe> cookbook_recipes = (List<UserRecipe>) userService.findAllByUserIdAndIsSaved(curr.getId(), true);
 
+        mv.addObject("cookbook_recipes", cookbook_recipes);
+        */
         return autoDirect(req, mv);
     }
 
@@ -92,4 +97,3 @@ public class CookbookController {
         return (username == null) ? new ModelAndView("redirect:/") : mv.addObject("loggedin", isLoggedIn(req)).addObject("username", "Hi " + userService.findByUsername(username).getFirstName() + "!");
     }
 }
- */

@@ -191,8 +191,8 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", mealplans=" + mealplans +
-                ", recipes=" + recipes +
+                //", mealplans=" + mealplans +
+                //", recipes=" + recipes +
                 '}';
     }
 

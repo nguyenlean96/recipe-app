@@ -15,7 +15,7 @@
         <div class="container-fluid">
             <a class="navbar-brand mb-0 h1" th:href="@{/}">
                 <img th:src="@{/images/logo/logo.png}" width="32" height="32" class="d-inline-block align-text-top">
-                A Recipe App
+                The Recipe App
             </a>
             <button
                     class="navbar-toggler"
@@ -27,21 +27,14 @@
                     aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse d-flex justify-content-center align-items-center">
+            <div class="collapse navbar-collapse d-flex flex-row justify-content-center align-items-center">
                 <div
+                        class="d-flex flex-row"
                     th:if="${loggedin}"
                 >
                     <ul class="navbar-nav mb-2">
-                        <li class="nav-item btn btn-primary me-2 p-0 d-flex align-items-center">
-                            <a
-                                    class="nav-link text-light m-0"
-                                    th:href="@{/api/v1/recipes/add}" th:text="'Add new recipe'"></a>
-                        </li>
                         <li class="nav-item me-2">
                             <a class="nav-link" th:href="@{/api/v1/cookbooks}">My CookBook</a>
-                        </li>
-                        <li class="nav-item me-2">
-                            <a class="nav-link" th:href="@{/api/v1/recipes}">My Recipes</a>
                         </li>
                         <li class="nav-item me-2">
                             <a class="nav-link" th:href="@{/api/v1/mealplans}">Meal Plans</a>
@@ -68,6 +61,13 @@
                             </ul>
                         </li>
                     </ul>
+                    <div class="d-flex flex-row-reverse">
+                        <a
+                            class="btn btn-primary text-light m-0 py-0"
+                            th:href="@{/api/v1/recipes/add}"
+                            th:text="'Add new recipe'"
+                        ></a>
+                    </div>
                 </div>
                 <div
                     th:if="not ${loggedin}"

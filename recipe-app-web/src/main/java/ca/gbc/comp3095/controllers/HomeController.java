@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -65,9 +66,15 @@ public class HomeController {
         mv.addObject("recipes", null);
         mv.addObject("recipe_name", name);
         try {
-            List<Recipe> req_recipes = (List<Recipe>) recipeService.findAllByName(name.toLowerCase());
-            System.out.println(req_recipes);
-            mv.addObject("recipes", req_recipes);
+            List<Recipe> saved_recipes = (List<Recipe>) recipeService.findAll();
+            System.out.println(saved_recipes);
+            List<Recipe> res_recipes = new ArrayList<>();
+            for (Recipe r : saved_recipes) {
+                if (r.getName().toLowerCase().contains(name.toLowerCase())) {
+                    res_recipes.add(r);
+                }
+            }
+            mv.addObject("recipes", res_recipes);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             mv.addObject("message", e.getMessage());

@@ -229,7 +229,7 @@ public class Recipe {
                 ", ingredients='" + ingredients + '\'' +
                 ", directions='" + directions + '\'' +
                 ", difficulty='" + difficulty + '\'' +
-                ", mealplans=" + mealplans +
+                //", mealplans=" + mealplans +
                 ", users=" + users +
                 '}';
     }
