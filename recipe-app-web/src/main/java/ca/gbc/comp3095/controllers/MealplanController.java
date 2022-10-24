@@ -30,7 +30,7 @@ public class MealplanController {
         ModelAndView mv = new ModelAndView();
 
         mv.addObject("recipes", saved_plans);
-        mv.setViewName("/recipes/recipe-list");
+        mv.setViewName("/meals/mealplan");
         return mv;
     }
     @GetMapping("/add")

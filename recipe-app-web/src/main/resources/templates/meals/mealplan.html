@@ -3,12 +3,134 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head th:replace="fragments :: html_head" />
+<head th:replace="fragments :: html_head">
+    <link rel="stylesheet" th:src="@{/css/main.css}">
+</head>
 <body>
 <div th:replace="fragments :: html_navbar" />
-
-
-
+<h1>My Meal Plan</h1>
+<div class="recipeList">
+    <h3>Monday</h3>
+    <div th:each="recipe : ${recipes}">
+        <div class="d-flex align-items-center recipe">
+            <div class="flex-shrink-0">
+                <img th:src="@{${recipe.getImageUrl()}}" style="max-width: 8vw;" alt="...">
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <h5 class="recipeName"><a th:text="${recipe.getName()}" th:href="@{'/api/v1/recipes/details?id=' + ${recipe.getId()}}"></a></h5>
+                <p class="recipeDescription" th:text="${recipe.getDescription()}" />
+            </div>
+            <div style="margin-left: 2%;">
+                <input type="image" src="/images/buttons/plus.png" name="submit" width="30" height="30" alt="submit"/>
+                <input type="image" src="/images/buttons/edit.png" name="submit" width="30" height="30" alt="submit"/>
+                <input type="image" src="/images/buttons/remove.png" name="submit" width="30" height="30" alt="submit"/>
+            </div>
+        </div>
+    </div>
+    <h3>Tuesday</h3>
+    <div th:each="recipe : ${recipes}">
+        <div class="d-flex align-items-center recipe">
+            <div class="flex-shrink-0">
+                <img th:src="@{${recipe.getImageUrl()}}" style="max-width: 8vw;" alt="...">
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <h5 class="recipeName"><a th:text="${recipe.getName()}" th:href="@{'/api/v1/recipes/details?id=' + ${recipe.getId()}}"></a></h5>
+                <p class="recipeDescription" th:text="${recipe.getDescription()}" />
+            </div>
+            <div style="margin-left: 2%;">
+                <input type="image" src="/images/buttons/plus.png" name="submit" width="30" height="30" alt="submit"/>
+                <input type="image" src="/images/buttons/edit.png" name="submit" width="30" height="30" alt="submit"/>
+                <input type="image" src="/images/buttons/remove.png" name="submit" width="30" height="30" alt="submit"/>
+            </div>
+        </div>
+    </div>
+    <h3>Wednesday</h3>
+    <div th:each="recipe : ${recipes}">
+        <div class="d-flex align-items-center recipe">
+            <div class="flex-shrink-0">
+                <img th:src="@{${recipe.getImageUrl()}}" style="max-width: 8vw;" alt="...">
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <h5 class="recipeName"><a th:text="${recipe.getName()}" th:href="@{'/api/v1/recipes/details?id=' + ${recipe.getId()}}"></a></h5>
+                <p class="recipeDescription" th:text="${recipe.getDescription()}" />
+            </div>
+            <div style="margin-left: 2%;">
+                <input type="image" src="/images/buttons/plus.png" name="submit" width="30" height="30" alt="submit"/>
+                <input type="image" src="/images/buttons/edit.png" name="submit" width="30" height="30" alt="submit"/>
+                <input type="image" src="/images/buttons/remove.png" name="submit" width="30" height="30" alt="submit"/>
+            </div>
+        </div>
+    </div>
+    <h3>Thursday</h3>
+    <div th:each="recipe : ${recipes}">
+        <div class="d-flex align-items-center recipe">
+            <div class="flex-shrink-0">
+                <img th:src="@{${recipe.getImageUrl()}}" style="max-width: 8vw;" alt="...">
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <h5 class="recipeName"><a th:text="${recipe.getName()}" th:href="@{'/api/v1/recipes/details?id=' + ${recipe.getId()}}"></a></h5>
+                <p class="recipeDescription" th:text="${recipe.getDescription()}" />
+            </div>
+            <div style="margin-left: 2%;">
+                <input type="image" src="/images/buttons/plus.png" name="submit" width="30" height="30" alt="submit"/>
+                <input type="image" src="/images/buttons/edit.png" name="submit" width="30" height="30" alt="submit"/>
+                <input type="image" src="/images/buttons/remove.png" name="submit" width="30" height="30" alt="submit"/>
+            </div>
+        </div>
+    </div>
+    <h3>Friday</h3>
+    <div th:each="recipe : ${recipes}">
+        <div class="d-flex align-items-center recipe">
+            <div class="flex-shrink-0">
+                <img th:src="@{${recipe.getImageUrl()}}" style="max-width: 8vw;" alt="...">
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <h5 class="recipeName"><a th:text="${recipe.getName()}" th:href="@{'/api/v1/recipes/details?id=' + ${recipe.getId()}}"></a></h5>
+                <p class="recipeDescription" th:text="${recipe.getDescription()}" />
+            </div>
+            <div style="margin-left: 2%;">
+                <input type="image" src="/images/buttons/plus.png" name="submit" width="30" height="30" alt="submit"/>
+                <input type="image" src="/images/buttons/edit.png" name="submit" width="30" height="30" alt="submit"/>
+                <input type="image" src="/images/buttons/remove.png" name="submit" width="30" height="30" alt="submit"/>
+            </div>
+        </div>
+    </div>
+    <h3>Saturday</h3>
+    <div th:each="recipe : ${recipes}">
+        <div class="d-flex align-items-center recipe">
+            <div class="flex-shrink-0">
+                <img th:src="@{${recipe.getImageUrl()}}" style="max-width: 8vw;" alt="...">
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <h5 class="recipeName"><a th:text="${recipe.getName()}" th:href="@{'/api/v1/recipes/details?id=' + ${recipe.getId()}}"></a></h5>
+                <p class="recipeDescription" th:text="${recipe.getDescription()}" />
+            </div>
+            <div style="margin-left: 2%;">
+                <input type="image" src="/images/buttons/plus.png" name="submit" width="30" height="30" alt="submit"/>
+                <input type="image" src="/images/buttons/edit.png" name="submit" width="30" height="30" alt="submit"/>
+                <input type="image" src="/images/buttons/remove.png" name="submit" width="30" height="30" alt="submit"/>
+            </div>
+        </div>
+    </div>
+    <h3>Sunday</h3>
+    <div th:each="recipe : ${recipes}">
+        <div class="d-flex align-items-center recipe">
+            <div class="flex-shrink-0">
+                <img th:src="@{${recipe.getImageUrl()}}" style="max-width: 8vw;" alt="...">
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <h5 class="recipeName"><a th:text="${recipe.getName()}" th:href="@{'/api/v1/recipes/details?id=' + ${recipe.getId()}}"></a></h5>
+                <p class="recipeDescription" th:text="${recipe.getDescription()}" />
+            </div>
+            <div style="margin-left: 2%;">
+                <input type="image" src="/images/buttons/plus.png" name="submit" width="30" height="30" alt="submit"/>
+                <input type="image" src="/images/buttons/edit.png" name="submit" width="30" height="30" alt="submit"/>
+                <input type="image" src="/images/buttons/remove.png" name="submit" width="30" height="30" alt="submit"/>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments :: html_footer" />
 <script th:replace="fragments :: bootstrap_script" />
 </body>
 </html>

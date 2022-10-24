@@ -8,7 +8,7 @@
     </head>
     <body>
         <div th:replace="fragments :: html_navbar" />
-        <h1>All Recipes</h1>
+        <h1>My Cookbook</h1>
         <div class="recipeList">
         <div th:each="recipe : ${recipes}">
             <div class="d-flex align-items-center recipe">
@@ -20,8 +20,9 @@
                     <p class="recipeDescription" th:text="${recipe.getDescription()}" />
                 </div>
                 <div style="margin-left: 2%;">
-                    <input type="image" src="/images/buttons/heart.png" name="submit" width="30" height="30" alt="submit"/>
                     <input type="image" src="/images/buttons/plus.png" name="submit" width="30" height="30" alt="submit"/>
+                    <input type="image" src="/images/buttons/edit.png" name="submit" width="30" height="30" alt="submit"/>
+                    <input type="image" src="/images/buttons/remove.png" name="submit" width="30" height="30" alt="submit"/>
                 </div>
             </div>
         </div>
