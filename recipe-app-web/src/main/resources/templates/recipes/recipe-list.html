@@ -20,7 +20,7 @@
                     <p class="recipeDescription" th:text="${recipe.getDescription()}" />
                 </div>
                 <div style="margin-left: 2%;">
-                    <input type="image" src="/images/buttons/plus.png" name="submit" width="30" height="30" alt="submit"/>
+                    <input type="image" src="/images/buttons/plus.png" name="submit" width="30" height="30" alt="submit" th:href="@{/api/v1/mealplans/add}"/>
                     <input type="image" src="/images/buttons/edit.png" name="submit" width="30" height="30" alt="submit"/>
                     <input type="image" src="/images/buttons/remove.png" name="submit" width="30" height="30" alt="submit"/>
                 </div>
