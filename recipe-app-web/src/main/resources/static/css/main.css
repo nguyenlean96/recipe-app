@@ -72,7 +72,15 @@ a{
     margin-bottom: 5vh;
     text-align: center;
 }
-
+.addUser{
+    border: 2px solid #004d00;
+    border-radius: 20px;
+    padding: 2%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 5%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 .recipeDescriptionView{
     text-align: center;
     margin: 2%;
@@ -92,6 +100,7 @@ a{
     margin-bottom: 5%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
 /* styling paper */
 #paper {
     width: 25vw;

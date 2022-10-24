@@ -5,12 +5,11 @@
     <head th:replace="fragments :: html_head" />
     <body>
         <div th:replace="fragments :: html_navbar" />
-        <div class="bg-light text-dark rounded m-5" style="filter: drop-shadow(0px 5px 50rem #004365);
-    filter: drop-shadow(0px 2px 6px #82A9BC);">
+        <h1>Register</h1>
             <form
                     th:action="@{${action}}"
                     th:object="${new_user}"
-                    class="row g-3 m-3">
+                    class="row g-3 m-3 addUser">
                 <div class="col-md-6">
                     <label
                         for="new_user_email_input"
@@ -52,10 +51,10 @@
                     <label for="inputZip" class="form-label">Zip</label>
                     <input type="text" class="form-control" id="inputZip">
                 </div>
-                <div class="col-12 mb-5 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary">Sign in</button>
+                <div>
+                    <button type="submit" class="btn btn-primary" style="background: #004d00; color: white; border: #004d00">Register</button>
                 </div>
+                <div><p>Already have an account? <a th:href="@{/api/v1/users/login}">Log In Here</a></p></div>
             </form>
-        </div>
     </body>
 </html>
