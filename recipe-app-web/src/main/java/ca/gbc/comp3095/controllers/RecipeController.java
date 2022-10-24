@@ -37,7 +37,7 @@ public class RecipeController {
     public ModelAndView list(HttpServletRequest req) {
         String username = (String) req.getSession().getAttribute("RECIPE_USER");
         User curr = (User) userService.findByUsername(username);
-        List<Recipe> saved_recipes = List.copyOf(curr.getRecipes());
+        List<Recipe> saved_recipes = List.copyOf(curr.getCookbook_recipes());
         ModelAndView mv = new ModelAndView();
 
         mv.addObject("recipes", saved_recipes);
@@ -64,7 +64,7 @@ public class RecipeController {
         mv.setViewName("redirect:/api/v1/recipes");
 
         User curr = (User) userService.findByUsername(String.valueOf(req.getSession().getAttribute("RECIPE_USER")));
-        curr.addRecipe(recipe);
+        curr.addRecipeToCreatedRecipes(recipe);
         recipe.addUser(curr);
         try {
             recipeService.save(recipe);

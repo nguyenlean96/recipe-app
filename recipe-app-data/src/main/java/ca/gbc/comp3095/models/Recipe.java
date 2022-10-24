@@ -14,7 +14,8 @@ public class Recipe {
 //* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
 //* Student Number: 101334588 - 101292266 - 101303158 - 101311327
 //* Date: 2022-10-23
-//* Description: in addition to the recipe attributes, recipe has a many-to-many relationship with users that is stored in the user_recipe table.
+//* Description: in addition to the recipe attributes, recipe has a many-to-many relationship with users that is stored in the user_recipe table (recipes saved into cookbook).
+//* each recipe is created by one user. this is a many-to-one relationship with user.
 //* each recipe also can belong to many mealplan items (meals) - that is why the recipe id is stored in the mealplan table as a foreign key
 // *********************************************************************************//
 
@@ -39,18 +40,26 @@ public class Recipe {
     private String directions;
     private String difficulty; // enum Difficulty - EASY, MODERATE, HARD
 
+
     // RELATIONSHIPS
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @OneToMany(mappedBy = "recipe")
     private Set<Mealplan> mealplans = new HashSet<>();
 
-    @ManyToMany(mappedBy = "recipes")
-    private Set<User> users;
+    @ManyToMany()
+    @JoinTable(name = "user_recipe",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> users = new HashSet<>();
 
-    // CONSTRACTORS
+    // CONSTRUCTORS
     public Recipe() {
     }
 
-    public Recipe(long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, Set<Mealplan> mealplans, Set<User> users) {
+    public Recipe(long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
@@ -61,22 +70,6 @@ public class Recipe {
         this.ingredients = ingredients;
         this.directions = directions;
         this.difficulty = difficulty;
-        this.mealplans = mealplans;
-        this.users = users;
-    }
-
-    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, Set<Mealplan> mealplans, Set<User> users) {
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.description = description;
-        this.prepTime = prepTime;
-        this.cookTime = cookTime;
-        this.servings = servings;
-        this.ingredients = ingredients;
-        this.directions = directions;
-        this.difficulty = difficulty;
-        this.mealplans = mealplans;
-        this.users = users;
     }
 
     public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
@@ -91,7 +84,8 @@ public class Recipe {
         this.difficulty = difficulty;
     }
 
-    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, Set<User> users) {
+    public Recipe(long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, User user, Set<Mealplan> mealplans, Set<User> users) {
+        this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
@@ -101,7 +95,36 @@ public class Recipe {
         this.ingredients = ingredients;
         this.directions = directions;
         this.difficulty = difficulty;
+        this.user = user;
+        this.mealplans = mealplans;
         this.users = users;
+    }
+
+    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, User user, Set<Mealplan> mealplans) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.prepTime = prepTime;
+        this.cookTime = cookTime;
+        this.servings = servings;
+        this.ingredients = ingredients;
+        this.directions = directions;
+        this.difficulty = difficulty;
+        this.user = user;
+        this.mealplans = mealplans;
+    }
+
+    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, User user) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.prepTime = prepTime;
+        this.cookTime = cookTime;
+        this.servings = servings;
+        this.ingredients = ingredients;
+        this.directions = directions;
+        this.difficulty = difficulty;
+        this.user = user;
     }
 
     // GETTERS AND SETTERS
@@ -185,6 +208,14 @@ public class Recipe {
         this.difficulty = difficulty;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Set<Mealplan> getMealplans() {
         return mealplans;
     }
@@ -201,7 +232,7 @@ public class Recipe {
         this.users = users;
     }
 
-    // equals and hashcode
+    // EQUALS AND HASHCODE
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -215,7 +246,7 @@ public class Recipe {
         return Objects.hash(id);
     }
 
-    // METHODS
+    // TO STRING
     @Override
     public String toString() {
         return "Recipe{" +
@@ -229,29 +260,26 @@ public class Recipe {
                 ", ingredients='" + ingredients + '\'' +
                 ", directions='" + directions + '\'' +
                 ", difficulty='" + difficulty + '\'' +
+                ", user=" + user +
                 ", mealplans=" + mealplans +
                 ", users=" + users +
                 '}';
     }
 
-    // HELPER METHODS FOR RELATIONSHIPS
+    // HELPER METHODS
     public void addMealplan(Mealplan mealplan) {
-        mealplans.add(mealplan);
-        mealplan.setRecipe(this);
+        this.mealplans.add(mealplan);
     }
 
     public void removeMealplan(Mealplan mealplan) {
-        mealplans.remove(mealplan);
-        mealplan.setRecipe(null);
+        this.mealplans.remove(mealplan);
     }
 
     public void addUser(User user) {
-        users.add(user);
-        user.getRecipes().add(this);
+        this.users.add(user);
     }
 
     public void removeUser(User user) {
-        users.remove(user);
-        user.getRecipes().remove(this);
+        this.users.remove(user);
     }
 }
