@@ -3,78 +3,103 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head th:replace="fragments :: html_header" />
+<head th:replace="fragments :: html_header"/>
+<style>
+    .add{
+        background-image: url("/images/buttons/plus.png");
+        background-size: cover;
+        width: 40px;
+        height: 40px;
+        background-color: white;
+    }
+    .edit{
+        background-image: url("/images/buttons/edit.png") ;
+        background-size: cover;
+        width: 40px;
+        height: 40px;
+        background-color: white;
+    }
+
+</style>
 <body>
-<div th:replace="fragments :: html_navbar" />
+<div th:replace="fragments :: html_navbar"/>
 
 <div class="d-flex justify-content-center">
     <div class="row m-3 m-5 rounded shadow bg-light text-dark w-75 p-5">
-        <div class="col-md-12 mt-3">
-            <h2 th:text="${recipe.getName()}"></h2>
-        </div>
-        <div class="col-md-12">
-            <p th:text="${recipe.getDescription()}"></p>
-        </div>
-        <div class="row col-md-12">
-            <div class="col-9 p-3">
-                <img
-                        class="img-fluid rounded mx-auto d-block"
-                        th:src="@{${recipe.getImageUrl()}}"
-                        alt="This is just a mockup image">
+        <div class="position-relative">
+            <div class="position-absolute top-0 end-0 mt-1 me-1" th:if="${loggedin}">
+                <input type="button" class="add" name="add"
+                       th:alt="'Add to cookbook'" th:href="'/api/v1/cookbooks/add?id=' + ${recipe.getId()}">
+                <input  type="button" class="edit" name="edit"
+                        th:alt="'Edit Recipe'" th:href="'/api/v1/recipes/edit?id=' + ${recipe.getId()}" >
             </div>
 
-            <!--- Img and Time START --->
-            <div class="col-3 p-1">
-                <table
-                        class="table"
-                >
-                    <tbody>
-                    <tr>
-                        <td>
-                            <h4>Prep Time (min)</h4>
-                            <p th:text="${recipe.getPrepTime()} + ' mins'"></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h4>Cook Time (min)</h4>
-                            <p th:text="${recipe.getCookTime()} + ' mins'"></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h4>Total Time (min)</h4>
-                            <p th:text="(${recipe.getPrepTime()} + ${recipe.getCookTime()}) + ' mins'"></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h4>Servings</h4>
-                            <p th:text="${recipe.getServings()}"></p>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="col-md-12 mt-3">
+                <h2 th:text="${recipe.getName()}"></h2>
             </div>
-        </div>
-        <!--- Img and Time END --->
-        <div>
-            <h4>Ingredients</h4>
-            <ul th:each="ingredient : ${reformat_ingredients}">
-                <li th:if="${ingredient} != ''" th:text="${ingredient}"></li>
-            </ul>
-        </div>
-        <hr>
-        <div class="mb-auto">
-            <h4>Directions</h4>
-            <ul th:each="direction : ${reformat_directions}">
-                <li th:if="${direction} != ''" th:text="${direction}"></li>
-            </ul>
+            <div class="col-md-12">
+                <p th:text="${recipe.getDescription()}"></p>
+            </div>
+            <div class="row col-md-12">
+                <div class="col-9 p-3">
+                    <img
+                            class="img-fluid rounded mx-auto d-block"
+                            th:src="@{${recipe.getImageUrl()}}"
+                            alt="This is just a mockup image">
+                </div>
+
+                <!--- Img and Time START --->
+                <div class="col-3 p-1">
+                    <table
+                            class="table"
+                    >
+                        <tbody>
+                        <tr>
+                            <td>
+                                <h4>Prep Time (min)</h4>
+                                <p th:text="${recipe.getPrepTime()} + ' mins'"></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h4>Cook Time (min)</h4>
+                                <p th:text="${recipe.getCookTime()} + ' mins'"></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h4>Total Time (min)</h4>
+                                <p th:text="(${recipe.getPrepTime()} + ${recipe.getCookTime()}) + ' mins'"></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h4>Servings</h4>
+                                <p th:text="${recipe.getServings()}"></p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--- Img and Time END --->
+            <div>
+                <h4>Ingredients</h4>
+                <ul th:each="ingredient : ${reformat_ingredients}">
+                    <li th:if="${ingredient} != ''" th:text="${ingredient}"></li>
+                </ul>
+            </div>
+            <hr>
+            <div class="mb-auto">
+                <h4>Directions</h4>
+                <ul th:each="direction : ${reformat_directions}">
+                    <li th:if="${direction} != ''" th:text="${direction}"></li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
-</div>
 
-<script th:replace="fragments :: bootstrap_script" />
+<script th:replace="fragments :: bootstrap_script"/>
 </body>
 </html>

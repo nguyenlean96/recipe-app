@@ -19,7 +19,6 @@
                     <input
                             type="hidden"
                             name="id"
-                            th:if="not (${req_plan.getId()} == null)"
                             th:field="*{id}"
                     />
                     <!-- BUILD OUR OWN CALENDAR PENDING
@@ -72,7 +71,7 @@
                     </div>
                     <div class="col-12">
                         <div
-                                th:if="${req_recipes} == null"
+                                th:if="${req_recipes.isEmpty()}"
                                 class="card border border-0"
                         >
                             <select
@@ -103,11 +102,13 @@
                                         th:each="recipe : ${req_recipes}"
                                 >
                                     <option
-                                            th:if="${recipe.getId() == ${recipe_id}}"
-                                            th:value="${recipe_id}" selected></option>
+                                            th:if="not (${chosen_recipe} == null)"
+                                            th:value="${chosen_recipe.getId()}"
+                                            th:text="${chosen_recipe.getName()}"
+                                            selected></option>
                                 </div>
                                 <div
-                                        th:if="${recipe_id} == null"
+                                        th:if="${chosen_recipe} == null"
                                 >
                                     <option value="" selected>Please select a recipe</option>
                                 </div>

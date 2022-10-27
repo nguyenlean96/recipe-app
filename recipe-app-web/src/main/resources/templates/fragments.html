@@ -5,17 +5,23 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head th:fragment="html_header">
     <meta charset="UTF-8">
-    <title th:text="${'YourRecipe ' + page_title}" />
-    <link rel="stylesheet" th:src="@{/style/main.css}">
-    <link th:fragment="bootstrap_stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <title th:text="${'YourRecipe ' + page_title}"/>
+    <link rel="stylesheet" th:href="@{/style/main.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Raleway&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/logo/favicon.ico">
+    <link th:fragment="bootstrap_stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 </head>
 <body>
 <div th:fragment="html_navbar">
-    <nav class="navbar navbar-expand-lg bg-light">
+    <nav th:fragment="html_navbar" class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand mb-0 h1" th:href="@{/}">
+            <a class="navbar-brand mb-0 h1" th:href="@{/}" style="font-family:'Playfair Display', serif; text-align: center">
                 <img th:src="@{/images/logo/logo.png}" width="32" height="32" class="d-inline-block align-text-top">
-                The Recipe App
+                YourRecipe
             </a>
             <button
                     class="navbar-toggler"
@@ -27,19 +33,19 @@
                     aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse d-flex flex-row justify-content-center align-items-center">
-                <div
-                        class="d-flex flex-row"
-                    th:if="${loggedin}"
-                >
-                    <ul class="navbar-nav mb-2">
-                        <li class="nav-item me-2">
-                            <a class="nav-link" th:href="@{/api/v1/cookbooks}">My CookBook</a>
+            <div class="collapse navbar-collapse justify-content-end ">
+                <div th:if=" ${loggedin}" >
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/api/v1/recipes}">All Recipes</a>
                         </li>
-                        <li class="nav-item me-2">
-                            <a class="nav-link" th:href="@{/api/v1/mealplans}">Meal Plans</a>
+                        <li class="nav-item">
+                            <a class="nav-link"th:href="@{/api/v1/cookbooks}">My Cookbook</a>
                         </li>
-                        <li  class="nav-item dropdown">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/api/v1/mealplans}">My Meal Plan</a>
+                        </li>
+                        <li class="nav-item dropdown">
                             <a
                                     class="nav-link dropdown-toggle"
                                     th:href="@{/api/v1/users/profile}" role="button"
@@ -56,68 +62,33 @@
                                 <li><a class="dropdown-item"
                                        th:href="@{/api/v1/mealplans/add}"
                                 >Add Meal Plan</a></li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li><a class="dropdown-item" th:href="@{/api/v1/users/logout}">Log Out</a></li>
                             </ul>
                         </li>
                     </ul>
-                    <div class="d-flex flex-row-reverse">
-                        <a
-                            class="btn btn-primary text-light m-0 py-0"
-                            th:href="@{/api/v1/recipes/add}"
-                            th:text="'Add new recipe'"
-                        ></a>
-                    </div>
                 </div>
-                <div
-                    th:if="not ${loggedin}"
-                >
-                    <ul  class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/api/v1/users/login}">Log In</a>
-                        </li>
-                    </ul>
-                </div>
-
+                <ul  th:if="not ${loggedin}" class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/api/v1/users/login}">Log In</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
-
 </div>
-
 <div th:fragment="toast">
-
 </div>
-<div th:fragment="html_footer">
-    <div style="background-color: coral; min-height: 8vh;">
-        <div class="container text-center w-100 m-0 p-0">
-            <div class="row col-12">
-                <div class="col-md-6">
-
-                </div>
-                <div class="col-md-6 my-5"
-                >
-                    <div class="row mb-3">
-                        <a
-                                th:href="@{/}"
-                                th:text="'Home'"
-                        ></a>
-                    </div>
-                    <div class="row mb-3">
-                        <a
-                                th:href="@{/about}"
-                                th:text="'About'"
-                        ></a>
-                    </div>
-                </div>
-            </div>
-            <div class="row col-12 text-center">
-                <h5 class="mb-3">Assignment 1</h5>
-            </div>
-        </div>
-    </div>
-</div>
-<script th:fragment="bootstrap_script" src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-
+<footer id="footer" th:fragment="html_footer">
+    <h5>Assignment 1</h5>
+    <a th:href="@{/}" th:text="'Home' "></a>
+    <a th:href="@{/about}" th:text="'About'"></a>
+</footer>
+<script th:fragment="bootstrap_script"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
 </body>
 </html>
