@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head th:replace="fragments :: html_header" />
+<body>
+<div th:replace="fragments :: html_navbar" />
+<div class="d-flex justify-content-center align-items-center">
+    <div class="card m-5" style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="col-md-5 m-0 p-0 h-100">
+                <img th:src="@{/images/background/Mael-Plan-Diabetes.jpg}" class="opacity-50 img-fluid rounded-start h-100" alt="..." style="height: 100%; object-fit: fill; object-position: center;">
+            </div>
+            <div class="col-md-7 m-0 p-0">
+                <div class="card-body">
+                    <h5 class="card-title">Log In</h5>
+                    <form th:action="@{/api/v1/users/validator}"
+                          th:object="${user}"
+                          method="post">
+                        <div class="mx-3">
+                            <div class="mb-3">
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        th:field="*{username}"
+                                        id="uac_login_email_input"
+                                >
+                                <label for="uac_login_email_input" class="form-label">Username</label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="uac_login_passwd_input" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="uac_login_passwd_input" th:field="*{password}">
+                            </div>
+                            <div class="mb-3">
+                                <a th:href="@{/api/v1/users/new-user}" th:text="'Register new user'"></a>
+                            </div>
+                        </div>
+                        <div class="m-0 p-0">
+                            <button class="border border-0 m-0" type="submit" style="padding-top: 1em; padding-bottom: 1em; width: 100%; background-color: coral; color: #fff;">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments :: html_footer" />
+<script th:replace="fragments :: bootstrap_script" />
+</body>
+</html>
