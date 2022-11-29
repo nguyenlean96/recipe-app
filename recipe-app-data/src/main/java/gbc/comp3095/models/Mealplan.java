@@ -26,6 +26,7 @@ public class Mealplan {
     String dish;
     String date;
 
+    @Enumerated(EnumType.STRING)
     private EventType eventType; // nullable and null by default (shown to user as "none" pre-selected)
 
     // RELATIONSHIPS

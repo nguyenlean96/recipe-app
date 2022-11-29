@@ -35,6 +35,7 @@ public class Ingredient {
     @Size(min = 1, max = 6)
     private double quantity;
 
+    @Enumerated(EnumType.STRING)
     private UnitOfMeasurement unitOfMeasurement;
 
     // RELATIONSHIPS
