@@ -106,7 +106,7 @@ public class RecipeController {
             Recipe req_recipe = recipeService.findById(id);
 
             mv.addObject("recipe", req_recipe);
-            mv.addObject("reformat_ingredients", (List<String>) Arrays.asList(req_recipe.getIngredients().split("\\r?\\n")));
+//            mv.addObject("reformat_ingredients", (List<String>) Arrays.asList(req_recipe.getIngredients().split("\\r?\\n")));
             mv.addObject("reformat_directions", (List<String>) Arrays.asList(req_recipe.getDirections().split("\\r?\\n")));
             mv.setViewName("recipes/view");
         } catch (Exception e) {

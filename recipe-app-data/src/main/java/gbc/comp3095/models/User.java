@@ -47,6 +47,7 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private Set<Recipe> cookbook_recipes = new HashSet<>();
 
+
     // CONSTRUCTORS
     public User() {
     }

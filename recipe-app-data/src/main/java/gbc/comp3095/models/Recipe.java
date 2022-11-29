@@ -17,6 +17,7 @@ public class Recipe {
 //* Description: in addition to the recipe attributes, recipe has a many-to-many relationship with users that is stored in the user_recipe table (recipes saved into cookbook).
 //* each recipe is created by one user. this is a many-to-one relationship with user.
 //* each recipe also can belong to many mealplan items (meals) - that is why the recipe id is stored in the mealplan table as a foreign key
+//* ADDING ONE-TO-MANY RELATIONSHIP WITH INGREDIENT FOR ASSIGNMENT 2
 // *********************************************************************************//
 
     // ATTRIBUTES
@@ -32,9 +33,7 @@ public class Recipe {
     private Integer prepTime;
     private Integer cookTime;
     private Integer servings;
-    @Lob
-    @Column(length=512)
-    private String ingredients;
+
     @Lob
     @Column(length=512)
     private String directions;
@@ -55,11 +54,14 @@ public class Recipe {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users = new HashSet<>();
 
+    @OneToMany(mappedBy = "recipe")
+    private Set<Ingredient> recipeIngredients = new HashSet<>();
+
     // CONSTRUCTORS
     public Recipe() {
     }
 
-    public Recipe(long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
+    public Recipe(long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty, User user, Set<Mealplan> mealplans, Set<User> users, Set<Ingredient> recipeIngredients) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
@@ -67,64 +69,90 @@ public class Recipe {
         this.prepTime = prepTime;
         this.cookTime = cookTime;
         this.servings = servings;
-        this.ingredients = ingredients;
-        this.directions = directions;
-        this.difficulty = difficulty;
-    }
-
-    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty) {
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.description = description;
-        this.prepTime = prepTime;
-        this.cookTime = cookTime;
-        this.servings = servings;
-        this.ingredients = ingredients;
-        this.directions = directions;
-        this.difficulty = difficulty;
-    }
-
-    public Recipe(long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, User user, Set<Mealplan> mealplans, Set<User> users) {
-        this.id = id;
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.description = description;
-        this.prepTime = prepTime;
-        this.cookTime = cookTime;
-        this.servings = servings;
-        this.ingredients = ingredients;
         this.directions = directions;
         this.difficulty = difficulty;
         this.user = user;
         this.mealplans = mealplans;
         this.users = users;
+        this.recipeIngredients = recipeIngredients;
     }
 
-    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, User user, Set<Mealplan> mealplans) {
+    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty, User user, Set<Mealplan> mealplans, Set<User> users, Set<Ingredient> recipeIngredients) {
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
         this.prepTime = prepTime;
         this.cookTime = cookTime;
         this.servings = servings;
-        this.ingredients = ingredients;
         this.directions = directions;
         this.difficulty = difficulty;
         this.user = user;
         this.mealplans = mealplans;
+        this.users = users;
+        this.recipeIngredients = recipeIngredients;
     }
 
-    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String ingredients, String directions, String difficulty, User user) {
+    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty, User user) {
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
         this.prepTime = prepTime;
         this.cookTime = cookTime;
         this.servings = servings;
-        this.ingredients = ingredients;
         this.directions = directions;
         this.difficulty = difficulty;
         this.user = user;
+    }
+
+    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.prepTime = prepTime;
+        this.cookTime = cookTime;
+        this.servings = servings;
+        this.directions = directions;
+        this.difficulty = difficulty;
+    }
+
+    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.prepTime = prepTime;
+        this.cookTime = cookTime;
+        this.servings = servings;
+        this.directions = directions;
+    }
+
+    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.prepTime = prepTime;
+        this.cookTime = cookTime;
+        this.servings = servings;
+    }
+
+    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.prepTime = prepTime;
+        this.cookTime = cookTime;
+    }
+
+    public Recipe(String name, String imageUrl, String description, Integer prepTime) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.prepTime = prepTime;
+    }
+
+    public Recipe(String name, String imageUrl, String description) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.description = description;
     }
 
     // GETTERS AND SETTERS
@@ -184,12 +212,12 @@ public class Recipe {
         this.servings = servings;
     }
 
-    public String getIngredients() {
-        return ingredients;
+    public Set<Ingredient> getRecipeIngredients() {
+        return recipeIngredients;
     }
 
-    public void setIngredients(String ingredients) {
-        this.ingredients = ingredients;
+    public void setRecipeIngredients(Set<Ingredient> recipeIngredients) {
+        this.recipeIngredients = recipeIngredients;
     }
 
     public String getDirections() {
@@ -257,7 +285,6 @@ public class Recipe {
                 ", prepTime=" + prepTime +
                 ", cookTime=" + cookTime +
                 ", servings=" + servings +
-                ", ingredients='" + ingredients + '\'' +
                 ", directions='" + directions + '\'' +
                 ", difficulty='" + difficulty + '\'' +
                 '}';

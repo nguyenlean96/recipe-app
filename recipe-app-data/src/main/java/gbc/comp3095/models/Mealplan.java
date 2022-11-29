@@ -14,6 +14,9 @@ public class Mealplan {
 //* Date: 2022-10-23
 //* Description: the mealplan ITEMS (meals) are stored here for a simpler database
 //* each mealplan item has: one user - one recipe - the date they would eat the recipe - and the meal it is for (breakfast, lunch, dinner, snack)
+//* ASSIGNMENT 2:
+//* Description: the event type enum class is used to store the event type options for each meal plan - if it is left null then it is simply a meal plan
+//* However, if an event type is selected then it is an event plan (i.e. a meal plan for a specific event)
 // *********************************************************************************//
     // ATTRIBUTES
     @Id
@@ -22,6 +25,8 @@ public class Mealplan {
     long id;
     String dish;
     String date;
+
+    private EventType eventType; // nullable and null by default (shown to user as "none" pre-selected)
 
     // RELATIONSHIPS
     @ManyToOne(fetch = FetchType.EAGER)
