@@ -43,16 +43,17 @@ public class HomeController {
         mv.addObject("user", new User());
         List<Recipe> saved_recipes = (List<Recipe>) recipeService.findAll();
 
-        Recipe rep = new Recipe("name", "imageUrl", "description", 9, 8, 1, "ingredients", "directions", "difficulty");
-        recipeService.save(rep);
-        User curr = userService.findByUsername("lean.96");
-        rep.setUser(curr);
-        userService.save(curr);
-
-        mv.addObject("recipes", saved_recipes);
-        mv.addObject("loggedin", isLoggedIn(req));
-        mv.setViewName("index");
-        return isLoggedIn(req) ? mv.addObject("username", "Hi " + userService.findByUsername((String) req.getSession().getAttribute("RECIPE_USER")).getFirstName() + "!") : mv;
+//        Recipe rep = new Recipe("name", "imageUrl", "description", 9, 8, 1, "ingredients", "directions", "difficulty");
+//        recipeService.save(rep);
+//        User curr = userService.findByUsername("lean.96");
+//        rep.setUser(curr);
+//        userService.save(curr);
+//
+//        mv.addObject("recipes", saved_recipes);
+//        mv.addObject("loggedin", isLoggedIn(req));
+//        mv.setViewName("index");
+//        return isLoggedIn(req) ? mv.addObject("username", "Hi " + userService.findByUsername((String) req.getSession().getAttribute("RECIPE_USER")).getFirstName() + "!") : mv;
+        return mv;
     }
 
     @GetMapping("/about")

@@ -28,25 +28,25 @@ public class RecipeConfig {
             recipe1.setPrepTime(10);
             recipe1.setCookTime(20);
             recipe1.setServings(4);
-            recipe1.setIngredients("""
-                1 (12 ounce) package dried rice noodles
-
-                1 teaspoon vegetable oil
-
-                1 onion, finely diced
-
-                3 cloves garlic, minced
-
-                2 cups diced cooked chicken breast meat
-
-                1 small head cabbage, thinly sliced
-
-                4 carrot, thinly sliced
-
-                ¼ cup soy sauce
-
-                2 lemons - cut into wedges, for garnish
-            """);
+//            recipe1.setIngredients("""
+//                1 (12 ounce) package dried rice noodles
+//
+//                1 teaspoon vegetable oil
+//
+//                1 onion, finely diced
+//
+//                3 cloves garlic, minced
+//
+//                2 cups diced cooked chicken breast meat
+//
+//                1 small head cabbage, thinly sliced
+//
+//                4 carrot, thinly sliced
+//
+//                ¼ cup soy sauce
+//
+//                2 lemons - cut into wedges, for garnish
+//            """);
             recipe1.setDirections("""
                 Place rice noodles in a large bowl; cover with warm water and let soften for 8 to 10 minutes. Drain and set aside.
 
@@ -65,21 +65,21 @@ public class RecipeConfig {
             recipe2.setPrepTime(10);
             recipe2.setCookTime(30);
             recipe2.setServings(4);
-            recipe2.setIngredients("""
-                4 boneless, skinless chicken breast halves
-
-                1 cup all-purpose flour
-
-                2 eggs, beaten
-
-                1 cup Italian seasoned bread crumbs
-
-                1 (24 ounce) jar spaghetti sauce
-
-                1 cup shredded mozzarella cheese
-
-                ¼ cup grated Parmesan cheese
-            """);
+//            recipe2.setIngredients("""
+//                4 boneless, skinless chicken breast halves
+//
+//                1 cup all-purpose flour
+//
+//                2 eggs, beaten
+//
+//                1 cup Italian seasoned bread crumbs
+//
+//                1 (24 ounce) jar spaghetti sauce
+//
+//                1 cup shredded mozzarella cheese
+//
+//                ¼ cup grated Parmesan cheese
+//            """);
             recipe2.setDirections("""
                 Preheat oven to 350 degrees F (175 degrees C).
 
@@ -104,79 +104,79 @@ public class RecipeConfig {
             recipe3.setPrepTime(10);
             recipe3.setCookTime(30);
             recipe3.setServings(4);
-            recipe3.setIngredients("""
-                1 (3 pound) whole chicken
-
-                1 onion, chopped
-
-                1 (10.75 ounce) can condensed cream of chicken soup
-
-                1 (10.75 ounce) can condensed cream of celery soup
-
-                1 (10.75 ounce) can condensed cream of mushroom soup
-
-                1 (10.75 ounce) can condensed cream of chicken soup
-
-                1 (10.75 ounce) can condensed cream of celery soup
-
-                1 (10.75 ounce) can condensed cream of mushroom soup
-
-                1 (10.75 ounce) can condensed cream of chicken soup
-
-                1 (10.75 ounce) can condensed cream of celery soup
-
-                1 (10.75 ounce) can condensed cream of mushroom soup
-
-                1 (10.75 ounce) can condensed cream of chicken soup
-
-                1 (10.75 ounce) can condensed cream of celery soup
-
-                1 (10.75 ounce) can condensed cream of mushroom soup
-
-                1 (10.75 ounce) can condensed cream of chicken soup
-
-                1 (10.75 ounce) can condensed cream of celery soup
-
-                1 (10.75 ounce) can condensed cream of mushroom soup
-
-                1 (10.75 ounce) can condensed cream of chicken soup
-
-                1 (10.75 ounce) can condensed cream of celery soup
-
-                1 (10.75 ounce) can condensed cream of mushroom soup
-
-                1 (10.75 ounce) can condensed cream of chicken soup
-
-                1 (10.75 ounce) can condensed cream of celery soup
-
-                1 (10.75 ounce) can condensed cream of mushroom soup
-
-                1 (10.75 ounce) can condensed cream of chicken soup
-
-                1 (10.75 ounce) can condensed cream of celery soup
-
-                1 (10.75 ounce) can condensed cream of mushroom soup
-
-                1 (10.75 ounce) can condensed cream of chicken soup
-
-                1 (10.75 ounce) can condensed cream of celery soup
-
-                1 (10.75 ounce) can condensed cream of mushroom soup
-
-                1 (10.75 ounce) can condensed cream of chicken soup""");
-            recipe3.setDirections("""
-                Preheat oven to 350 degrees F (175 degrees C).
-
-                Place chicken breasts between two sheets of plastic wrap and pound to 1/4-inch thickness.
-
-                Place flour in a shallow dish. Place eggs in a separate shallow dish. Place bread crumbs in a third shallow dish.
-
-                Dip chicken in flour, then in egg, and finally in bread crumbs.
-
-                Place chicken in a 9x13-inch baking dish. Pour spaghetti sauce over chicken. Sprinkle with mozzarella cheese and Parmesan cheese.
-
-                Bake in the preheated oven until chicken is no longer pink in the center and the juices run clear, 30 to 35 minutes. An instant-read thermometer inserted into the center should read at least 165 degrees F (74 degrees C).
-            """);
+//            recipe3.setIngredients("""
+//                1 (3 pound) whole chicken
+//
+//                1 onion, chopped
+//
+//                1 (10.75 ounce) can condensed cream of chicken soup
+//
+//                1 (10.75 ounce) can condensed cream of celery soup
+//
+//                1 (10.75 ounce) can condensed cream of mushroom soup
+//
+//                1 (10.75 ounce) can condensed cream of chicken soup
+//
+//                1 (10.75 ounce) can condensed cream of celery soup
+//
+//                1 (10.75 ounce) can condensed cream of mushroom soup
+//
+//                1 (10.75 ounce) can condensed cream of chicken soup
+//
+//                1 (10.75 ounce) can condensed cream of celery soup
+//
+//                1 (10.75 ounce) can condensed cream of mushroom soup
+//
+//                1 (10.75 ounce) can condensed cream of chicken soup
+//
+//                1 (10.75 ounce) can condensed cream of celery soup
+//
+//                1 (10.75 ounce) can condensed cream of mushroom soup
+//
+//                1 (10.75 ounce) can condensed cream of chicken soup
+//
+//                1 (10.75 ounce) can condensed cream of celery soup
+//
+//                1 (10.75 ounce) can condensed cream of mushroom soup
+//
+//                1 (10.75 ounce) can condensed cream of chicken soup
+//
+//                1 (10.75 ounce) can condensed cream of celery soup
+//
+//                1 (10.75 ounce) can condensed cream of mushroom soup
+//
+//                1 (10.75 ounce) can condensed cream of chicken soup
+//
+//                1 (10.75 ounce) can condensed cream of celery soup
+//
+//                1 (10.75 ounce) can condensed cream of mushroom soup
+//
+//                1 (10.75 ounce) can condensed cream of chicken soup
+//
+//                1 (10.75 ounce) can condensed cream of celery soup
+//
+//                1 (10.75 ounce) can condensed cream of mushroom soup
+//
+//                1 (10.75 ounce) can condensed cream of chicken soup
+//
+//                1 (10.75 ounce) can condensed cream of celery soup
+//
+//                1 (10.75 ounce) can condensed cream of mushroom soup
+//
+//                1 (10.75 ounce) can condensed cream of chicken soup""");
+//            recipe3.setDirections("""
+//                Preheat oven to 350 degrees F (175 degrees C).
+//
+//                Place chicken breasts between two sheets of plastic wrap and pound to 1/4-inch thickness.
+//
+//                Place flour in a shallow dish. Place eggs in a separate shallow dish. Place bread crumbs in a third shallow dish.
+//
+//                Dip chicken in flour, then in egg, and finally in bread crumbs.
+//
+//                Place chicken in a 9x13-inch baking dish. Pour spaghetti sauce over chicken. Sprinkle with mozzarella cheese and Parmesan cheese.
+//
+//                Bake in the preheated oven until chicken is no longer pink in the center and the juices run clear, 30 to 35 minutes. An instant-read thermometer inserted into the center should read at least 165 degrees F (74 degrees C).
+//            """);
             recipe3.setDifficulty("Hard");
             // these are the users the recipe is saved or created by
             recipeRepository.save(recipe3);
