@@ -23,8 +23,8 @@ public class Mealplan {
     @SequenceGenerator(name="mealplan_generator", sequenceName="mealplan_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     long id;
-    String dish;
-    String date;
+    private String dish;
+    private String date;
 
     @Enumerated(EnumType.STRING)
     private EventType eventType; // nullable and null by default (shown to user as "none" pre-selected)
@@ -32,7 +32,7 @@ public class Mealplan {
     // RELATIONSHIPS
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User userMealplan;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
@@ -44,14 +44,14 @@ public class Mealplan {
     public Mealplan(long id, String dish, User user, Recipe recipe, String date) {
         this.id = id;
         this.dish = dish;
-        this.user = user;
+        this.userMealplan = user;
         this.recipe = recipe;
         this.date = date;
     }
 
     public Mealplan(String dish, User user, Recipe recipe, String date) {
         this.dish = dish;
-        this.user = user;
+        this.userMealplan = user;
         this.recipe = recipe;
         this.date = date;
     }
@@ -74,11 +74,11 @@ public class Mealplan {
     }
 
     public User getUser() {
-        return user;
+        return userMealplan;
     }
 
     public void setUser(User user) {
-        this.user = user;
+        this.userMealplan = user;
     }
 
     public Recipe getRecipe() {
@@ -116,7 +116,7 @@ public class Mealplan {
         return "Mealplan{" +
                 "id=" + id +
                 ", dish='" + dish + '\'' +
-                ", user=" + user +
+                ", user=" + userMealplan +
                 ", recipe=" + recipe +
                 ", date='" + date + '\'' +
                 '}';

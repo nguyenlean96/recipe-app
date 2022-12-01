@@ -17,7 +17,17 @@ import java.util.List;
 @RequestMapping("/api/v1/cookbooks")
 @ComponentScan("ca.gbc.comp3095.models")
 public class CookbookController {
-    // to controll user recipe table rows where IsSaved is 1 ----- if a user saves a recipe, it will be added to the user recipe table and IsSaved will be set to 1
+//*********************************************************************************
+//* Project: Your Recipe App
+//* Assignment: assignment 1
+//* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
+//* Student Number: 101334588  - 101292266    - 101303158            - 101311327
+//* Date: 2022-10-23
+//* Description: Mealplanner controller to handle requests for mealplanner operations and return the appropriate view to the user based on the request
+// *********************************************************************************/
+    // to controll user recipe table rows where IsSaved is 1
+    // -----
+    // if a user saves a recipe, it will be added to the user recipe table and IsSaved will be set to 1
     private UserService userService;
     private RecipeService recipeService;
     @Autowired
@@ -35,8 +45,8 @@ public class CookbookController {
         List<Recipe> saved_recipes = (List<Recipe>) List.copyOf(curr.getCookbook_recipes());
 
         mv.addObject("recipes", saved_recipes);
-
-        return autoDirect(req, mv);
+         mv = autoDirect(req, mv);
+        return mv;
     }
 
     @GetMapping("/add")
@@ -44,13 +54,20 @@ public class CookbookController {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("cookbooks/view");
 
-        Recipe req_recipe = (Recipe) recipeService.findById(rid);
-        User curr = getUser(req);
-        curr.addRecipeToCookbook(req_recipe);
-        userService.save(curr);
+        try {
+            Recipe req_recipe = (Recipe) recipeService.findById(rid);
+            System.out.println(req_recipe);
+            User curr = getUser(req);
+            curr.addRecipeToCookbook(req_recipe);
+            userService.save(curr);
 
-        mv.setViewName("redirect:/api/v1/cookbooks/");
-        return autoDirect(req, mv);
+            mv.setViewName("redirect:/api/v1/cookbooks/");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            mv.setViewName("redirect:/");
+        }
+        mv = autoDirect(req, mv);
+        return mv;
     }
     @GetMapping("/edit")
     public ModelAndView edit(HttpServletRequest req) {
@@ -86,13 +103,17 @@ public class CookbookController {
         return (!(username == null));
     }
 
-    public ModelAndView autoDirect(HttpServletRequest req, ModelAndView mv) {
+    private ModelAndView autoDirect(HttpServletRequest req, ModelAndView mv) {
         HttpSession session = req.getSession();
         String username = (String) session.getAttribute("RECIPE_USER");
-        return (username == null) ? new ModelAndView("redirect:/") : mv.addObject("loggedin", isLoggedIn(req)).addObject("username", "Hi " + userService.findByUsername(username).getFirstName() + "!");
+        if (username == null)
+            return new ModelAndView("redirect:/");
+
+         mv.addObject("isLoggedIn", isLoggedIn(req)).addObject("username", "Hi " + userService.findByUsername(username).getFirstName() + "!");
+        return mv;
     }
 
-    public User getUser(HttpServletRequest req){
+    private User getUser(HttpServletRequest req){
         return isLoggedIn(req) ? (User) userService.findByUsername(String.valueOf(req.getSession().getAttribute("RECIPE_USER"))) : null;
     }
 }

@@ -1,7 +1,10 @@
 package gbc.comp3095.recipeapp.controllers;
 
+import gbc.comp3095.models.Ingredient;
 import gbc.comp3095.models.Recipe;
+import gbc.comp3095.models.UnitOfMeasurement;
 import gbc.comp3095.models.User;
+import gbc.comp3095.recipeapp.config.DbContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,19 +29,16 @@ public class RecipeController {
 // *********************************************************************************/
 
     private static boolean testMode = false;
-    private RecipeService recipeService;
-    private UserService userService;
+    private DbContext context;
 
-    @Autowired
-    public RecipeController(RecipeService recipeService, UserService userService) {
-        this.recipeService = recipeService;
-        this.userService = userService;
+    public RecipeController(DbContext context) {
+        this.context = context;
     }
 
     @GetMapping({"", "/"})
     public ModelAndView list(HttpServletRequest req) {
         String username = (String) req.getSession().getAttribute("RECIPE_USER");
-        User curr = (User) userService.findByUsername(username);
+        User curr = (User) context.users.findByUsername(username);
         List<Recipe> saved_recipes = (List<Recipe>) List.copyOf(curr.getCookbook_recipes());
         ModelAndView mv = new ModelAndView();
 
@@ -50,8 +50,9 @@ public class RecipeController {
     @GetMapping("/add")
     public ModelAndView add(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
-        Recipe new_recipe = new Recipe();
+        Recipe new_recipe = this.context.recipes.save(new Recipe());
         mv.addObject("req_recipe", new_recipe);
+        mv.addObject("new_ingredient", new Ingredient("", 0, UnitOfMeasurement.UNIT, new_recipe));
 
         mv.addObject("action", "/api/v1/recipes/save");
         mv.addObject("btn_label", "Add new recipe");
@@ -64,15 +65,15 @@ public class RecipeController {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("redirect:/api/v1/recipes");
 
-        User curr = (User) userService.findByUsername(String.valueOf(req.getSession().getAttribute("RECIPE_USER")));
+        User curr = (User) context.users.findByUsername(String.valueOf(req.getSession().getAttribute("RECIPE_USER")));
 
         try {
-            recipe.addUser(curr);
             recipe.setImageUrl("/images/mDishes/food-placeholder.png");
-            recipeService.save(recipe);
+            context.recipes.save(recipe);
+            recipe.addUser(curr);
             curr.addRecipeToCreatedRecipes(recipe);
             curr.addRecipeToCookbook(recipe);
-            userService.save(curr);
+            context.users.save(curr);
 
         } catch (Exception e) {
             e.getMessage();
@@ -84,13 +85,17 @@ public class RecipeController {
     @GetMapping("/edit")
     public ModelAndView edit(@RequestParam("id") Long id, HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
-        Recipe req_recipe = recipeService.findById(id);
-        mv.addObject("req_recipe", req_recipe);
+        try {
+            Recipe req_recipe = context.recipes.findById(id);
+            mv.addObject("req_recipe", req_recipe);
+            mv.addObject("new_ingredient", new Ingredient("", 0, UnitOfMeasurement.UNIT, req_recipe));
 
-
-        mv.addObject("action", "/api/v1/recipes/save");
-        mv.addObject("btn_label", "Save changes");
-        mv.setViewName("recipes/edit");
+            mv.addObject("action", "/api/v1/recipes/save");
+            mv.addObject("btn_label", "Save changes");
+            mv.setViewName("recipes/edit");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         return testMode ? mv : autoDirect(req, mv);
     }
@@ -103,7 +108,7 @@ public class RecipeController {
             if (id == null) {
                 return new ModelAndView("redirect:/").addObject("message", "Please select a recipe");
             }
-            Recipe req_recipe = recipeService.findById(id);
+            Recipe req_recipe = context.recipes.findById(id);
 
             mv.addObject("recipe", req_recipe);
 //            mv.addObject("reformat_ingredients", (List<String>) Arrays.asList(req_recipe.getIngredients().split("\\r?\\n")));
@@ -114,17 +119,17 @@ public class RecipeController {
         }
         System.out.println("Is logged in? " + String.valueOf(isLoggedIn(req)));
         System.out.println("Logged in as: " + String.valueOf(req.getSession().getAttribute("RECIPE_USER")));
-        return isLoggedIn(req) ? mv.addObject("loggedin", isLoggedIn(req)).addObject("username", req.getSession().getAttribute("RECIPE_USER")) : mv;
+        return isLoggedIn(req) ? mv.addObject("isLoggedIn", isLoggedIn(req)).addObject("username", "Hi " + getUser(req).getFirstName() + "!") : mv;
     }
     @GetMapping("/delete")
     public ModelAndView delete(@RequestParam("id") Long id, HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
         User cur = getUser(req);
-        Recipe recipe = (Recipe) recipeService.findById(id);
+        Recipe recipe = (Recipe) context.recipes.findById(id);
         cur.removeRecipeFromCookbook(recipe);
         cur.removeRecipeFromCreatedRecipes(recipe);
-        userService.save(cur);
-        recipeService.deleteById(id);
+        context.users.save(cur);
+        context.recipes.deleteById(id);
         mv.setViewName("redirect:/api/v1/recipes");
         return autoDirect(req, mv);
     }
@@ -145,9 +150,13 @@ public class RecipeController {
     public ModelAndView autoDirect(HttpServletRequest req, ModelAndView mv) {
         HttpSession session = req.getSession();
         String username = (String) session.getAttribute("RECIPE_USER");
-        return (username == null) ? new ModelAndView("redirect:/") : mv.addObject("loggedin", isLoggedIn(req)).addObject("username", "Hi " + userService.findByUsername(username).getFirstName() + "!");
+        if (username == null)
+            return new ModelAndView("redirect:/");
+
+        mv.addObject("isLoggedIn", isLoggedIn(req)).addObject("username", "Hi " + context.users.findByUsername(username).getFirstName() + "!");
+        return mv;
     }
     public User getUser(HttpServletRequest req){
-        return isLoggedIn(req) ? (User) userService.findByUsername(String.valueOf(req.getSession().getAttribute("RECIPE_USER"))) : null;
+        return isLoggedIn(req) ? (User) context.users.findByUsername(String.valueOf(req.getSession().getAttribute("RECIPE_USER"))) : null;
     }
 }

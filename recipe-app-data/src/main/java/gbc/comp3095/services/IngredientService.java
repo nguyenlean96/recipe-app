@@ -2,6 +2,7 @@ package gbc.comp3095.services;
 
 import gbc.comp3095.models.Ingredient;
 import gbc.comp3095.repositories.IngredientRepository;
+import gbc.comp3095.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,9 +17,11 @@ public class IngredientService {
     // *********************************************************************************//
 
     private final IngredientRepository ingredientRepository;
+    private final RecipeRepository recipeRepository;
 
-    public IngredientService(IngredientRepository ingredientRepository) {
+    public IngredientService(IngredientRepository ingredientRepository, RecipeRepository recipeRepository) {
         this.ingredientRepository = ingredientRepository;
+        this.recipeRepository = recipeRepository;
     }
 
     // create, update, delete, find, findAll
@@ -31,7 +34,10 @@ public class IngredientService {
     }
 
     public Ingredient save(Ingredient object) {
-        return ingredientRepository.save(object);
+        if (object != null) {
+            return ingredientRepository.save(object);
+        }
+        return null;
     }
 
     public void delete(Ingredient object) {

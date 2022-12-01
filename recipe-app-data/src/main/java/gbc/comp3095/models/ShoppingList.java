@@ -17,11 +17,12 @@ public class ShoppingList {
     @Id
     @SequenceGenerator(name="recipe_generator", sequenceName="recipe_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name="shoppinglist_id")
     private long id;
 
     // RELATIONSHIPS
-    @OneToOne
-    @MapsId
+    @OneToOne(mappedBy = "shoppingList")
+    // @MapsId
     private User user;
 
     @ManyToMany

@@ -24,7 +24,8 @@ public class Recipe {
     @Id
     @SequenceGenerator(name="recipe_generator", sequenceName="recipe_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    @Column(name="recipe_id")
+    private Long id;
     private String name;
     private String imageUrl;
     @Lob
@@ -43,25 +44,37 @@ public class Recipe {
     // RELATIONSHIPS
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User creator;
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(
+            mappedBy = "recipe",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private Set<Mealplan> mealplans = new HashSet<>();
 
-    @ManyToMany()
-    @JoinTable(name = "user_recipe",
-            joinColumns = @JoinColumn(name = "recipe_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users = new HashSet<>();
+    @ManyToMany(
+            mappedBy = "cookbook_recipes"
+    )
+    private Set<User> recipeCookbook = new HashSet<>();
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(
+            mappedBy = "recipe",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private Set<Ingredient> recipeIngredients = new HashSet<>();
+
+    @ManyToMany(
+            mappedBy = "eventRecipes"
+    )
+    private Set<EventPlan> recipeEvents = new HashSet<>();
 
     // CONSTRUCTORS
     public Recipe() {
     }
 
-    public Recipe(long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty, User user, Set<Mealplan> mealplans, Set<User> users, Set<Ingredient> recipeIngredients) {
+    public Recipe(Long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty, User user, Set<Mealplan> mealplans, Set<User> users, Set<Ingredient> recipeIngredients) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
@@ -71,9 +84,9 @@ public class Recipe {
         this.servings = servings;
         this.directions = directions;
         this.difficulty = difficulty;
-        this.user = user;
+        this.creator = user;
         this.mealplans = mealplans;
-        this.users = users;
+        this.recipeCookbook = users;
         this.recipeIngredients = recipeIngredients;
     }
 
@@ -86,9 +99,9 @@ public class Recipe {
         this.servings = servings;
         this.directions = directions;
         this.difficulty = difficulty;
-        this.user = user;
+        this.creator = user;
         this.mealplans = mealplans;
-        this.users = users;
+        this.recipeCookbook = users;
         this.recipeIngredients = recipeIngredients;
     }
 
@@ -101,7 +114,7 @@ public class Recipe {
         this.servings = servings;
         this.directions = directions;
         this.difficulty = difficulty;
-        this.user = user;
+        this.creator = user;
     }
 
     public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty) {
@@ -156,11 +169,11 @@ public class Recipe {
     }
 
     // GETTERS AND SETTERS
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -237,11 +250,11 @@ public class Recipe {
     }
 
     public User getUser() {
-        return user;
+        return creator;
     }
 
     public void setUser(User user) {
-        this.user = user;
+        this.creator = user;
     }
 
     public Set<Mealplan> getMealplans() {
@@ -253,11 +266,11 @@ public class Recipe {
     }
 
     public Set<User> getUsers() {
-        return users;
+        return recipeCookbook;
     }
 
     public void setUsers(Set<User> users) {
-        this.users = users;
+        this.recipeCookbook = users;
     }
 
     // EQUALS AND HASHCODE
@@ -287,6 +300,7 @@ public class Recipe {
                 ", servings=" + servings +
                 ", directions='" + directions + '\'' +
                 ", difficulty='" + difficulty + '\'' +
+                ", ingredients='" + (recipeIngredients != null ? recipeIngredients : "[Empty]") + '\'' +
                 '}';
     }
 
@@ -300,10 +314,19 @@ public class Recipe {
     }
 
     public void addUser(User user) {
-        this.users.add(user);
+        this.recipeCookbook.add(user);
     }
 
     public void removeUser(User user) {
-        this.users.remove(user);
+        this.recipeCookbook.remove(user);
+    }
+    public void addIngredient(Ingredient i) {
+        this.recipeIngredients.add(i);
+    }
+    public void removeIngredient(Long id) {
+        for (Ingredient i : this.recipeIngredients) {
+            if (i.getId() == id)
+                this.recipeIngredients.remove(i);
+        }
     }
 }

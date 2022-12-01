@@ -2,6 +2,7 @@ package gbc.comp3095.recipeapp.controllers;
 
 import gbc.comp3095.models.Recipe;
 import gbc.comp3095.models.User;
+import gbc.comp3095.recipeapp.config.DbContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +14,7 @@ import gbc.comp3095.services.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -27,33 +29,37 @@ public class HomeController {
 // *********************************************************************************/
 
     private static boolean testMode = false;
-    private RecipeService recipeService;
-    private UserService userService;
+    private DbContext context;
 
-    @Autowired
-    public HomeController(RecipeService recipeService, UserService userService) {
-        this.recipeService = recipeService;
-        this.userService = userService;
+    public HomeController(DbContext context) {
+        this.context = context;
     }
 
     @GetMapping({"","/","home","index"})
     public ModelAndView home(HttpServletRequest req) {
         System.out.println("Home view access detected");
         ModelAndView mv = new ModelAndView();
-        mv.addObject("user", new User());
-        List<Recipe> saved_recipes = (List<Recipe>) recipeService.findAll();
+        // mv.addObject("user", new User());
+        List<Recipe> saved_recipes = (List<Recipe>) context.recipes.findAll();
 
-//        Recipe rep = new Recipe("name", "imageUrl", "description", 9, 8, 1, "ingredients", "directions", "difficulty");
-//        recipeService.save(rep);
-//        User curr = userService.findByUsername("lean.96");
-//        rep.setUser(curr);
-//        userService.save(curr);
-//
-//        mv.addObject("recipes", saved_recipes);
-//        mv.addObject("loggedin", isLoggedIn(req));
-//        mv.setViewName("index");
-//        return isLoggedIn(req) ? mv.addObject("username", "Hi " + userService.findByUsername((String) req.getSession().getAttribute("RECIPE_USER")).getFirstName() + "!") : mv;
-        return mv;
+        if (saved_recipes.size() < 5) {
+            Recipe rep = new Recipe("Phá lấu", "/images/mDishes/food-placeholder.png", "description", 9, 8, 1, "direction", "impossible");
+            rep.setRecipeIngredients(new HashSet<>());
+            context.recipes.save(rep);
+            try {
+                if (isLoggedIn(req)) {
+                    User curr = getCurrUser(req);
+                    rep.setUser(curr);
+                    context.users.save(curr);
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        mv.setViewName("index");
+        mv.addObject("recipes", saved_recipes);
+        // return isLoggedIn(req) ? mv.addObject("username", "Hi " + context.users.findByUsername((String) req.getSession().getAttribute("RECIPE_USER")).getFirstName() + "!").addObject("isLoggedIn", isLoggedIn(req)) : mv;
+        return autoDirect(req, mv);
     }
 
     @GetMapping("/about")
@@ -74,7 +80,7 @@ public class HomeController {
         mv.addObject("recipes", null);
         mv.addObject("recipe_name", name);
         try {
-            List<Recipe> saved_recipes = (List<Recipe>) recipeService.findAll();
+            List<Recipe> saved_recipes = (List<Recipe>) context.recipes.findAll();
             System.out.println(saved_recipes);
             List<Recipe> res_recipes = new ArrayList<>();
             for (Recipe r : saved_recipes) {
@@ -98,17 +104,25 @@ public class HomeController {
         mv.setViewName("redirect:/");
         return autoDirect(req, mv);
     }
-
-    public boolean isLoggedIn(HttpServletRequest req) {
+    private User getCurrUser(HttpServletRequest req) {
         HttpSession session = req.getSession();
         String username = (String) session.getAttribute("RECIPE_USER");
-        System.out.println("Is logged in? " + String.valueOf(!(username == null)));
-        return (!(username == null));
+        return this.context.users.findByUsername(username);
+    }
+    private boolean isLoggedIn(HttpServletRequest req) {
+        boolean loggedIn = this.getCurrUser(req) != null;
+        return loggedIn;
     }
 
-    public ModelAndView autoDirect(HttpServletRequest req, ModelAndView mv) {
+    private ModelAndView autoDirect(HttpServletRequest req, ModelAndView mv) {
         HttpSession session = req.getSession();
         String username = (String) session.getAttribute("RECIPE_USER");
-        return (username == null) ? new ModelAndView("redirect:/") : mv.addObject("loggedin", isLoggedIn(req)).addObject("username", "Hi " + userService.findByUsername(username).getFirstName() + "!");
+        User curr_user = this.context.users.findByUsername(username);
+        if (!(curr_user == null)) {
+            mv.addObject("isLoggedIn", true)
+                    .addObject("username", "Hi " + curr_user.getFirstName() + "!");
+        }
+
+        return mv;
     }
 }

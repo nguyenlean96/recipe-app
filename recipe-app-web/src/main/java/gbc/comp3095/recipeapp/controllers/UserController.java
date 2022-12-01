@@ -1,6 +1,7 @@
 package gbc.comp3095.recipeapp.controllers;
 
 import gbc.comp3095.models.User;
+import gbc.comp3095.recipeapp.config.DbContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -25,18 +26,15 @@ public class UserController {
 // *********************************************************************************/
 
     private static boolean testMode = true;
-    private final UserService userService;
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private DbContext context;
+    public UserController(DbContext context) { this.context = context; }
 
     @GetMapping({"", "/", "/profile"})
     public ModelAndView view(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
         String username = (String) req.getSession().getAttribute("RECIPE_USER");
         mv.addObject("page_title", username).addObject("username", username);
-        User profile = (User) userService.findByUsername(username);
+        User profile = (User) context.users.findByUsername(username);
         mv.addObject("profile", profile);
         mv.setViewName("users/view");
         return autoDirect(req, mv);
@@ -60,11 +58,11 @@ public class UserController {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("redirect:/api/v1/users/login");
         try {
-            if (userService.findByUsername(u.getUsername()) != null) {
+            if (context.users.findByUsername(u.getUsername()) != null) {
                 return new ModelAndView("users/edit").addObject("user", u).addObject("message", "Username " + u.getUsername() + " exists!");
             }
             u.encryptPassword();
-            userService.save(u);
+            context.users.save(u);
         } catch (Exception e) {
             System.out.println(e);
             mv.addObject("message", e.getMessage());
@@ -79,7 +77,7 @@ public class UserController {
         status.setComplete();
         req.removeAttribute("RECIPE_USER", WebRequest.SCOPE_SESSION);
 
-        mv.setViewName("redirect:/");
+        mv.setViewName("redirect:/api/v1/users/login");
         return mv;
     }
 
@@ -98,7 +96,7 @@ public class UserController {
     public ModelAndView edit(@RequestParam("id") Long id, HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
         mv.addObject("is_edit", true);
-        User req_user = userService.findById(id);
+        User req_user = context.users.findById(id);
         mv.addObject("user", req_user);
 
         mv.addObject("action", "/api/v1/users/save");
@@ -111,7 +109,7 @@ public class UserController {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("redirect:/");
         try {
-            User exists = (User) userService.findByUsername(user.getUsername());
+            User exists = (User) context.users.findByUsername(user.getUsername());
             if (exists == null) {
                 return new ModelAndView("users/uac/login");
             }
@@ -138,6 +136,10 @@ public class UserController {
     public ModelAndView autoDirect(HttpServletRequest req, ModelAndView mv) {
         HttpSession session = req.getSession();
         String username = (String) session.getAttribute("RECIPE_USER");
-        return (username == null) ? new ModelAndView("redirect:/") : mv.addObject("loggedin", isLoggedIn(req)).addObject("username", username);
+        if (username == null)
+            return new ModelAndView("redirect:/");
+
+        mv.addObject("isLoggedIn", isLoggedIn(req)).addObject("username", username);
+        return mv;
     }
 }

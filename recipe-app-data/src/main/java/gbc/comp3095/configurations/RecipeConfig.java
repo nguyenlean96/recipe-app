@@ -1,6 +1,9 @@
 package gbc.comp3095.configurations;
 
+import gbc.comp3095.models.Ingredient;
 import gbc.comp3095.models.Recipe;
+import gbc.comp3095.models.UnitOfMeasurement;
+import gbc.comp3095.services.RecipeService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +11,11 @@ import gbc.comp3095.repositories.RecipeRepository;
 
 @Configuration
 public class RecipeConfig {
+    private RecipeService recipes;
+
+    public RecipeConfig(RecipeService recipes) {
+        this.recipes = recipes;
+    }
     //*********************************************************************************
 //* Project: Your Recipe App
 //* Assignment: assignment 1
@@ -28,25 +36,6 @@ public class RecipeConfig {
             recipe1.setPrepTime(10);
             recipe1.setCookTime(20);
             recipe1.setServings(4);
-//            recipe1.setIngredients("""
-//                1 (12 ounce) package dried rice noodles
-//
-//                1 teaspoon vegetable oil
-//
-//                1 onion, finely diced
-//
-//                3 cloves garlic, minced
-//
-//                2 cups diced cooked chicken breast meat
-//
-//                1 small head cabbage, thinly sliced
-//
-//                4 carrot, thinly sliced
-//
-//                ¼ cup soy sauce
-//
-//                2 lemons - cut into wedges, for garnish
-//            """);
             recipe1.setDirections("""
                 Place rice noodles in a large bowl; cover with warm water and let soften for 8 to 10 minutes. Drain and set aside.
 
@@ -55,7 +44,20 @@ public class RecipeConfig {
                 Transfer pancit to a serving dish and garnish with lemon wedges.
             """);
             recipe1.setDifficulty("Easy");
-            recipeRepository.save(recipe1);
+            Recipe saved_recipe1 = recipes.save(recipe1);
+            saved_recipe1.addIngredient(new Ingredient("package dried noodles", 12, UnitOfMeasurement.OUNCE, saved_recipe1));
+            saved_recipe1.addIngredient(new Ingredient("vegetable oil", 1, UnitOfMeasurement.TEASPOON, saved_recipe1));
+            saved_recipe1.addIngredient(new Ingredient("fined diced", 1, UnitOfMeasurement.UNIT, saved_recipe1));
+            saved_recipe1.addIngredient(new Ingredient("minced garlic", 3, UnitOfMeasurement.TEASPOON, saved_recipe1));
+            saved_recipe1.addIngredient(new Ingredient("Diced cooked chicken breast meat", 2, UnitOfMeasurement.CUP, saved_recipe1));
+            saved_recipe1.addIngredient(new Ingredient("Thin-sliced cabbage", 1, UnitOfMeasurement.UNIT, saved_recipe1));
+            saved_recipe1.addIngredient(new Ingredient("Thin-sliced carrot", 4, UnitOfMeasurement.UNIT, saved_recipe1));
+            saved_recipe1.addIngredient(new Ingredient("Soy sauce", .75, UnitOfMeasurement.CUP, saved_recipe1));
+            saved_recipe1.addIngredient(new Ingredient("Lemon - cut into wedges for garnish", 2, UnitOfMeasurement.UNIT, saved_recipe1));
+            System.out.println(recipes.save(saved_recipe1));
+
+
+
             ////////////////////////////
             Recipe recipe2 = new Recipe();
             recipe2.setId(2L);
@@ -65,21 +67,6 @@ public class RecipeConfig {
             recipe2.setPrepTime(10);
             recipe2.setCookTime(30);
             recipe2.setServings(4);
-//            recipe2.setIngredients("""
-//                4 boneless, skinless chicken breast halves
-//
-//                1 cup all-purpose flour
-//
-//                2 eggs, beaten
-//
-//                1 cup Italian seasoned bread crumbs
-//
-//                1 (24 ounce) jar spaghetti sauce
-//
-//                1 cup shredded mozzarella cheese
-//
-//                ¼ cup grated Parmesan cheese
-//            """);
             recipe2.setDirections("""
                 Preheat oven to 350 degrees F (175 degrees C).
 
@@ -94,7 +81,15 @@ public class RecipeConfig {
                 Bake in the preheated oven until chicken is no longer pink in the center and the juices run clear, 30 to 35 minutes. An instant-read thermometer inserted into the center should read at least 165 degrees F (74 degrees C).
             """);
             recipe2.setDifficulty("Medium");
-            recipeRepository.save(recipe2);
+            Recipe saved_recipe2 = recipes.save(recipe2);
+            saved_recipe2.addIngredient(new Ingredient("boneless, skinless chicken breast halves", 4, UnitOfMeasurement.UNIT, saved_recipe2));
+            saved_recipe2.addIngredient(new Ingredient("all-purpose flour", 1, UnitOfMeasurement.CUP, saved_recipe2));
+            saved_recipe2.addIngredient(new Ingredient("eggs, beaten", 2, UnitOfMeasurement.UNIT, saved_recipe2));
+            saved_recipe2.addIngredient(new Ingredient("Italian seasoned bread crumbs", 1, UnitOfMeasurement.CUP, saved_recipe2));
+            saved_recipe2.addIngredient(new Ingredient("spaghetti sauce", 24, UnitOfMeasurement.OUNCE, saved_recipe2));
+            saved_recipe2.addIngredient(new Ingredient("shredded mozzarella cheese", 1, UnitOfMeasurement.CUP, saved_recipe2));
+            saved_recipe2.addIngredient(new Ingredient("grated Parmesan cheese", .75, UnitOfMeasurement.CUP, saved_recipe2));
+            System.out.println(recipes.save(saved_recipe2));
             ////////////////////////////
             Recipe recipe3 = new Recipe();
             recipe3.setId(3L);
@@ -104,82 +99,29 @@ public class RecipeConfig {
             recipe3.setPrepTime(10);
             recipe3.setCookTime(30);
             recipe3.setServings(4);
-//            recipe3.setIngredients("""
-//                1 (3 pound) whole chicken
-//
-//                1 onion, chopped
-//
-//                1 (10.75 ounce) can condensed cream of chicken soup
-//
-//                1 (10.75 ounce) can condensed cream of celery soup
-//
-//                1 (10.75 ounce) can condensed cream of mushroom soup
-//
-//                1 (10.75 ounce) can condensed cream of chicken soup
-//
-//                1 (10.75 ounce) can condensed cream of celery soup
-//
-//                1 (10.75 ounce) can condensed cream of mushroom soup
-//
-//                1 (10.75 ounce) can condensed cream of chicken soup
-//
-//                1 (10.75 ounce) can condensed cream of celery soup
-//
-//                1 (10.75 ounce) can condensed cream of mushroom soup
-//
-//                1 (10.75 ounce) can condensed cream of chicken soup
-//
-//                1 (10.75 ounce) can condensed cream of celery soup
-//
-//                1 (10.75 ounce) can condensed cream of mushroom soup
-//
-//                1 (10.75 ounce) can condensed cream of chicken soup
-//
-//                1 (10.75 ounce) can condensed cream of celery soup
-//
-//                1 (10.75 ounce) can condensed cream of mushroom soup
-//
-//                1 (10.75 ounce) can condensed cream of chicken soup
-//
-//                1 (10.75 ounce) can condensed cream of celery soup
-//
-//                1 (10.75 ounce) can condensed cream of mushroom soup
-//
-//                1 (10.75 ounce) can condensed cream of chicken soup
-//
-//                1 (10.75 ounce) can condensed cream of celery soup
-//
-//                1 (10.75 ounce) can condensed cream of mushroom soup
-//
-//                1 (10.75 ounce) can condensed cream of chicken soup
-//
-//                1 (10.75 ounce) can condensed cream of celery soup
-//
-//                1 (10.75 ounce) can condensed cream of mushroom soup
-//
-//                1 (10.75 ounce) can condensed cream of chicken soup
-//
-//                1 (10.75 ounce) can condensed cream of celery soup
-//
-//                1 (10.75 ounce) can condensed cream of mushroom soup
-//
-//                1 (10.75 ounce) can condensed cream of chicken soup""");
-//            recipe3.setDirections("""
-//                Preheat oven to 350 degrees F (175 degrees C).
-//
-//                Place chicken breasts between two sheets of plastic wrap and pound to 1/4-inch thickness.
-//
-//                Place flour in a shallow dish. Place eggs in a separate shallow dish. Place bread crumbs in a third shallow dish.
-//
-//                Dip chicken in flour, then in egg, and finally in bread crumbs.
-//
-//                Place chicken in a 9x13-inch baking dish. Pour spaghetti sauce over chicken. Sprinkle with mozzarella cheese and Parmesan cheese.
-//
-//                Bake in the preheated oven until chicken is no longer pink in the center and the juices run clear, 30 to 35 minutes. An instant-read thermometer inserted into the center should read at least 165 degrees F (74 degrees C).
-//            """);
+            recipe3.setDirections("""
+                Preheat oven to 350 degrees F (175 degrees C).
+
+                Place chicken breasts between two sheets of plastic wrap and pound to 1/4-inch thickness.
+
+                Place flour in a shallow dish. Place eggs in a separate shallow dish. Place bread crumbs in a third shallow dish.
+
+                Dip chicken in flour, then in egg, and finally in bread crumbs.
+
+                Place chicken in a 9x13-inch baking dish. Pour spaghetti sauce over chicken. Sprinkle with mozzarella cheese and Parmesan cheese.
+
+                Bake in the preheated oven until chicken is no longer pink in the center and the juices run clear, 30 to 35 minutes. An instant-read thermometer inserted into the center should read at least 165 degrees F (74 degrees C).
+            """);
             recipe3.setDifficulty("Hard");
+            Recipe saved_recipe3 = recipes.save(recipe3);
+            saved_recipe3.addIngredient(new Ingredient("whole chicken", 3, UnitOfMeasurement.POUND, saved_recipe3));
+            saved_recipe3.addIngredient(new Ingredient("onion, chopped", 1, UnitOfMeasurement.UNIT, saved_recipe3));
+            saved_recipe3.addIngredient(new Ingredient("can condensed cream of chicken soup", 10.75, UnitOfMeasurement.OUNCE, saved_recipe3));
+            saved_recipe3.addIngredient(new Ingredient("can condensed cream of celery soup", 10.75, UnitOfMeasurement.OUNCE, saved_recipe3));
+            saved_recipe3.addIngredient(new Ingredient("can condensed cream of mushroom soup", 10.75, UnitOfMeasurement.OUNCE, saved_recipe3));
+
             // these are the users the recipe is saved or created by
-            recipeRepository.save(recipe3);
+            recipes.save(saved_recipe3);
             ////////////////////////////
         };
     }

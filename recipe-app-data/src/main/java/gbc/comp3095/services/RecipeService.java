@@ -1,9 +1,13 @@
 package gbc.comp3095.services;
 
+import gbc.comp3095.models.Ingredient;
 import gbc.comp3095.models.Recipe;
+import gbc.comp3095.repositories.IngredientRepository;
 import gbc.comp3095.repositories.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class RecipeService {
@@ -16,9 +20,11 @@ public class RecipeService {
 //* Description: service class to handle business logic for recipe and implement the abstract methods declared or inherited in the Recipe Repository interface
 // *********************************************************************************//
     private final RecipeRepository recipeRepository;
-    @Autowired
-    public RecipeService(RecipeRepository recipeRepository) {
+    private final IngredientRepository ingredientRepository;
+
+    public RecipeService(RecipeRepository recipeRepository, IngredientRepository ingredientRepository) {
         this.recipeRepository = recipeRepository;
+        this.ingredientRepository = ingredientRepository;
     }
 
     // create, update, delete, find, findAll
@@ -27,11 +33,28 @@ public class RecipeService {
     }
 
     public Recipe findById(Long id) {
-        return recipeRepository.findById(id).orElse(null);
+        List<Recipe> saved_recipes = (List<Recipe>) this.findAll();
+        for (Recipe r : saved_recipes) {
+            if (r.getId() == id)
+                return r;
+        }
+        return null;
     }
 
     public Recipe save(Recipe object) {
-        return recipeRepository.save(object);
+        if (object != null) {
+//            Recipe saved_recipe = recipeRepository.save(object);
+//            if (object.getRecipeIngredients().size() > 0) {
+//                for (Ingredient i : object.getRecipeIngredients()) {
+//                    i.setRecipe(saved_recipe);
+//                    if (i.getRecipe().getId() != null) {
+//                        ingredientRepository.save(i);
+//                    }
+//                }
+//            }
+            return recipeRepository.save(object);
+        }
+        return null;
     }
 
     public void delete(Recipe object) {
@@ -43,6 +66,6 @@ public class RecipeService {
     }
 
     public Iterable<Recipe> findAll() {
-        return recipeRepository.findAll();
+        return this.recipeRepository.findAll();
     }
 }

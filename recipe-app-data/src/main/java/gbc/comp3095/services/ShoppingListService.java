@@ -2,7 +2,9 @@ package gbc.comp3095.services;
 
 import gbc.comp3095.models.ShoppingList;
 import gbc.comp3095.repositories.ShoppingListRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ShoppingListService {
     //*********************************************************************************
     //* Project: Your Recipe App

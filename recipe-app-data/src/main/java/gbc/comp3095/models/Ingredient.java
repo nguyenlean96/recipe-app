@@ -25,14 +25,15 @@ public class Ingredient {
     @Id
     @SequenceGenerator(name="recipe_generator", sequenceName="recipe_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    private Long id;
 
-    @NotNull
+    // @NotNull
     @Size(min = 1, max = 255)
     private String description;
 
-    @NotNull
-    @Size(min = 1, max = 6)
+    // @NotNull
+    // Can I remove this since there are amount using upto 10.75 Ounce
+    // @Size(min = 1, max = 6)
     private double quantity;
 
     @Enumerated(EnumType.STRING)
@@ -40,7 +41,7 @@ public class Ingredient {
 
     // RELATIONSHIPS
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "recipe_id", nullable = false)
+    @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
     @ManyToMany(mappedBy = "ingredients")
@@ -51,7 +52,13 @@ public class Ingredient {
     public Ingredient() {
     }
 
-    public Ingredient(long id, String description, double quantity, UnitOfMeasurement unitOfMeasurement, Recipe recipe) {
+    public Ingredient(String description, double quantity, UnitOfMeasurement unitOfMeasurement) {
+        this.description = description;
+        this.quantity = quantity;
+        this.unitOfMeasurement = unitOfMeasurement;
+    }
+
+    public Ingredient(Long id, String description, double quantity, UnitOfMeasurement unitOfMeasurement, Recipe recipe) {
             this.id = id;
             this.description = description;
             this.quantity = quantity;
@@ -67,11 +74,11 @@ public class Ingredient {
     }
 
     // GETTERS AND SETTERS
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -129,7 +136,7 @@ public class Ingredient {
                 ", description='" + description + '\'' +
                 ", quantity=" + quantity +
                 ", unitOfMeasurement=" + unitOfMeasurement +
-                ", recipe=" + recipe +
+                ", recipe=" + (recipe != null ? recipe.getName() : "{Empty}") +
                 '}';
     }
 

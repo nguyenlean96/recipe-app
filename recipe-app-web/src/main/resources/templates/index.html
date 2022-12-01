@@ -5,15 +5,16 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
     <head th:replace="fragments :: html_header" />
     <body>
-        <div th:replace="fragments :: html_navbar"></div>
+        <div th:replace="fragments :: html_navbar(${isLoggedIn}, ${username})"></div>
         <div class="card text-bg-dark m-1">
             <img
                 class="opacity-25 d-block w-100 card-image"
                 th:src="@{/images/background/ut-medium-meal-plan-660x396.jpg}"
-                style="max-height: 18rem;"
+                style="max-height: 18rem; object-fit: cover; object-position: top; aspect-ratio: 1 /1; filter: blur(3px)"
                 alt=""
             >
-            <div class="d-flex card-img-overlay align-items-center justify-content-center">
+            <div class="d-flex card-img-overlay align-items-center justify-content-center"
+            >
                 <h1 class="fs-1">Welcome to Recipe App</h1>
             </div>
         </div>
@@ -59,7 +60,7 @@
                                 <img
                                         class="card-img-top img-fluid"
                                         th:src="@{${recipe.getImageUrl()}}"
-                                        style="height: 10rem; object-fit: fill; object-position: center;"
+                                        style="height: 10rem; object-fit: cover; object-position: center; aspect-ratio: 1 /1;"
                                         alt="..."
                                 >
                                 <div class="card-body p-3">

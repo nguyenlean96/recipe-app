@@ -5,7 +5,7 @@
           xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
     <head th:replace="fragments :: html_header" />
     <body>
-        <div th:replace="fragments :: html_navbar" />
+        <div th:replace="fragments :: html_navbar(${isLoggedIn}, ${username})"></div>
 
         <div id="real_body"
              class="d-flex justify-content-center"

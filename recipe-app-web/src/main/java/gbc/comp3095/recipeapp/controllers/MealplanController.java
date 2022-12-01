@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/mealplans")
 public class MealplanController {
-    //*********************************************************************************
+//*********************************************************************************
 //* Project: Your Recipe App
 //* Assignment: assignment 1
 //* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
@@ -160,7 +160,11 @@ public class MealplanController {
     public ModelAndView autoDirect(HttpServletRequest req, ModelAndView mv) {
         HttpSession session = req.getSession();
         String username = (String) session.getAttribute("RECIPE_USER");
-        return (username == null) ? new ModelAndView("redirect:/") : mv.addObject("loggedin", isLoggedIn(req)).addObject("username", "Hi " + userService.findByUsername(username).getFirstName() + "!");
+        if (username == null)
+            return new ModelAndView("redirect:/");
+
+         mv.addObject("isLoggedIn", isLoggedIn(req)).addObject("username", "Hi " + userService.findByUsername(username).getFirstName() + "!");
+        return mv;
     }
     public User getUser(HttpServletRequest req){
         return isLoggedIn(req) ? (User) userService.findByUsername(String.valueOf(req.getSession().getAttribute("RECIPE_USER"))) : null;

@@ -2,162 +2,263 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
 >
-<head th:replace="fragments :: html_header" />
-<body>
-<div th:replace="fragments :: html_navbar" />
+    <head th:replace="~{layouts/form_fragments :: header}" />
+    <body style="padding-bottom: 110rem;">
+        <div th:replace="fragments :: html_navbar(${isLoggedIn}, ${username})"></div>
 
-<div class="d-block border mx-5 my-1">
-    <div class="card text-bg-dark d-flex flex-column flex-nowrap">
-        <img class="opacity-25 d-block w-100 card-image" alt="Recipe edit background img" style="max-height: 30vh;" th:src="@{ /images/background/ut-medium-meal-plan-660x396.jpg}">
-        <div class="card-img-overlay mx-5" style="margin-top: 12vh;">
-            <div class="bg-light text-dark rounded" style="filter: drop-shadow(0px 5px 50rem #004365);
-            filter: drop-shadow(0px 2px 6px #82A9BC);">
-                <form class="row g-3 mx-5 mt-3"
-                      th:action="@{${action}}"
-                      th:object="${req_recipe}"
-                      method="post">
-                    <input
-                            type="hidden"
-                            name="imageUrl"
-                            th:field="*{id}"
-                    />
-                    <!-- Name field -->
-                    <div class="col-md-12">
-                        <label for="recipe_name_input" class="form-label">Name</label>
-
-                        <input
-                                class="form-control"
-                                type="text"
-                                name="name"
-                                th:field="*{name}"
-                                th:value="${req_recipe.getName()}"
-                                id="recipe_name_input"
-                        >
-                    </div>
-                    <!-- Default ImageURL field -->
-                    <input
-                            type="hidden"
-                            name="imageUrl"
-                            th:field="*{imageUrl}"
-                            th:value="${req_recipe.getImageUrl()}" />
-                    <!-- Description field -->
-                    <div class="col-md-12">
-                        <label for="recipe_description_input" class="form-label">Description</label>
-                        <textarea
-                                class="form-control"
-                                name="description"
-                                rows="4"
-                                style="width: 100%;"
-                                th:field="*{description}"
-                                th:value="${req_recipe.getDescription()}"
-                                id="recipe_description_input"
-                        ></textarea>
-                        <div id="description_message"></div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="row">
-                            <!-- PrepTime field -->
-                            <div class="row col-4">
-                                <label
-                                        for="recipe_servings_input"
-                                        class="form-label"
-                                >Prep Time</label>
+        <div class="d-block border mx-5 my-1"
+        >
+            <div class="card text-bg-dark d-flex flex-column flex-nowrap">
+                <img class="opacity-25 d-block w-100 card-image" alt="Recipe edit background img" style="max-height: 30vh;" th:src="@{ /images/background/ut-medium-meal-plan-660x396.jpg}">
+                <div class="card-img-overlay mx-2" style="margin-top: 10vh;">
+                    <div class="bg-light text-dark rounded-4 mx-5 px-2 pb-3" style="filter: drop-shadow(0px 5px 50rem #004365);
+                    filter: drop-shadow(0px 2px 6px #82A9BC);">
+                        <h3 class="p-3 mb-3 border-bottom">Add new Recipe</h3>
+                        <form
+                            id="recipeform"
+                            class="row g-3 mx-3 ms-5"
+                            th:action="@{${action}}"
+                            th:object="${req_recipe}"
+                              method="post">
+                            <input
+                                    type="hidden"
+                                    name="imageUrl"
+                                    th:field="*{id}"
+                            />
+                            <!-- Name field -->
+                            <div class="col-md-12">
+                                <h5 class="form-label">Name</h5>
                                 <input
                                         class="form-control"
-                                        type="number"
-                                        name="prepTime"
-                                        th:field="*{prepTime}"
-                                        th:value="${req_recipe.getPrepTime()}"
-                                        id="recipe_prep_input">
-                                <span id="prep_min">minute</span>
-                            </div>
-                            <div class="col-4">
-                                <label for="recipe_servings_input" class="form-label">Cook Time</label>
-                                <input
-                                        class="form-control"
-                                        type="number"
-                                        name="cookTime"
-                                        th:field="*{cookTime}"
-                                        th:value="${req_recipe.getCookTime()}"
-                                        id="recipe_cook_input"
+                                        type="text"
+                                        name="name"
+                                        th:field="*{name}"
+                                        th:value="${req_recipe.getName()}"
+                                        id="recipe_name_input"
                                 >
-                                <span id="cook_min">minute</span>
                             </div>
-                            <div class="col-4">
-                                <label for="recipe_servings_input" class="form-label">Servings</label>
-                                <input
+                            <div class="col-12 px-2 my-4">
+                                <h5 class="form-label">Difficulty</h5>
+                                <select class="form-select" aria-label="Recipe Difficulty Select" name="difficulty">
+                                    <option value="Easy" selected>Select difficulty for this recipe</option>
+                                    <option value="Easy">Easy</option>
+                                    <option value="Moderate">Moderate</option>
+                                    <option value="Hard">Hard</option>
+                                </select>
+                            </div>
+                            <!-- Default ImageURL field -->
+                            <input
+                                    type="hidden"
+                                    name="imageUrl"
+                                    th:field="*{imageUrl}"
+                                    th:value="${req_recipe.getImageUrl()}" />
+                            <!-- Description field -->
+                            <div class="col-md-12 mb-4">
+                                <h5 class="form-label">Description</h5>
+                                <textarea
                                         class="form-control"
-                                        type="number"
-                                        name="servings"
-                                        th:field="*{servings}"
-                                        th:value="${req_recipe.getServings()}"
-                                        id="recipe_servings_input"
-                                >
-                                <span id="serv_num"></span>
+                                        name="description"
+                                        rows="4"
+                                        style="width: 100%;"
+                                        th:field="*{description}"
+                                        th:value="${req_recipe.getDescription()}"
+                                        id="recipe_description_input"
+                                ></textarea>
+                                <div id="description_message"></div>
                             </div>
+
+                            <div class="row col-md-12 px-5">
+                                <div class="col-md-6 p-3 m-0 border">
+                                    <img
+                                            class="img-fluid w-100 h-100"
+                                            th:src="@{/images/mDishes/food-placeholder.png}"
+                                            style="height: 10rem; object-fit: fill; object-position: center;"
+                                            alt="..."
+                                    >
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row ms-5">
+                                        <!-- PrepTime field -->
+                                        <div class="row col-12 mb-4">
+                                            <label
+                                                    for="recipe_servings_input"
+                                                    class="form-label"
+                                            >Prep Time</label>
+                                            <div class="row col-12 d-flex align-items-center">
+                                                <div class="col-md-6">
+                                                    <input
+                                                            class="form-control"
+                                                            type="number"
+                                                            name="prepTime"
+                                                            th:field="*{prepTime}"
+                                                            th:value="${req_recipe.getPrepTime()}"
+                                                            id="recipe_prep_input">
+                                                </div>
+                                                <div class="col-md-6"><span id="prep_min">minute</span></div>
+                                            </div>
+                                        </div>
+                                        <!-- CookTime field -->
+                                        <div class="row col-12 mb-4">
+                                            <label for="recipe_servings_input" class="form-label">Cook Time</label>
+                                            <div class="row col-12 d-flex align-items-center">
+                                                <div class="col-md-6">
+                                                    <input
+                                                        class="form-control"
+                                                        type="number"
+                                                        name="cookTime"
+                                                        th:field="*{cookTime}"
+                                                        th:value="${req_recipe.getCookTime()}"
+                                                        id="recipe_cook_input"
+                                                    >
+                                                </div>
+                                                <div class="col-md-6"><span id="cook_min">minute</span></div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row col-12 mb-4">
+                                            <label for="recipe_servings_input" class="form-label">Servings</label>
+                                            <div class="row col-12 d-flex align-items-center">
+                                                <div class="col-md-6">
+                                                    <input
+                                                            class="form-control"
+                                                            type="number"
+                                                            name="servings"
+                                                            th:field="*{servings}"
+                                                            th:value="${req_recipe.getServings()}"
+                                                            id="recipe_servings_input"
+                                                    >
+                                                </div>
+                                                <div class="col-md-6"><span id="serv_num">people</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Ingredient Section START -->
+                            <hr />
+                            <div class="row col-md-12">
+                                <div class="col-6">
+                                    <input type="hidden" th:field="*{recipeIngredients}">
+                                    <h5 class="mb-3">List of ingredient(s)</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" class="col-md-3">Ingredient</th>
+                                            <th scope="col" class="col-md-5"></th>
+                                            <!-- <th scope="col" class="col-md-2 text-center">Amount</th> -->
+                                            <!-- <th scope="col" class="col-md-2 text-center">Unit</th> -->
+                                            <th scope="col" class="col-2"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="ingredient_input">
+                                        <div
+                                                th:if="not *{recipeIngredients.isEmpty()}"
+                                                th:each="r : *{recipeIngredients}">
+                                            <tr>
+                                                <td th:text="${r.quantity + ' ' + r.unitOfMeasurement.name() + ' of '}"></td>
+                                                <td th:text="${r.description}"></td>
+                                                <!-- <td class="text-center" th:text="${r.quantity}"></td>-->
+                                                <!-- <td class="text-center" th:text="${r.unitOfMeasurement.name()}"></td>-->
+                                                <td class="text-center">
+                                                    <a class="btn btn-outline-danger btn_del" th:href="@{${'/api/v1/ingredients/delete?id='+ r.getId()}}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                        </svg>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </div>
+                                        </tbody>
+                                    </table>
+                                    <!--
+                                    <label class="form-label">Ingredients</label>
+                                    <textarea
+                                            class="form-control"
+                                            rows="3"
+                                            style="width: 100%;"
+                                            name="ingredient"
+                                            th:field="*{ingredients}"
+                                            th:value="${req_recipe.getIngredients()}"
+                                            id="recipe_ingredient_input"
+                                    ></textarea>
+                                    -->
+                                    <div id="ingredient_message"></div>
+                                </div>
+                                <div class="col-6 border-start">
+                                    <h5 class="form-label mb-3">Directions</h5>
+                                    <textarea
+                                            class="form-control"
+                                            rows="3"
+                                            style="width: 100%; min-height: 25em;"
+                                            name="directions"
+                                            th:field="*{directions}"
+                                            th:value="${req_recipe.getDirections()}"
+                                            id="recipe_direction_input"
+                                    ></textarea>
+                                    <div id="directions_message"></div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 px-5 my-4">
+
+                            </div>
+
+                            <div class="col-12 mb-3 text-center px-5">
+                                <input  type="submit" form="recipeform" class="btn btn-primary" value="Save Changes">
+                            </div>
+                        </form>
+                        <hr />
+                        <div class="row col-12 px-5 mb-3">
+                            <h5 class="mb-3"
+                                th:text="${'Add new ingredient for this recipe'}"></h5>
+                            <form
+                                    id="add_ingredient"
+                                    th:action="@{/api/v1/ingredients/add}"
+                                    th:object="${new_ingredient}"
+                                    method="post"
+                            >
+                                <input type="hidden" name="recipe" th:field="*{recipe}" th:value="${new_ingredient.recipe}">
+                                <div class="d-flex justify-content-center align-items-end">
+                                    <div class="col-md-5 me-3">
+                                        <h6>Ingredient description:</h6>
+                                        <input type="text" class="form-control" name="ingredient_description" form="add_ingredient" placeholder="Enter ingredient description. E.g. Thin sliced tomato"
+                                        th:field="*{description}" th:value="${new_ingredient.recipe.id}"
+                                        >
+                                    </div>
+                                    <div class="col-md-2 me-3">
+                                        <h6>Quantity:</h6>
+                                        <input type="number" step=".01" class="form-control" name="ingredient_qty" form="add_ingredient"
+                                        th:field="*{quantity}"
+                                        >
+                                    </div>
+                                    <div class="col-md-2  me-3">
+                                        <h6>Unit:</h6>
+                                        <select class="form-select" aria-label="ingredient_units" name="ingredient_unit" form="add_ingredient" th:field="*{unitOfMeasurement}">
+                                            <option value="UNIT" selected>Unit (by default)</option>
+                                            <option value="CUP">Cup</option>
+                                            <option value="TABLESPOON">Tablespoon</option>
+                                            <option value="TEASPOON">Teaspoon</option>
+                                            <option value="MILLILITER">Milliliter</option>
+                                            <option value="LITER">Liter</option>
+                                            <option value="POUND">Pound</option>
+                                            <option value="OUNCE">Ounce</option>
+                                            <option value="KILOGRAM">Kilogram</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input type="submit" id="btn_add_ingredient" class="btn btn-primary" form="add_ingredient" value="Add ingredient">
+
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <!-- Ingredient Section START -->
-                    <div class="col-md-12">
-                        <label class="form-label">Ingredients</label>
-                        <textarea
-                                class="form-control"
-                                rows="3"
-                                style="width: 100%;"
-                                name="ingredient"
-                                th:field="*{ingredients}"
-                                th:value="${req_recipe.getIngredients()}"
-                                id="recipe_ingredient_input"
-                        ></textarea>
-                        <div id="ingredient_message"></div>
-                        <!-- [PENDING] Ingredients as objects
-                        <div id="ingredient_input_1">
-                            <div id="ingredient_input">
-                                <div class="col-md-9">
-                                    <input type="text" class="form-control" id="recipe_direction_input">
-                                </div>
-                                <div class="col-md-3">
-                                    <button id="btn_del_1">DEL</button>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary">Add Ingredient</button>
-                        -->
-                    </div>
 
-                    <div class="col-md-12">
-                        <label class="form-label">Directions</label>
-                        <textarea
-                                class="form-control"
-                                rows="3"
-                                style="width: 100%;"
-                                name="directions"
-                                th:field="*{directions}"
-                                th:value="${req_recipe.getDirections()}"
-                                id="recipe_direction_input"
-                        ></textarea>
-                        <div id="directions_message"></div>
-                    </div>
-
-                    <div class="col-12">
-                        <select class="form-select" aria-label="Recipe Difficulty Select" name="difficulty">
-                            <option selected>Select difficulty for this recipe</option>
-                            <option value="Easy">Easy</option>
-                            <option value="Moderate">Moderate</option>
-                            <option value="Hard">Hard</option>
-                        </select>
-                    </div>
-                    <div class="col-12 mb-3">
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-<div class="d-block" th:replace="fragments :: html_footer" />
-<script th:src="@{/js/recipe_form.js}"></script>
-<script th:replace="fragments :: bootstrap_script" />
-</body>
+
+        <div class="d-block" th:replace="~{layouts/form_fragments :: bootstrap_script}" />
+        <script th:replace="fragments :: bootstrap_script" />
+    </body>
 </html>

@@ -27,24 +27,50 @@ public class User {
     // ATTRIBUTES
     @Id
     @SequenceGenerator(name="user_generator", sequenceName="user_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE  )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "user_id")
     private Long id;
     private String username;
     private String password;
     private String email;
+    @Column(name="first_name")
     private String firstName;
+    @Column(name="last_name")
     private String lastName;
     private String phoneNumber;
 
+    @OneToMany(
+            mappedBy = "eventUser",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<EventPlan> userEventPlans = new HashSet<>();
+    @OneToOne
+    @JoinColumn(name="shoppinglist_id", referencedColumnName = "shoppinglist_id")
+    private ShoppingList shoppingList;
+
 
     // RELATIONSHIPS
-    @OneToMany(mappedBy = "user")
+    @OneToMany(
+            mappedBy = "creator",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private Set<Recipe> created_recipes = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(
+            mappedBy = "userMealplan",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private Set<Mealplan> mealplans = new HashSet<>();
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany
+    @JoinTable(
+            name="cookbook_recipe",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="recipe_id")
+    )
     private Set<Recipe> cookbook_recipes = new HashSet<>();
 
 
