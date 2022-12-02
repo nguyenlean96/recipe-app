@@ -5,17 +5,23 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head th:fragment="html_header">
     <meta charset="UTF-8">
-    <title th:text="${'YourRecipe ' + page_title}" />
-    <link rel="stylesheet" th:src="@{/style/main.css}">
-    <link th:fragment="bootstrap_stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <title th:text="${'YourRecipe ' + page_title}"/>
+    <link rel="stylesheet" th:href="@{/style/main.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Raleway&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/logo/favicon.ico">
+    <link th:fragment="bootstrap_stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 </head>
 <body>
 <div th:fragment="html_navbar(isLoggedIn, username)">
     <nav class="navbar navbar-expand-md navbar-light bg-light px-4">
         <div class="mx-auto order-0">
-            <a class="navbar-brand mb-0 h1" th:href="@{/}">
+            <a class="navbar-brand mb-0 h1" th:href="@{/}" style="font-family:'Playfair Display', serif; text-align: center">
                 <img th:src="@{/images/logo/logo.png}" width="32" height="32" class="d-inline-block align-text-top">
-                The Recipe App
+                Your Recipe
             </a>
             <button
                     class="navbar-toggler"
@@ -62,7 +68,7 @@
                 <li class="nav-item me-2"
                     th:if="${isLoggedIn}"
                 >
-                    <a class="nav-link" th:href="@{/api/v1/recipes/favourite}">My Favourité</a>
+                    <a class="nav-link" th:href="@{/api/v1/recipes/favourite}">My Favourite</a>
                 </li>
                 <li class="nav-item me-2"
                     th:if="${isLoggedIn}"
@@ -86,57 +92,28 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart4" viewBox="0 0 16 16">
                             <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l.5 2H5V5H3.14zM6 5v2h2V5H6zm3 0v2h2V5H9zm3 0v2h1.36l.5-2H12zm1.11 3H12v2h.61l.5-2zM11 8H9v2h2V8zM8 8H6v2h2V8zM5 8H3.89l.5 2H5V8zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
                         </svg>
-                        Your List
+                        My List
                     </a>
                 </li>
             </ul>
         </div>
     </nav>
 </div>
-
-<div th:fragment="toast">
-
-</div>
-<div th:fragment="html_footer">
-    <div
-            style="background-color: coral;
-            min-height: 6vh;
-            min-width: 100%"
-            class="container"
-    >
-        <div class="row d-flex justify-content-center pt-4">
-            <div class="col-6 my-2 text-center">
-                <div class="row mb-1">
-                    <a
-                            class="text-decoration-none mb-2"
-                            th:href="@{/}"
-                            th:text="'Home'"
-                    ></a>
-                    <a
-                            class="text-decoration-none mb-2"
-                            th:href="@{/about}"
-                            th:text="'About'"
-                    ></a>
-                </div>
-            </div>
-            <div class="col-6 my-2 text-center"
-            >
-                <div class="row mb-1">
-                    <a
-                            class="text-decoration-none mb-2"
-                            th:href="@{/about}"
-                            th:text="'About'"
-                    ></a>
-
-                </div>
-            </div>
-        </div>
-        <div class="row col-12 text-center pb-3">
-            <h5 class="mb-3">Assignment 2</h5>
-        </div>
-    </div>
-</div>
+<div th:fragment="toast"></div>
+<footer id="footer" th:fragment="html_footer">
+    <h5>Assignment 2</h5>
+    <a
+            class="text-decoration-none mb-2"
+            th:href="@{/}"
+            th:text="'Home'"
+    ></a>
+    <br>
+    <a
+            class="text-decoration-none mb-2"
+            th:href="@{/about}"
+            th:text="'About'"
+    ></a>
+</footer>
 <script th:fragment="bootstrap_script" src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-
 </body>
 </html>
