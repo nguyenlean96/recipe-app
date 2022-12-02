@@ -39,7 +39,7 @@ public class RecipeController {
     public ModelAndView list(HttpServletRequest req) {
         String username = (String) req.getSession().getAttribute("RECIPE_USER");
         User curr = (User) context.users.findByUsername(username);
-        List<Recipe> saved_recipes = (List<Recipe>) List.copyOf(curr.getCookbook_recipes());
+        List<Recipe> saved_recipes = (List<Recipe>) List.copyOf(curr.getFavourite_recipes());
         ModelAndView mv = new ModelAndView();
 
         mv.addObject("recipes", saved_recipes);
@@ -72,10 +72,10 @@ public class RecipeController {
                 recipe.setImageUrl("/images/mDishes/food-placeholder.png");
             }
             recipe.setCreator(curr);
-            recipe.addUser(curr);
+            recipe.addUserFavourite(curr);
             context.recipes.save(recipe);
             curr.addRecipeToCreatedRecipes(recipe);
-            curr.addRecipeToCookbook(recipe);
+            curr.addRecipeToFavourite(recipe);
             System.out.println(recipe);
             User saved_user = this.context.users.save(curr);
             System.out.println(saved_user);
@@ -131,7 +131,7 @@ public class RecipeController {
         ModelAndView mv = new ModelAndView();
         User cur = getUser(req);
         Recipe recipe = (Recipe) context.recipes.findById(id);
-        cur.removeRecipeFromCookbook(recipe);
+        cur.removeRecipeFromFavorite(recipe);
         cur.removeRecipeFromCreatedRecipes(recipe);
         context.users.save(cur);
         context.recipes.deleteById(id);

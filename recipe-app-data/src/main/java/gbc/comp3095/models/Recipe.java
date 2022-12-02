@@ -55,9 +55,9 @@ public class Recipe {
     private Set<Mealplan> mealplans = new HashSet<>();
 
     @ManyToMany(
-            mappedBy = "cookbook_recipes"
+            mappedBy = "favourite_recipes"
     )
-    private Set<User> recipeCookbook = new HashSet<>();
+    private Set<User> recipeFavourite = new HashSet<>();
 
     @OneToMany(
             mappedBy = "recipe",
@@ -123,7 +123,7 @@ public class Recipe {
         this.creator = creator;
     }
 
-    public Recipe(Long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty, User creator, Set<Mealplan> mealplans, Set<User> recipeCookbook, Set<Ingredient> recipeIngredients, Set<EventPlan> recipeEvents) {
+    public Recipe(Long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty, User creator, Set<Mealplan> mealplans, Set<User> recipeFavourite, Set<Ingredient> recipeIngredients, Set<EventPlan> recipeEvents) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
@@ -135,7 +135,7 @@ public class Recipe {
         this.difficulty = difficulty;
         this.creator = creator;
         this.mealplans = mealplans;
-        this.recipeCookbook = recipeCookbook;
+        this.recipeFavourite = recipeFavourite;
         this.recipeIngredients = recipeIngredients;
         this.recipeEvents = recipeEvents;
     }
@@ -237,12 +237,12 @@ public class Recipe {
         this.mealplans = mealplans;
     }
 
-    public Set<User> getUsers() {
-        return recipeCookbook;
+    public Set<User> getUserFavourite() {
+        return recipeFavourite;
     }
 
-    public void setUsers(Set<User> users) {
-        this.recipeCookbook = users;
+    public void setUserFavourite(Set<User> recipeFavourite) {
+        this.recipeFavourite = recipeFavourite;
     }
 
     public User getCreator() {
@@ -251,14 +251,6 @@ public class Recipe {
 
     public void setCreator(User creator) {
         this.creator = creator;
-    }
-
-    public Set<User> getRecipeCookbook() {
-        return recipeCookbook;
-    }
-
-    public void setRecipeCookbook(Set<User> recipeCookbook) {
-        this.recipeCookbook = recipeCookbook;
     }
 
     public Set<EventPlan> getRecipeEvents() {
@@ -310,12 +302,12 @@ public class Recipe {
         this.mealplans.remove(mealplan);
     }
 
-    public void addUser(User user) {
-        this.recipeCookbook.add(user);
+    public void addUserFavourite(User user) {
+        this.recipeFavourite.add(user);
     }
 
-    public void removeUser(User user) {
-        this.recipeCookbook.remove(user);
+    public void removeUserFavourite(User user) {
+        this.recipeFavourite.remove(user);
     }
     public void addIngredient(Ingredient i) {
         this.recipeIngredients.add(i);

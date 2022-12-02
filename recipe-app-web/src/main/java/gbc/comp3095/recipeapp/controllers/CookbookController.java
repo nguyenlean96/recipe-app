@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/recipes/favourite")
+@RequestMapping("/api/v1/cookbooks")
 @ComponentScan("ca.gbc.comp3095.models")
 public class CookbookController {
 //*********************************************************************************
@@ -41,8 +41,7 @@ public class CookbookController {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("cookbooks/index");
         User curr = getUser(req);
-
-        List<Recipe> saved_recipes = (List<Recipe>) List.copyOf(curr.getCookbook_recipes());
+        List<Recipe> saved_recipes = (List<Recipe>) List.copyOf(curr.getFavourite_recipes());
 
         mv.addObject("recipes", saved_recipes);
          mv = autoDirect(req, mv);
@@ -58,7 +57,7 @@ public class CookbookController {
             Recipe req_recipe = (Recipe) recipeService.findById(rid);
             System.out.println(req_recipe);
             User curr = getUser(req);
-            curr.addRecipeToCookbook(req_recipe);
+            curr.addRecipeToFavourite(req_recipe);
             userService.save(curr);
 
             mv.setViewName("redirect:/api/v1/cookbooks/");
@@ -91,8 +90,8 @@ public class CookbookController {
         mv.setViewName("cookbooks/view");
         Recipe r = (Recipe) recipeService.findById(id);
         User curr = getUser(req);
-        curr.addRecipeToCookbook(recipe);
-        List<Recipe> user_cookbook = (List<Recipe>) List.copyOf(curr.getCookbook_recipes());
+        curr.addRecipeToFavourite(recipe);
+        List<Recipe> user_cookbook = (List<Recipe>) List.copyOf(curr.getFavourite_recipes());
         return autoDirect(req, mv);
     }
 

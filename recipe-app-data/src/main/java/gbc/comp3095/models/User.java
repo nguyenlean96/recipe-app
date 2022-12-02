@@ -57,11 +57,11 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name="cookbook_recipe",
+            name="favourite_recipe",
             joinColumns = @JoinColumn(name="user_id"),
             inverseJoinColumns = @JoinColumn(name="recipe_id")
     )
-    private Set<Recipe> cookbook_recipes = new HashSet<>();
+    private Set<Recipe> favourite_recipes = new HashSet<>();
 
     @OneToMany(
             mappedBy = "eventUser",
@@ -91,7 +91,7 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public User(Long id, String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Mealplan> mealplans, Set<Recipe> cookbook_recipes) {
+    public User(Long id, String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Mealplan> mealplans, Set<Recipe> favourite_recipes) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -100,7 +100,7 @@ public class User {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.mealplans = mealplans;
-        this.cookbook_recipes = cookbook_recipes;
+        this.favourite_recipes = favourite_recipes;
     }
 
     public User(String username, String password, String email, String firstName, String lastName, String phoneNumber) {
@@ -112,17 +112,17 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public User(String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Recipe> cookbook_recipes) {
+    public User(String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Recipe> favourite_recipes) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
-        this.cookbook_recipes = cookbook_recipes;
+        this.favourite_recipes = favourite_recipes;
     }
 
-    public User(String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Recipe> created_recipes, Set<Recipe> cookbook_recipes) {
+    public User(String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Recipe> created_recipes, Set<Recipe> favourite_recipes) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -130,10 +130,10 @@ public class User {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.created_recipes = created_recipes;
-        this.cookbook_recipes = cookbook_recipes;
+        this.favourite_recipes = favourite_recipes;
     }
 
-    public User(String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Recipe> created_recipes, Set<Mealplan> mealplans, Set<Recipe> cookbook_recipes) {
+    public User(String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Recipe> created_recipes, Set<Mealplan> mealplans, Set<Recipe> favourite_recipes) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -142,10 +142,10 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.created_recipes = created_recipes;
         this.mealplans = mealplans;
-        this.cookbook_recipes = cookbook_recipes;
+        this.favourite_recipes = favourite_recipes;
     }
 
-    public User(Long id, String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Recipe> created_recipes, Set<Mealplan> mealplans, Set<Recipe> cookbook_recipes, Set<EventPlan> userEventPlans, Set<Ingredient> shoppingListIngredients) {
+    public User(Long id, String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Recipe> created_recipes, Set<Mealplan> mealplans, Set<Recipe> favourite_recipes, Set<EventPlan> userEventPlans, Set<Ingredient> shoppingListIngredients) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -155,7 +155,7 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.created_recipes = created_recipes;
         this.mealplans = mealplans;
-        this.cookbook_recipes = cookbook_recipes;
+        this.favourite_recipes = favourite_recipes;
         this.userEventPlans = userEventPlans;
         this.shoppingListIngredients = shoppingListIngredients;
     }
@@ -233,12 +233,12 @@ public class User {
         this.mealplans = mealplans;
     }
 
-    public Set<Recipe> getCookbook_recipes() {
-        return cookbook_recipes;
+    public Set<Recipe> getFavourite_recipes() {
+        return favourite_recipes;
     }
 
-    public void setCookbook_recipes(Set<Recipe> cookbook_recipes) {
-        this.cookbook_recipes = cookbook_recipes;
+    public void setFavourite_recipes(Set<Recipe> favourite_recipes) {
+        this.favourite_recipes = favourite_recipes;
     }
 
     public Set<EventPlan> getUserEventPlans() {
@@ -294,7 +294,7 @@ public class User {
         hash = 97 * hash + Objects.hashCode(this.phoneNumber);
         hash = 97 * hash + Objects.hashCode(this.created_recipes);
         hash = 97 * hash + Objects.hashCode(this.mealplans);
-        hash = 97 * hash + Objects.hashCode(this.cookbook_recipes);
+        hash = 97 * hash + Objects.hashCode(this.favourite_recipes);
         return hash;
     }
 
@@ -337,19 +337,19 @@ public class User {
         if (!Objects.equals(this.mealplans, other.mealplans)) {
             return false;
         }
-        if (!Objects.equals(this.cookbook_recipes, other.cookbook_recipes)) {
+        if (!Objects.equals(this.favourite_recipes, other.favourite_recipes)) {
             return false;
         }
         return true;
     }
 
     // HELPER METHODS
-    public void addRecipeToCookbook(Recipe recipe) {
-        this.cookbook_recipes.add(recipe);
+    public void addRecipeToFavourite(Recipe recipe) {
+        this.favourite_recipes.add(recipe);
     }
 
-    public void removeRecipeFromCookbook(Recipe recipe) {
-        this.cookbook_recipes.remove(recipe);
+    public void removeRecipeFromFavorite(Recipe recipe) {
+        this.favourite_recipes.remove(recipe);
     }
 
     public void addRecipeToCreatedRecipes(Recipe recipe) {
