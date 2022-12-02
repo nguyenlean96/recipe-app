@@ -69,7 +69,7 @@ public class HomeController {
         mv.addObject("viewName", "about");
 
         mv.setViewName("about");
-        return isLoggedIn(req) ? mv.addObject("loggedin", isLoggedIn(req)).addObject("username", req.getSession().getAttribute("RECIPE_USER")) : mv;
+        return isLoggedIn(req) ? mv.addObject("isLoggedIn", isLoggedIn(req)).addObject("username", ("Hi " + req.getSession().getAttribute("RECIPE_USER") + "!")) : mv;
     }
 
     @GetMapping("/search")
