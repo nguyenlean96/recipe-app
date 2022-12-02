@@ -45,6 +45,7 @@ public class RecipeConfig {
             """);
             recipe1.setDifficulty("Easy");
             Recipe saved_recipe1 = recipes.save(recipe1);
+
             saved_recipe1.addIngredient(new Ingredient("package dried noodles", 12, UnitOfMeasurement.OUNCE, saved_recipe1));
             saved_recipe1.addIngredient(new Ingredient("vegetable oil", 1, UnitOfMeasurement.TEASPOON, saved_recipe1));
             saved_recipe1.addIngredient(new Ingredient("fined diced", 1, UnitOfMeasurement.UNIT, saved_recipe1));

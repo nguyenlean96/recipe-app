@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "eventplan")
+@Table(name="eventplan")
 public class EventPlan {
     //*********************************************************************************
     //* Project: Your Recipe App
@@ -23,9 +23,8 @@ public class EventPlan {
     @Id
     @SequenceGenerator(name="recipe_generator", sequenceName="recipe_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name="eventplan_id")
     private Long id;
-
+    private String description;
     private String dish;
 
     private String date;
@@ -47,31 +46,36 @@ public class EventPlan {
     private Set<Recipe> eventRecipes = new HashSet<>();
 
     public EventPlan() {
+
     }
 
-    public EventPlan(String dish, String date, EventType eventType) {
+    public EventPlan(String description, String dish, String date, EventType eventType) {
+        this.description = description;
         this.dish = dish;
         this.date = date;
         this.eventType = eventType;
     }
 
-    public EventPlan(String dish, String date, EventType eventType, User eventUser) {
-        this.dish = dish;
-        this.date = date;
-        this.eventType = eventType;
-        this.eventUser = eventUser;
-    }
-
-    public EventPlan(Long id, String dish, String date, EventType eventType, User eventUser) {
-        this.id = id;
+    public EventPlan(String description, String dish, String date, EventType eventType, User eventUser) {
+        this.description = description;
         this.dish = dish;
         this.date = date;
         this.eventType = eventType;
         this.eventUser = eventUser;
     }
 
-    public EventPlan(Long id, String dish, String date, EventType eventType, User eventUser, Set<Recipe> eventRecipes) {
+    public EventPlan(Long id, String description,  String dish, String date, EventType eventType, User eventUser) {
         this.id = id;
+        this.description = description;
+        this.dish = dish;
+        this.date = date;
+        this.eventType = eventType;
+        this.eventUser = eventUser;
+    }
+
+    public EventPlan(Long id, String description,  String dish, String date, EventType eventType, User eventUser, Set<Recipe> eventRecipes) {
+        this.id = id;
+        this.description = description;
         this.dish = dish;
         this.date = date;
         this.eventType = eventType;
@@ -85,6 +89,14 @@ public class EventPlan {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getDish() {
@@ -142,12 +154,15 @@ public class EventPlan {
     @Override
     public String toString() {
         return "EventPlan{" +
-                "id=" + id != null ? String.valueOf(id) : "null"  +
+                "id=" + id +
+                ", description='" + description + '\'' +
                 ", dish='" + dish + '\'' +
                 ", date='" + date + '\'' +
                 ", eventType=" + eventType +
-                ", eventUser=" + eventUser != null ? eventUser.toString() : "null" +
-                ", eventRecipes=" + eventRecipes != null ? eventRecipes.toString() : "null" +
                 '}';
     }
+
+    public void addEventRecipe(Recipe r) { this.eventRecipes.add(r); }
+    public void removeEventRecipe(Recipe r) { this.eventRecipes.remove(r); }
+
 }

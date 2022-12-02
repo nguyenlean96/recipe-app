@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@SuppressWarnings("JpaAttributeTypeInspection")
 @Entity
 @Table(name="users")
 public class User {
@@ -39,17 +40,6 @@ public class User {
     private String lastName;
     private String phoneNumber;
 
-    @OneToMany(
-            mappedBy = "eventUser",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Set<EventPlan> userEventPlans = new HashSet<>();
-    @OneToOne
-    @JoinColumn(name="shoppinglist_id", referencedColumnName = "shoppinglist_id")
-    private ShoppingList shoppingList;
-
-
     // RELATIONSHIPS
     @OneToMany(
             mappedBy = "creator",
@@ -73,6 +63,19 @@ public class User {
     )
     private Set<Recipe> cookbook_recipes = new HashSet<>();
 
+    @OneToMany(
+            mappedBy = "eventUser",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<EventPlan> userEventPlans = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "shoppinglist_ingredient",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
+    private Set<Ingredient> shoppingListIngredients = new HashSet<>();
 
     // CONSTRUCTORS
     public User() {
@@ -140,6 +143,21 @@ public class User {
         this.created_recipes = created_recipes;
         this.mealplans = mealplans;
         this.cookbook_recipes = cookbook_recipes;
+    }
+
+    public User(Long id, String username, String password, String email, String firstName, String lastName, String phoneNumber, Set<Recipe> created_recipes, Set<Mealplan> mealplans, Set<Recipe> cookbook_recipes, Set<EventPlan> userEventPlans, Set<Ingredient> shoppingListIngredients) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.created_recipes = created_recipes;
+        this.mealplans = mealplans;
+        this.cookbook_recipes = cookbook_recipes;
+        this.userEventPlans = userEventPlans;
+        this.shoppingListIngredients = shoppingListIngredients;
     }
 
     // GETTERS AND SETTERS
@@ -223,6 +241,22 @@ public class User {
         this.cookbook_recipes = cookbook_recipes;
     }
 
+    public Set<EventPlan> getUserEventPlans() {
+        return userEventPlans;
+    }
+
+    public void setUserEventPlans(Set<EventPlan> userEventPlans) {
+        this.userEventPlans = userEventPlans;
+    }
+
+    public Set<Ingredient> getShoppingList() {
+        return shoppingListIngredients;
+    }
+
+    public void setShoppingList(Set<Ingredient> shoppingList) {
+        this.shoppingListIngredients = shoppingList;
+    }
+
     // METHODS
     // ENCRYPT USER PASSWORD
     public void encryptPassword() {
@@ -237,7 +271,15 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", phoneNumber=" + phoneNumber + '}';
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
     }
 
     @Override
@@ -325,4 +367,11 @@ public class User {
     public void removeMealplan(Mealplan mealplan) {
         this.mealplans.remove(mealplan);
     }
+
+    public void addEventPlan(EventPlan ePlan) { this.userEventPlans.add(ePlan); }
+
+    public void removeEventPlan(EventPlan ePlan) { this.userEventPlans.remove(ePlan); }
+
+    public void addToShoppingList(Ingredient i) { this.shoppingListIngredients.add(i); }
+    public void removeIngredientFromShoppingList(Ingredient i) { this.shoppingListIngredients.remove(i); }
 }

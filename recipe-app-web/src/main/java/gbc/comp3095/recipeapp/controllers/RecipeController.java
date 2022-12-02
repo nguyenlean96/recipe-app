@@ -68,12 +68,17 @@ public class RecipeController {
         User curr = (User) context.users.findByUsername(String.valueOf(req.getSession().getAttribute("RECIPE_USER")));
 
         try {
-            recipe.setImageUrl("/images/mDishes/food-placeholder.png");
-            context.recipes.save(recipe);
+            if (recipe.getImageUrl().isEmpty()) {
+                recipe.setImageUrl("/images/mDishes/food-placeholder.png");
+            }
+            recipe.setCreator(curr);
             recipe.addUser(curr);
+            context.recipes.save(recipe);
             curr.addRecipeToCreatedRecipes(recipe);
             curr.addRecipeToCookbook(recipe);
-            context.users.save(curr);
+            System.out.println(recipe);
+            User saved_user = this.context.users.save(curr);
+            System.out.println(saved_user);
 
         } catch (Exception e) {
             e.getMessage();

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head th:replace="fragments :: html_header" />
+    <body>
+        <div th:replace="fragments :: html_navbar(${isLoggedIn}, ${username})" />
+        <!-- Real Body -->
+        <div id="real_body"
+             style="padding-bottom: 30rem;"
+             class="d-block mx-5 my-1"
+        >
+            <div class="card text-bg-dark d-flex flex-column flex-nowrap">
+                <img class="opacity-25 d-block card-image" alt="Recipe edit background img" style="max-height: 30vh; min-width: 100%;" th:src="@{ /images/background/specialdiets-vegan-meal-plan.jpg}">
+                <div class="card-img-overlay mx-5" style="margin-top: 5rem;">
+                    <div class="bg-light text-dark rounded-4" style="filter: drop-shadow(0px 5px 50rem #004365);
+            filter: drop-shadow(0px 2px 6px #82A9BC);">
+                        <form class="row g-3 mt-3 px-5 py-3"
+                              th:action="@{${action}}"
+                              th:object="${req_event}"
+                              method="post">
+                            <input
+                                    type="hidden"
+                                    name="id"
+                                    th:field="*{id}"
+                            />
+                            <div class="row col-12 g-3">
+                                <div class="container col-5">
+                                    <div class="">Event</div>
+                                    <div class="">Planner</div>
+                                </div>
+
+                                <div class="col-7 g-3">
+                                    <div class="col-12 g-3">
+                                        <h5 class="mb-3">Date:</h5>
+                                        <input
+                                                class="form-control mb-4"
+                                                type="date"
+                                                name="date"
+                                                th:field="*{date}"
+                                        >
+                                    </div>
+                                    <div class="col-12 g-3">
+                                        <h5 class="mb-3">What type of event are you planning?</h5>
+                                        <select
+                                                class="form-select"
+                                                aria-label="Recipe Difficulty Select"
+                                                name="eventType"
+                                                th:field="*{eventType}"
+                                        >
+                                            <option value="OTHER" selected>Other</option>
+                                            <option value="BIRTHDAY">Birthday</option>
+                                            <option value="WEDDING">Wedding</option>
+                                            <option value="ANNIVERSARY">Anniversary</option>
+                                            <option value="THANKSGIVING">Thanksgiving</option>
+                                            <option value="CHRISTMAS">Christmas</option>
+                                            <option value="HALLOWEEN">Halloween</option>
+                                            <option value="EASTER">Easter</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row col-12">
+                                    <h5>Event's Description</h5>
+                                    <input style="min-width: 100%;"
+                                            class="form-control w-100"
+                                           th:field="*{description}"
+                                           name="description"
+                                           type="text"
+                                    >
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center">
+                                        <h5 class="me-1">Type of meal?</h5>
+                                        <span>(Optional)</span>
+                                    </div>
+                                    <select
+                                            class="form-select"
+                                            aria-label="Recipe Difficulty Select"
+                                            name="dish"
+                                            th:field="*{dish}"
+                                    >
+                                        <option value="Normal" selected>Please select a type of meal</option>
+                                        <option value="Breakfast">Breakfast</option>
+                                        <option value="Lunch">Lunch</option>
+                                        <option value="Snacks">Snacks</option>
+                                        <option value="Dinner">Dinner</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <input type="hidden" th:field="*{eventRecipes}">
+                                    <div
+                                            th:if="${req_recipes.isEmpty()}"
+                                            class="card border border-0"
+                                    >
+                                        <select
+                                                class="form-select"
+                                                aria-label="Recipe Select"
+                                                name="recipe"
+                                                disabled
+                                        >
+                                            <option value="Normal" selected>Please select a recipe</option>
+                                        </select>
+                                        <a
+                                                class="stretched-link"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal"
+                                                th:href="@{#exampleModal}"></a>
+                                    </div>
+                                    <div
+                                            th:unless="${req_recipes.isEmpty()}"
+                                    >
+                                        <input type="hidden" name="recipe_item" th:value="${'-99'}" >
+                                        <div class=""
+                                         th:each="r : ${req_recipes}"
+                                        >
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" th:value="${r.getId()}" th:id="${r.getId()}" name="recipe_item" th:checked="${req_event.getEventRecipes().contains(r)}">
+                                                <label class="form-check-label" th:text="${r.getName()}"></label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <input type="hidden" th:field="*{eventUser}">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:if="not (${message} == null)">
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1
+                                    class="modal-title fs-5"
+                                    id="exampleModalLabel"
+                                    th:text="${message_title}"
+                            ></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p
+                                    th:text="${message}"
+                            ></p>
+                        </div>
+                        <div class="modal-footer">
+                            <a
+                                    class="btn btn-primary"
+                                    th:href="@{/api/v1/recipes/add}"
+                                    th:text="'Add new recipe'"
+                            ></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div th:replace="fragments :: html_footer"></div>
+        <script th:replace="fragments :: bootstrap_script" />
+    </body>
+</html>

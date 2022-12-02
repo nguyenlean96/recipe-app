@@ -46,7 +46,7 @@
                     <div th:each="i : ${list}">
                         <div class="d-flex align-items-center">
                             <span>for</span>
-                            <h4 class="ms-2" th:text="${i.getName()}"></h4>
+                            <h4 class="ms-2" th:text="${i.getRecipe().getName()}"></h4>
                         </div>
                         <div class="row mb-3 ms-5">
                             <table class="table table-hover">
@@ -58,12 +58,11 @@
                                     <th scope="col"></th>
                                 </tr>
                                 </thead>
-                                <tbody th:if="not ${i.getRecipeIngredients().isEmpty()}"
-                                       th:each="r : ${i.getRecipeIngredients()}">
+                                <tbody>
                                 <tr>
-                                    <td scope="row" th:text="${r.description}"></td>
-                                    <td th:text="${r.quantity}"></td>
-                                    <td th:text="${r.unitOfMeasurement.name()}"></td>
+                                    <td scope="row" th:text="${i.description}"></td>
+                                    <td th:text="${i.quantity}"></td>
+                                    <td th:text="${i.unitOfMeasurement.name()}"></td>
                                     <td></td>
                                 </tr>
                                 </tbody>

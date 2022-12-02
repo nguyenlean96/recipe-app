@@ -44,8 +44,8 @@ public class Ingredient {
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
-    @ManyToMany(mappedBy = "ingredients")
-    private Set<ShoppingList> shoppingLists = new HashSet<>();
+    @ManyToMany(mappedBy = "shoppingListIngredients")
+    private Set<User> shoppingLists = new HashSet<>();
 
 
     // CONSTRUCTORS
@@ -114,6 +114,14 @@ public class Ingredient {
         this.recipe = recipe;
     }
 
+    public Set<User> getShoppingLists() {
+        return shoppingLists;
+    }
+
+    public void setShoppingLists(Set<User> shoppingLists) {
+        this.shoppingLists = shoppingLists;
+    }
+
     // EQUALS AND HASHCODE
     @Override
     public boolean equals(Object o) {
@@ -129,6 +137,8 @@ public class Ingredient {
     }
 
     // TO STRING
+
+
     @Override
     public String toString() {
         return "Ingredient{" +
@@ -136,7 +146,8 @@ public class Ingredient {
                 ", description='" + description + '\'' +
                 ", quantity=" + quantity +
                 ", unitOfMeasurement=" + unitOfMeasurement +
-                ", recipe=" + (recipe != null ? recipe.getName() : "{Empty}") +
+                ", recipe=" + recipe +
+                ", shoppingLists=" + shoppingLists +
                 '}';
     }
 

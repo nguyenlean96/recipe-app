@@ -10,14 +10,14 @@ public class DbContext {
     public UserService users;
     public RecipeService recipes;
     public MealplanService mealplans;
+    public EventPlanService events;
     public IngredientService ingredients;
-    public ShoppingListService shoppinglists;
 
-    public DbContext(UserService users, RecipeService recipes, MealplanService mealplans, IngredientService ingredients, ShoppingListService shoppinglists) {
+    public DbContext(UserService users, RecipeService recipes, MealplanService mealplans,  EventPlanService eventPlanService, IngredientService ingredients) {
         this.users = users;
         this.recipes = recipes;
         this.mealplans = mealplans;
+        this.events = eventPlanService;
         this.ingredients = ingredients;
-        this.shoppinglists = shoppinglists;
     }
 }

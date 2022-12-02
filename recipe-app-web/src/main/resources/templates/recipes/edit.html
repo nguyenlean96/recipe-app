@@ -20,12 +20,9 @@
                             th:action="@{${action}}"
                             th:object="${req_recipe}"
                               method="post">
-                            <input
-                                    type="hidden"
-                                    name="imageUrl"
-                                    th:field="*{id}"
-                            />
-                            <!-- Name field -->
+                            <!-- ID -->
+                            <input type="hidden" th:field="*{id}" th:value="*{id}" />
+                            <!-- Name -->
                             <div class="col-md-12">
                                 <h5 class="form-label">Name</h5>
                                 <input
@@ -33,10 +30,15 @@
                                         type="text"
                                         name="name"
                                         th:field="*{name}"
-                                        th:value="${req_recipe.getName()}"
                                         id="recipe_name_input"
                                 >
                             </div>
+                            <!-- Default ImageURL field -->
+                            <input
+                                    type="hidden"
+                                    name="imageUrl"
+                                    th:field="*{imageUrl}">
+                            <!-- difficulty field -->
                             <div class="col-12 px-2 my-4">
                                 <h5 class="form-label">Difficulty</h5>
                                 <select class="form-select" aria-label="Recipe Difficulty Select" name="difficulty">
@@ -46,12 +48,6 @@
                                     <option value="Hard">Hard</option>
                                 </select>
                             </div>
-                            <!-- Default ImageURL field -->
-                            <input
-                                    type="hidden"
-                                    name="imageUrl"
-                                    th:field="*{imageUrl}"
-                                    th:value="${req_recipe.getImageUrl()}" />
                             <!-- Description field -->
                             <div class="col-md-12 mb-4">
                                 <h5 class="form-label">Description</h5>
@@ -61,16 +57,24 @@
                                         rows="4"
                                         style="width: 100%;"
                                         th:field="*{description}"
-                                        th:value="${req_recipe.getDescription()}"
                                         id="recipe_description_input"
                                 ></textarea>
                                 <div id="description_message"></div>
                             </div>
 
                             <div class="row col-md-12 px-5">
+                                <!-- Thumbnail preview -->
                                 <div class="col-md-6 p-3 m-0 border">
                                     <img
                                             class="img-fluid w-100 h-100"
+                                            th:if="not ${req_recipe.imageUrl.isBlank()}"
+                                            th:src="@{${req_recipe.getImageUrl()}}"
+                                            style="height: 10rem; object-fit: fill; object-position: center;"
+                                            alt="..."
+                                    >
+                                    <img
+                                            class="img-fluid w-100 h-100"
+                                            th:if="${req_recipe.imageUrl.isEmpty()}"
                                             th:src="@{/images/mDishes/food-placeholder.png}"
                                             style="height: 10rem; object-fit: fill; object-position: center;"
                                             alt="..."
@@ -91,7 +95,6 @@
                                                             type="number"
                                                             name="prepTime"
                                                             th:field="*{prepTime}"
-                                                            th:value="${req_recipe.getPrepTime()}"
                                                             id="recipe_prep_input">
                                                 </div>
                                                 <div class="col-md-6"><span id="prep_min">minute</span></div>
@@ -107,7 +110,6 @@
                                                         type="number"
                                                         name="cookTime"
                                                         th:field="*{cookTime}"
-                                                        th:value="${req_recipe.getCookTime()}"
                                                         id="recipe_cook_input"
                                                     >
                                                 </div>
@@ -124,7 +126,6 @@
                                                             type="number"
                                                             name="servings"
                                                             th:field="*{servings}"
-                                                            th:value="${req_recipe.getServings()}"
                                                             id="recipe_servings_input"
                                                     >
                                                 </div>
@@ -170,21 +171,10 @@
                                         </div>
                                         </tbody>
                                     </table>
-                                    <!--
-                                    <label class="form-label">Ingredients</label>
-                                    <textarea
-                                            class="form-control"
-                                            rows="3"
-                                            style="width: 100%;"
-                                            name="ingredient"
-                                            th:field="*{ingredients}"
-                                            th:value="${req_recipe.getIngredients()}"
-                                            id="recipe_ingredient_input"
-                                    ></textarea>
-                                    -->
                                     <div id="ingredient_message"></div>
                                 </div>
                                 <div class="col-6 border-start">
+                                    <!-- Direction field -->
                                     <h5 class="form-label mb-3">Directions</h5>
                                     <textarea
                                             class="form-control"
@@ -192,19 +182,14 @@
                                             style="width: 100%; min-height: 25em;"
                                             name="directions"
                                             th:field="*{directions}"
-                                            th:value="${req_recipe.getDirections()}"
                                             id="recipe_direction_input"
                                     ></textarea>
                                     <div id="directions_message"></div>
                                 </div>
 
                             </div>
-                            <div class="col-md-12 px-5 my-4">
-
-                            </div>
-
                             <div class="col-12 mb-3 text-center px-5">
-                                <input  type="submit" form="recipeform" class="btn btn-primary" value="Save Changes">
+                                <button  type="submit" form="recipeform" class="btn btn-primary">Save changes</button>
                             </div>
                         </form>
                         <hr />
@@ -222,7 +207,7 @@
                                     <div class="col-md-5 me-3">
                                         <h6>Ingredient description:</h6>
                                         <input type="text" class="form-control" name="ingredient_description" form="add_ingredient" placeholder="Enter ingredient description. E.g. Thin sliced tomato"
-                                        th:field="*{description}" th:value="${new_ingredient.recipe.id}"
+                                        th:field="*{description}"
                                         >
                                     </div>
                                     <div class="col-md-2 me-3">

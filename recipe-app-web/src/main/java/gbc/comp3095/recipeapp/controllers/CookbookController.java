@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/cookbooks")
+@RequestMapping("/api/v1/recipes/favourite")
 @ComponentScan("ca.gbc.comp3095.models")
 public class CookbookController {
 //*********************************************************************************

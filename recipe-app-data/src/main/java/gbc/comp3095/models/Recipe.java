@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@SuppressWarnings("JpaAttributeTypeInspection")
 @Entity
 @Table(name="recipes")
 public class Recipe {
@@ -74,49 +75,6 @@ public class Recipe {
     public Recipe() {
     }
 
-    public Recipe(Long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty, User user, Set<Mealplan> mealplans, Set<User> users, Set<Ingredient> recipeIngredients) {
-        this.id = id;
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.description = description;
-        this.prepTime = prepTime;
-        this.cookTime = cookTime;
-        this.servings = servings;
-        this.directions = directions;
-        this.difficulty = difficulty;
-        this.creator = user;
-        this.mealplans = mealplans;
-        this.recipeCookbook = users;
-        this.recipeIngredients = recipeIngredients;
-    }
-
-    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty, User user, Set<Mealplan> mealplans, Set<User> users, Set<Ingredient> recipeIngredients) {
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.description = description;
-        this.prepTime = prepTime;
-        this.cookTime = cookTime;
-        this.servings = servings;
-        this.directions = directions;
-        this.difficulty = difficulty;
-        this.creator = user;
-        this.mealplans = mealplans;
-        this.recipeCookbook = users;
-        this.recipeIngredients = recipeIngredients;
-    }
-
-    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty, User user) {
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.description = description;
-        this.prepTime = prepTime;
-        this.cookTime = cookTime;
-        this.servings = servings;
-        this.directions = directions;
-        this.difficulty = difficulty;
-        this.creator = user;
-    }
-
     public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty) {
         this.name = name;
         this.imageUrl = imageUrl;
@@ -128,7 +86,7 @@ public class Recipe {
         this.difficulty = difficulty;
     }
 
-    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions) {
+    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty, User creator) {
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
@@ -136,36 +94,50 @@ public class Recipe {
         this.cookTime = cookTime;
         this.servings = servings;
         this.directions = directions;
+        this.difficulty = difficulty;
+        this.creator = creator;
     }
 
-    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings) {
+    public Recipe(Long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty) {
+        this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
         this.prepTime = prepTime;
         this.cookTime = cookTime;
         this.servings = servings;
+        this.directions = directions;
+        this.difficulty = difficulty;
     }
 
-    public Recipe(String name, String imageUrl, String description, Integer prepTime, Integer cookTime) {
+    public Recipe(Long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty, User creator) {
+        this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
         this.prepTime = prepTime;
         this.cookTime = cookTime;
+        this.servings = servings;
+        this.directions = directions;
+        this.difficulty = difficulty;
+        this.creator = creator;
     }
 
-    public Recipe(String name, String imageUrl, String description, Integer prepTime) {
+    public Recipe(Long id, String name, String imageUrl, String description, Integer prepTime, Integer cookTime, Integer servings, String directions, String difficulty, User creator, Set<Mealplan> mealplans, Set<User> recipeCookbook, Set<Ingredient> recipeIngredients, Set<EventPlan> recipeEvents) {
+        this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
         this.prepTime = prepTime;
-    }
-
-    public Recipe(String name, String imageUrl, String description) {
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.description = description;
+        this.cookTime = cookTime;
+        this.servings = servings;
+        this.directions = directions;
+        this.difficulty = difficulty;
+        this.creator = creator;
+        this.mealplans = mealplans;
+        this.recipeCookbook = recipeCookbook;
+        this.recipeIngredients = recipeIngredients;
+        this.recipeEvents = recipeEvents;
     }
 
     // GETTERS AND SETTERS
@@ -273,6 +245,30 @@ public class Recipe {
         this.recipeCookbook = users;
     }
 
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
+    public Set<User> getRecipeCookbook() {
+        return recipeCookbook;
+    }
+
+    public void setRecipeCookbook(Set<User> recipeCookbook) {
+        this.recipeCookbook = recipeCookbook;
+    }
+
+    public Set<EventPlan> getRecipeEvents() {
+        return recipeEvents;
+    }
+
+    public void setRecipeEvents(Set<EventPlan> recipeEvents) {
+        this.recipeEvents = recipeEvents;
+    }
+
     // EQUALS AND HASHCODE
     @Override
     public boolean equals(Object o) {
@@ -288,6 +284,8 @@ public class Recipe {
     }
 
     // TO STRING
+
+
     @Override
     public String toString() {
         return "Recipe{" +
@@ -300,7 +298,6 @@ public class Recipe {
                 ", servings=" + servings +
                 ", directions='" + directions + '\'' +
                 ", difficulty='" + difficulty + '\'' +
-                ", ingredients='" + (recipeIngredients != null ? recipeIngredients : "[Empty]") + '\'' +
                 '}';
     }
 
