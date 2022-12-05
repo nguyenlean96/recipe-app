@@ -8,7 +8,7 @@ import java.util.Set;
 @SuppressWarnings("JpaAttributeTypeInspection")
 @Entity
 @Table(name="recipes")
-public class Recipe {
+public class Recipe implements Cloneable {
 //*********************************************************************************
 //* Project: Your Recipe App
 //* Assignment: assignment 1
@@ -55,7 +55,8 @@ public class Recipe {
     private Set<Mealplan> mealplans = new HashSet<>();
 
     @ManyToMany(
-            mappedBy = "favourite_recipes"
+            mappedBy = "favourite_recipes",
+            cascade = CascadeType.ALL
     )
     private Set<User> recipeFavourite = new HashSet<>();
 
@@ -67,7 +68,8 @@ public class Recipe {
     private Set<Ingredient> recipeIngredients = new HashSet<>();
 
     @ManyToMany(
-            mappedBy = "eventRecipes"
+            mappedBy = "eventRecipes",
+            cascade = CascadeType.ALL
     )
     private Set<EventPlan> recipeEvents = new HashSet<>();
 
@@ -309,8 +311,16 @@ public class Recipe {
     public void removeUserFavourite(User user) {
         this.recipeFavourite.remove(user);
     }
-    public void addIngredient(Ingredient i) {
-        this.recipeIngredients.add(i);
+    public void addIngredient(Ingredient object) {
+        try {
+            for (Ingredient i : this.recipeIngredients) {
+                if ((i.getDescription() == object.getDescription()) && (i.getQuantity() == object.getQuantity()) && (i.getUnitOfMeasurement() == object.getUnitOfMeasurement()) && (i.getRecipe().getId() == object.getRecipe().getId()))
+                    throw new Exception("Duplicates found.");
+            }
+            this.recipeIngredients.add(object);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
     public void removeIngredient(Long id) {
         for (Ingredient i : this.recipeIngredients) {

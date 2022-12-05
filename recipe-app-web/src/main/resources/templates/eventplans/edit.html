@@ -49,14 +49,14 @@
                                                 name="eventType"
                                                 th:field="*{eventType}"
                                         >
-                                            <option value="OTHER" selected>Other</option>
-                                            <option value="BIRTHDAY">Birthday</option>
-                                            <option value="WEDDING">Wedding</option>
-                                            <option value="ANNIVERSARY">Anniversary</option>
-                                            <option value="THANKSGIVING">Thanksgiving</option>
-                                            <option value="CHRISTMAS">Christmas</option>
-                                            <option value="HALLOWEEN">Halloween</option>
-                                            <option value="EASTER">Easter</option>
+                                            <option value="OTHER" th:selected="${req_event.getEventType().name() == 'OTHER' || req_event.getEventType().name() == ''}">Other</option>
+                                            <option value="BIRTHDAY" th:selected="${req_event.getEventType().name() == 'BIRTHDAY'}">Birthday</option>
+                                            <option value="WEDDING" th:selected="${req_event.getEventType().name() == 'WEDDING'}">Wedding</option>
+                                            <option value="ANNIVERSARY" th:selected="${req_event.getEventType().name() == 'ANNIVERSARY'}">Anniversary</option>
+                                            <option value="THANKSGIVING" th:selected="${req_event.getEventType().name() == 'THANKSGIVING'}">Thanksgiving</option>
+                                            <option value="CHRISTMAS" th:selected="${req_event.getEventType().name() == 'CHRISTMAS'}">Christmas</option>
+                                            <option value="HALLOWEEN" th:selected="${req_event.getEventType().name() == 'HALLOWEEN'}">Halloween</option>
+                                            <option value="EASTER" th:selected="${req_event.getEventType().name() == 'EASTER'}">Easter</option>
                                         </select>
                                     </div>
                                 </div>

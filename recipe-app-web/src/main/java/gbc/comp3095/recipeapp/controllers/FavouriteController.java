@@ -16,6 +16,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/recipes/favourite")
 public class FavouriteController {
+    //*********************************************************************************
+    //*                                *** NEW ***
+    //* Project: Your Recipe App
+    //* Assignment: Assignment 2
+    //* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
+    //* Student Number: 101334588  - 101292266    - 101303158            - 101311327
+    //* Date: 2022-10-23
+    //* Description: This controller works as an extension from the RecipeController to handle
+    //* the favourite recipes only
+    // *********************************************************************************/
+    // This static attribute is used to avoid redundantly repeated call to this uri
     private static String furl = "/api/v1/recipes/favourite";
     private DbContext context;
     public FavouriteController(DbContext context) {
@@ -44,6 +55,24 @@ public class FavouriteController {
             User curr = getUser(req);
             Recipe req_recipe = this.context.recipes.findById(id);
             curr.addRecipeToFavourite(req_recipe);
+            this.context.users.save(curr);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return mv;
+    }
+
+    @GetMapping("/remove")
+    public ModelAndView remove(@RequestParam("id") Long id, HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("redirect:" + furl);
+        try {
+            User curr = getUser(req);
+            System.out.println(curr);
+            Recipe req_recipe = this.context.recipes.findById(id);
+            System.out.println(req_recipe);
+            curr.removeRecipeFromFavorite(req_recipe);
             this.context.users.save(curr);
         } catch (Exception e) {
             System.out.println(e.getMessage());

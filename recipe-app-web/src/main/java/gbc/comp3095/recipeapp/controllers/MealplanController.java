@@ -18,14 +18,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/mealplans")
 public class MealplanController {
-//*********************************************************************************
-//* Project: Your Recipe App
-//* Assignment: assignment 1
-//* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
-//* Student Number: 101334588  - 101292266    - 101303158            - 101311327
-//* Date: 2022-10-23
-//* Description: Mealplanner controller to handle requests for mealplanner operations and return the appropriate view to the user based on the request
-// *********************************************************************************/
+    //*********************************************************************************
+    //* Project: Your Recipe App
+    //* Assignment: Assignment 2
+    //* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
+    //* Student Number: 101334588  - 101292266    - 101303158            - 101311327
+    //* Date: 2022-10-23
+    //* Description: Mealplanner controller to handle requests for mealplanner operations and return the appropriate view to the user based on the request
+    // *********************************************************************************/
     private UserService userService;
     private RecipeService recipeService;
     private MealplanService mealplanService;

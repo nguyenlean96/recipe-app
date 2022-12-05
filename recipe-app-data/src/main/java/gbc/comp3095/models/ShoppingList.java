@@ -5,6 +5,7 @@ import java.util.Set;
 
 public class ShoppingList {
     //*********************************************************************************
+    //*                             !!!!!   DEPRECATED     !!!!!
     //* Project: Your Recipe App
     //* Assignment: assignment 2
     //* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova

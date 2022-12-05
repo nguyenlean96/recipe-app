@@ -12,6 +12,17 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/api/v1/ingredients")
 public class IngredientController {
+    //**********************************************************************************
+    //*                                *** NEW ***
+    //* Project: Your Recipe App
+    //* Assignment: Assignment 2
+    //* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
+    //* Student Number: 101334588  - 101292266    - 101303158            - 101311327
+    //* Date: 2022-10-23
+    //* Description: Ingredient controller is to handle requests from user to perform operations
+    //* and always return the recipe view since this type of operation only allowed within recipe
+    //* only as of all ingredients only exist in a relationship with a specific recipe
+    // *********************************************************************************/
     private DbContext context;
     public IngredientController(DbContext context) {
         this.context = context;

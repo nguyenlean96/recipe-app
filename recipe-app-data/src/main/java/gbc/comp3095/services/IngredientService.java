@@ -5,6 +5,8 @@ import gbc.comp3095.repositories.IngredientRepository;
 import gbc.comp3095.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class IngredientService {
     //*********************************************************************************
@@ -30,12 +32,25 @@ public class IngredientService {
     }
 
     public Ingredient findById(Long id) {
-        return ingredientRepository.findById(id).orElse(null);
+        List<Ingredient> saved_ones = this.ingredientRepository.findAll();
+        for (Ingredient i : saved_ones) {
+            if (i.getId() == id) return i;
+        }
+        return null;
     }
 
     public Ingredient save(Ingredient object) {
         if (object != null) {
-            return ingredientRepository.save(object);
+            List<Ingredient> saved_ones = this.ingredientRepository.findAll();
+            try {
+                for (Ingredient i : saved_ones) {
+                    if ((i.getDescription() == object.getDescription()) && (i.getQuantity() == object.getQuantity()) && (i.getUnitOfMeasurement() == object.getUnitOfMeasurement()) && (i.getRecipe().getId() == object.getRecipe().getId()))
+                        throw new Exception("Duplicates found.");
+                }
+                return ingredientRepository.save(object);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
         return null;
     }

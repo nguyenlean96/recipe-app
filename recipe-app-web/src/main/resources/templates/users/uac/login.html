@@ -24,11 +24,14 @@
                                                 class="form-control"
                                                 th:field="*{username}"
                                                 id="uac_login_email_input"
+                                                placeholder="Please enter your email address"
                                         >
+                                        <span><small><i>* User: assignment2</i></small></span>
                                     </div>
                                     <div class="mb-3">
                                         <label for="uac_login_passwd_input" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="uac_login_passwd_input" th:field="*{password}">
+                                        <input type="password" class="form-control" id="uac_login_passwd_input" th:field="*{password}" placeholder="Please enter your password">
+                                        <span><smal><i>* Password: comp3095</i></smal></span>
                                     </div>
                                     <div class="mb-3">
                                         <a th:href="@{/api/v1/users/new-user}" th:text="'Register new user'"></a>

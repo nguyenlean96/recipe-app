@@ -7,6 +7,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EventPlanService {
+    //*********************************************************************************
+    //* Project: Your Recipe App
+    //* Assignment: assignment 1
+    //* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
+    //* Student Number: 101334588 - 101292266 - 101303158 - 101311327
+    //* Date: 2022-10-23
+    //* Description: EventPlan class to handle CRUD process for EventPlan objects
+    // *********************************************************************************//
     private EventPlanRepository eventPlanRepository;
 
     public EventPlanService(EventPlanRepository eventPlanRepository) {

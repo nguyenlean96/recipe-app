@@ -43,26 +43,22 @@ public class RecipeService {
 
     public Recipe save(Recipe object) {
         if (object != null) {
-//            Recipe saved_recipe = recipeRepository.save(object);
-//            if (object.getRecipeIngredients().size() > 0) {
-//                for (Ingredient i : object.getRecipeIngredients()) {
-//                    i.setRecipe(saved_recipe);
-//                    if (i.getRecipe().getId() != null) {
-//                        ingredientRepository.save(i);
-//                    }
-//                }
-//            }
             return recipeRepository.save(object);
         }
         return null;
     }
 
     public void delete(Recipe object) {
+
         recipeRepository.delete(object);
     }
 
     public void deleteById(Long id) {
-        recipeRepository.deleteById(id);
+        List<Recipe> saved_recipes = (List<Recipe>) this.findAll();
+        for (Recipe r : saved_recipes) {
+            if (r.getId() == id)
+                recipeRepository.delete(r);
+        }
     }
 
     public Iterable<Recipe> findAll() {

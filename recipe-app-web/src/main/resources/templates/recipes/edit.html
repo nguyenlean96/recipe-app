@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
 >
     <head th:replace="~{layouts/form_fragments :: header}" />
-    <body style="padding-bottom: 110rem;">
+    <body style="padding-bottom: 130rem;">
         <div th:replace="fragments :: html_navbar(${isLoggedIn}, ${username})"></div>
 
         <div class="d-block border mx-5 my-1"
@@ -21,7 +21,8 @@
                             th:object="${req_recipe}"
                               method="post">
                             <!-- ID -->
-                            <input type="hidden" th:field="*{id}" th:value="*{id}" />
+                            <input type="hidden" th:field="*{id}"/>
+                            <input type="hidden" th:field="*{creator}">
                             <!-- Name -->
                             <div class="col-md-12">
                                 <h5 class="form-label">Name</h5>
@@ -41,11 +42,11 @@
                             <!-- difficulty field -->
                             <div class="col-12 px-2 my-4">
                                 <h5 class="form-label">Difficulty</h5>
-                                <select class="form-select" aria-label="Recipe Difficulty Select" name="difficulty">
-                                    <option value="Easy" selected>Select difficulty for this recipe</option>
-                                    <option value="Easy">Easy</option>
-                                    <option value="Moderate">Moderate</option>
-                                    <option value="Hard">Hard</option>
+                                <select class="form-select" aria-label="Recipe Difficulty Select" name="difficulty" th:field="*{difficulty}">
+                                    <option value="Easy" th:selected="${req_recipe.difficulty == ''}">Select difficulty for this recipe</option>
+                                    <option value="Easy" th:selected="${req_recipe.difficulty == 'Easy'}">Easy</option>
+                                    <option value="Moderate" th:selected="${req_recipe.difficulty == 'Moderate'}">Moderate</option>
+                                    <option value="Hard" th:selected="${req_recipe.difficulty == 'Hard'}">Hard</option>
                                 </select>
                             </div>
                             <!-- Description field -->
@@ -67,16 +68,16 @@
                                 <div class="col-md-6 p-3 m-0 border">
                                     <img
                                             class="img-fluid w-100 h-100"
-                                            th:if="not ${req_recipe.imageUrl.isBlank()}"
+                                            th:if="not ${req_recipe.imageUrl == ''}"
                                             th:src="@{${req_recipe.getImageUrl()}}"
                                             style="height: 10rem; object-fit: fill; object-position: center;"
                                             alt="..."
                                     >
                                     <img
                                             class="img-fluid w-100 h-100"
-                                            th:if="${req_recipe.imageUrl.isEmpty()}"
+                                            th:if="${req_recipe.imageUrl == ''}"
                                             th:src="@{/images/mDishes/food-placeholder.png}"
-                                            style="height: 10rem; object-fit: fill; object-position: center;"
+                                            style="height: 10rem; object-fit: cover; object-position: center; aspect-ratio: 1/1;"
                                             alt="..."
                                     >
                                 </div>

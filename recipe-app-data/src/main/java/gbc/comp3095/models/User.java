@@ -42,6 +42,7 @@ public class User {
 
     // RELATIONSHIPS
     @OneToMany(
+            fetch = FetchType.EAGER,
             mappedBy = "creator",
             cascade = CascadeType.ALL,
             orphanRemoval = true

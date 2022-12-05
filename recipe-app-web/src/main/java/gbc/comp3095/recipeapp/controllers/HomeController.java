@@ -19,14 +19,14 @@ import java.util.List;
 
 @RestController
 public class HomeController {
-//*********************************************************************************
-//* Project: Your Recipe App
-//* Assignment: assignment 1
-//* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
-//* Student Number: 101334588  - 101292266    - 101303158            - 101311327
-//* Date: 2022-10-23
-//* Description: Home controller to handle requests for home operations and return the appropriate view to the user based on the request - Landing page operations
-// *********************************************************************************/
+    //*********************************************************************************
+    //* Project: Your Recipe App
+    //* Assignment: Assignment 2
+    //* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
+    //* Student Number: 101334588  - 101292266    - 101303158            - 101311327
+    //* Date: 2022-10-23
+    //* Description: Home controller to handle requests for home operations and return the appropriate view to the user based on the request - Landing page operations
+    // *********************************************************************************/
 
     private static boolean testMode = false;
     private DbContext context;
@@ -41,24 +41,13 @@ public class HomeController {
         ModelAndView mv = new ModelAndView();
         // mv.addObject("user", new User());
         List<Recipe> saved_recipes = (List<Recipe>) context.recipes.findAll();
-
-        if (saved_recipes.size() < 5) {
-            Recipe rep = new Recipe("Phá lấu", "/images/mDishes/food-placeholder.png", "description", 9, 8, 1, "direction", "impossible");
-            rep.setRecipeIngredients(new HashSet<>());
-            context.recipes.save(rep);
-            try {
-                if (isLoggedIn(req)) {
-                    User curr = getCurrUser(req);
-                    rep.setUser(curr);
-                    context.users.save(curr);
-                }
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+        for (Recipe recipe : saved_recipes) {
+            if (recipe.getName() == null) {
+                this.context.recipes.delete(this.context.recipes.findById(recipe.getId()));
             }
         }
         mv.setViewName("index");
         mv.addObject("recipes", saved_recipes);
-        // return isLoggedIn(req) ? mv.addObject("username", "Hi " + context.users.findByUsername((String) req.getSession().getAttribute("RECIPE_USER")).getFirstName() + "!").addObject("isLoggedIn", isLoggedIn(req)) : mv;
         return autoDirect(req, mv);
     }
 
@@ -122,7 +111,6 @@ public class HomeController {
             mv.addObject("isLoggedIn", true)
                     .addObject("username", "Hi " + curr_user.getFirstName() + "!");
         }
-
         return mv;
     }
 }

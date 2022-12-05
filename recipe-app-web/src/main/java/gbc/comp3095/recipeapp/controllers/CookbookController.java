@@ -1,4 +1,7 @@
 package gbc.comp3095.recipeapp.controllers;
+/*
+    DEPRECATED
+    ***************************************
 
 import gbc.comp3095.models.Recipe;
 import gbc.comp3095.models.User;
@@ -17,17 +20,22 @@ import java.util.List;
 @RequestMapping("/api/v1/cookbooks")
 @ComponentScan("ca.gbc.comp3095.models")
 public class CookbookController {
-//*********************************************************************************
-//* Project: Your Recipe App
-//* Assignment: assignment 1
-//* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
-//* Student Number: 101334588  - 101292266    - 101303158            - 101311327
-//* Date: 2022-10-23
-//* Description: Mealplanner controller to handle requests for mealplanner operations and return the appropriate view to the user based on the request
-// *********************************************************************************/
+
+ */
+    //*********************************************************************************
+    //*                          !!!!   DEPRECATED   !!!!
+    //* Project: Your Recipe App
+    //* Assignment: assignment 1
+    //* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
+    //* Student Number: 101334588  - 101292266    - 101303158            - 101311327
+    //* Date: 2022-10-23
+    //* Description: Mealplanner controller to handle requests for mealplanner operations
+    //* and return the appropriate view to the user based on the request
+    // *********************************************************************************/
     // to controll user recipe table rows where IsSaved is 1
     // -----
     // if a user saves a recipe, it will be added to the user recipe table and IsSaved will be set to 1
+/*
     private UserService userService;
     private RecipeService recipeService;
     @Autowired
@@ -116,3 +124,4 @@ public class CookbookController {
         return isLoggedIn(req) ? (User) userService.findByUsername(String.valueOf(req.getSession().getAttribute("RECIPE_USER"))) : null;
     }
 }
+*/

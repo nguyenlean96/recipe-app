@@ -2,13 +2,11 @@ package gbc.comp3095.recipeapp.controllers;
 
 import gbc.comp3095.models.*;
 import gbc.comp3095.recipeapp.config.DbContext;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +14,16 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/v1/eventplans")
 public class EventPlanController {
+    //*********************************************************************************
+    //*                                 *** NEW ***
+    //* Project: Your Recipe App
+    //* Assignment: Assignment 2
+    //* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
+    //* Student Number: 101334588  - 101292266    - 101303158            - 101311327
+    //* Date: 2022-10-23
+    //* Description: This controller is to handle the EventPlan CRUD operation from the users
+    //* and route the pages to the appropriate views
+    // *********************************************************************************/
     private DbContext context;
 
     public EventPlanController(DbContext context) {
@@ -43,6 +51,7 @@ public class EventPlanController {
         ModelAndView mv = new ModelAndView();
         User curr = getUser(req);
         EventPlan new_plan = new EventPlan();
+        new_plan.setEventType(EventType.OTHER);
         mv.addObject("req_event", new_plan);
         List<Recipe> saved_recipes = (List<Recipe>) this.context.recipes.findAll();
         mv.addObject("req_recipes", saved_recipes);
@@ -52,8 +61,6 @@ public class EventPlanController {
             mv.addObject("message", "There is no recipes saved.\nPlease add a recipe first");
             mv.addObject("recipe_add_link", "/api/v1/recipes/add");
         }
-
-
 
         mv.addObject("action", "/api/v1/eventplans/save");
         mv.addObject("btn_label", "Add new plan");

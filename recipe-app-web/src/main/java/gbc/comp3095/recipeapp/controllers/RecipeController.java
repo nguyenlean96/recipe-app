@@ -14,6 +14,7 @@ import gbc.comp3095.services.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -21,7 +22,7 @@ import java.util.List;
 public class RecipeController {
 //*********************************************************************************
 //* Project: Your Recipe App
-//* Assignment: assignment 1
+//* Assignment: Assignment 2
 //* Author(s): Sarah Sami - Le An Nguyen - Farshad Jalali Ameri - Angela Efremova
 //* Student Number: 101334588  - 101292266    - 101303158            - 101311327
 //* Date: 2022-10-23
@@ -37,13 +38,18 @@ public class RecipeController {
 
     @GetMapping({"", "/"})
     public ModelAndView list(HttpServletRequest req) {
-        String username = (String) req.getSession().getAttribute("RECIPE_USER");
-        User curr = (User) context.users.findByUsername(username);
-        List<Recipe> saved_recipes = (List<Recipe>) List.copyOf(curr.getFavourite_recipes());
         ModelAndView mv = new ModelAndView();
-
-        mv.addObject("recipes", saved_recipes);
+        String username = (String) req.getSession().getAttribute("RECIPE_USER");
         mv.setViewName("/recipes/index");
+        try {
+            User curr = (User) context.users.findByUsername(username);
+            List<Recipe> saved_recipes = (List<Recipe>) List.copyOf(curr.getCreated_recipes());
+
+            mv.addObject("recipes", saved_recipes);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
         return autoDirect(req, mv);
     }
 
@@ -68,20 +74,57 @@ public class RecipeController {
         User curr = (User) context.users.findByUsername(String.valueOf(req.getSession().getAttribute("RECIPE_USER")));
 
         try {
+            if (recipe.getName().equals("")) {
+                this.context.recipes.delete(this.context.recipes.findById(recipe.getId()));
+                throw new Exception("Name cannot be blank");
+            }
+            if (recipe.getDescription().equals("")) {
+                this.context.recipes.delete(this.context.recipes.findById(recipe.getId()));
+                throw new Exception("Description cannot be blank");
+            }
+            if (recipe.getDirections().equals("")) {
+                this.context.recipes.delete(this.context.recipes.findById(recipe.getId()));
+                throw new Exception("Direction cannot be blank");
+            }
+            // Set default image since this feature is still under developing
             if (recipe.getImageUrl().isEmpty()) {
                 recipe.setImageUrl("/images/mDishes/food-placeholder.png");
             }
-            recipe.setCreator(curr);
-            recipe.addUserFavourite(curr);
-            context.recipes.save(recipe);
-            curr.addRecipeToCreatedRecipes(recipe);
-            curr.addRecipeToFavourite(recipe);
-            System.out.println(recipe);
-            User saved_user = this.context.users.save(curr);
-            System.out.println(saved_user);
+            if (recipe.getCreator() == null) {
+                recipe.setCreator(curr);
+                Recipe saved_one = this.context.recipes.save(recipe);
+                curr.addRecipeToCreatedRecipes(saved_one);
 
+            } else if (!recipe.getCreator().getUsername().equals(curr.getUsername())) {
+                System.out.println("Hijacking recipe #" + recipe.getId() + " - " + recipe.getName() + " from " + recipe.getCreator() + "...");
+                System.out.println("Saving a copy version of " + recipe.getName() + " to user: " + curr.getUsername());
+
+                Recipe new_recipe = new Recipe();
+                new_recipe.setName(recipe.getName());
+                new_recipe.setImageUrl(recipe.getImageUrl());
+                new_recipe.setDescription(recipe.getDescription());
+                new_recipe.setPrepTime(recipe.getPrepTime());
+                new_recipe.setCookTime(recipe.getCookTime());
+                new_recipe.setServings(recipe.getServings());
+                new_recipe.setDirections(recipe.getDirections());
+                new_recipe.setDifficulty(recipe.getDifficulty());
+
+                new_recipe.setCreator(curr);
+                Recipe saved_one = this.context.recipes.save(new_recipe);
+                List<Ingredient> old_ones = (List<Ingredient>) List.copyOf(recipe.getRecipeIngredients());
+                for (Ingredient i : old_ones) {
+                    Ingredient new_one = new Ingredient(i.getDescription(), i.getQuantity(), i.getUnitOfMeasurement(), saved_one);
+                    saved_one.addIngredient(new_one);
+                }
+                curr.addRecipeToCreatedRecipes(saved_one);
+                System.out.println(saved_one);
+            } else {
+                Recipe saved_one = this.context.recipes.save(recipe);
+                curr.addRecipeToCreatedRecipes(saved_one);
+            }
+            this.context.users.save(curr);
         } catch (Exception e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
 
         return testMode ? mv : autoDirect(req, mv);
@@ -114,34 +157,52 @@ public class RecipeController {
                 return new ModelAndView("redirect:/").addObject("message", "Please select a recipe");
             }
             Recipe req_recipe = context.recipes.findById(id);
+            List<Ingredient> original_ones = List.copyOf(req_recipe.getRecipeIngredients());
+            req_recipe.setRecipeIngredients(new HashSet<>());
+            for (Ingredient i : original_ones) {
+                if (!req_recipe.getRecipeIngredients().contains(i)) {
+                    req_recipe.addIngredient(i);
+                } else {
+                    this.context.ingredients.delete(i);
+                }
+            }
 
             mv.addObject("recipe", req_recipe);
-//            mv.addObject("reformat_ingredients", (List<String>) Arrays.asList(req_recipe.getIngredients().split("\\r?\\n")));
+
+            // mv.addObject("reformat_ingredients", (List<String>) Arrays.asList(req_recipe.getIngredients().split("\\r?\\n"))); >>> DEPRECATED >>>
+
             mv.addObject("reformat_directions", (List<String>) Arrays.asList(req_recipe.getDirections().split("\\r?\\n")));
             mv.setViewName("recipes/view");
         } catch (Exception e) {
             System.out.println(e);
         }
-        System.out.println("Is logged in? " + String.valueOf(isLoggedIn(req)));
-        System.out.println("Logged in as: " + String.valueOf(req.getSession().getAttribute("RECIPE_USER")));
+
         return isLoggedIn(req) ? mv.addObject("isLoggedIn", isLoggedIn(req)).addObject("username", "Hi " + getUser(req).getFirstName() + "!") : mv;
     }
     @GetMapping("/delete")
     public ModelAndView delete(@RequestParam("id") Long id, HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
-        User cur = getUser(req);
-        Recipe recipe = (Recipe) context.recipes.findById(id);
-        cur.removeRecipeFromFavorite(recipe);
-        cur.removeRecipeFromCreatedRecipes(recipe);
-        context.users.save(cur);
-        context.recipes.deleteById(id);
         mv.setViewName("redirect:/api/v1/recipes");
-        return autoDirect(req, mv);
+        User curr = getUser(req);
+        List<Recipe> saved_recipes = (List<Recipe>) this.context.recipes.findAll();
+        try {
+            Recipe recipe = context.recipes.findById(id);
+            // System.out.println(recipe);
+            curr.removeRecipeFromCreatedRecipes(recipe);
+            if (curr.getFavourite_recipes().contains(recipe)){
+                curr.removeRecipeFromFavorite(recipe);
+            }
+            this.context.recipes.delete(recipe);
+            this.context.users.save(curr);
+            if (saved_recipes.contains(recipe)) throw new Exception("Deleting " + recipe.getName() + " failed");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return mv;
     }
     @GetMapping("/search")
     public ModelAndView search(@RequestParam("name") String name, HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
-
 
         return isLoggedIn(req) ? mv.addObject("loggedin", isLoggedIn(req)).addObject("username", req.getSession().getAttribute("RECIPE_USER")) : mv;
     }
